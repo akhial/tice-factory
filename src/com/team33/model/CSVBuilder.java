@@ -1,4 +1,8 @@
 package com.team33.model;
 
-public class CSVBuilder {
+/**
+ * Created by Amine on 13/02/2017.
+ */
+public class CSVBuilder  {
+    CSVFormat csvf;
 }
