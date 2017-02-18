@@ -26,6 +26,7 @@ public class CSVBuilder  {
     }
 
     public CSVBuilder(CSVFormat format) {
+        
         this.format = format;
     }
 
