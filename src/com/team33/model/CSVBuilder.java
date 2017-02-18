@@ -30,11 +30,11 @@ public class CSVBuilder  {
         this.format = format;
     }
 
-    public void BuildCSV(){
-        tempPath = format.BuildCSV(workbooksPaths);
+    public void buildCSV(){
+        tempPath = format.buildCSV(workbooksPaths);
     }
 
-    public void ConvertToCSV(){
+    public void convertToCSV(){
         ToCSV toCSV = new ToCSV();
         try {
             toCSV.convertExcelToCSV(tempPath,destination);
@@ -44,7 +44,4 @@ public class CSVBuilder  {
             e.printStackTrace();
         }
     }
-
-
-
 }
