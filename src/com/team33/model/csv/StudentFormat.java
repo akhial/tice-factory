@@ -7,6 +7,7 @@ import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import java.io.*;
 import java.util.ArrayList;
 import java.util.Iterator;
+import java.util.Scanner;
 
 /**
  * Created by Amine on 13/02/2017.
@@ -226,7 +227,26 @@ public class StudentFormat implements CSVFormat {
         }
     }
 
-    
+    public String chooseEmail(ArrayList<String> listEmails, Row rw, int colNom, int colPrenom)// choisir un email de la liste
+    {
+        String email = new String();
+
+        if (listEmails.size() == 0)
+        {
+            System.out.println("Erreur");
+            email = "";
+        }else if (listEmails.size() == 1){
+            email = listEmails.get(0);
+        }else{
+            System.out.println("Plusieurs emails peuvent correspendre à l'étudiant : "+getStudentInoformations(rw,colNom,colPrenom));
+            showListOfEmails(listEmails);
+            System.out.print("Veuillez coisir le bon mail svp : ");
+            Scanner sc = new Scanner(System.in);
+            int i = sc.nextInt();
+            email = listEmails.get(i-1);
+        }
+        return email;
+    }
 
 
 
