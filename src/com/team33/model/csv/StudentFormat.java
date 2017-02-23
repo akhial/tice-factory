@@ -1,10 +1,7 @@
 package com.team33.model.csv;
 
 import org.apache.poi.openxml4j.exceptions.InvalidFormatException;
-import org.apache.poi.ss.usermodel.Cell;
-import org.apache.poi.ss.usermodel.CellType;
-import org.apache.poi.ss.usermodel.Row;
-import org.apache.poi.ss.usermodel.WorkbookFactory;
+import org.apache.poi.ss.usermodel.*;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 
 import java.io.*;
@@ -126,6 +123,15 @@ public class StudentFormat implements CSVFormat {
         rw.getCell(3).setCellValue(email);
     }
 
+    private  String generateUser(Row rw,int indexOfNom,String level, int indexOfGroupe)// generer le nom de format moodle (a revoir en fonction des informations concernant le cycle superieur)
+    {
+        rw.getCell(indexOfGroupe).setCellType(CellType.STRING);
+        return  rw.getCell(indexOfNom).toString()+" "+ level+rw.getCell(indexOfGroupe).toString();
+
+    }
+
+
+
     private boolean rowContains(Row rw, String str)//verrifie si la ligne rw contient la chaine str
     {
         boolean contains = false;
@@ -152,6 +158,76 @@ public class StudentFormat implements CSVFormat {
         }
         return  rang;
     }
+    /*------------------------------------------------------------------------------------------------------
+     *                                          FINDING EMAILS                                             *
+     *-----------------------------------------------------------------------------------------------------*/
+    private String extractNameFromEmail(Row rw, int index)//extraire la partie du mail à utilisé comme référence pour comparaison
+    {
+        String name = new String();
+        name = rw.getCell(index).toString();
+        name = name.replace(String.valueOf(name.charAt(0))+name.charAt(1)+name.charAt(2),"");
+        return name;
+
+    }
+
+    private String nameForEmail(Row rw, int colNom, String repalceSapaceWit)// générer une chaine de carractère pour utiliser en comparaison pour trouver l'email
+    {
+        String str = new String();
+
+        str = rw.getCell(colNom).toString();
+        str = str.replace(" ", repalceSapaceWit);
+        str = str.toLowerCase();
+        str = str + "@esi.dz";
+        return str;
+
+    }
+
+    private ArrayList<String> findEmails(String namForEmail1,String namForEmail2,int indexOfEmailsSheet)// retourne un ArrayList contenant les emails douteux
+    {
+        ArrayList<String> listeEmails = new ArrayList<String>();
+        Sheet sheet = this.workbookEmails.getSheetAt(indexOfEmailsSheet);
+        for(Row rw:sheet)
+        {
+            if(rowContains(rw,namForEmail1))
+            {
+                if (namForEmail1.equals(extractNameFromEmail(rw,rangOfCellContaining(rw,namForEmail1))))
+                    listeEmails.add(rw.getCell(rangOfCellContaining(rw,namForEmail1)).toString());
+            }else if (rowContains(rw,namForEmail2))
+            {
+                if (namForEmail2.equals(extractNameFromEmail(rw,rangOfCellContaining(rw,namForEmail2))))
+                    listeEmails.add(rw.getCell(rangOfCellContaining(rw,namForEmail2)).toString());
+            }
+        }
+        return listeEmails;
+    }
+
+    private String getStudentInoformations(Row rw, int colNom, int colPrenom)// avoir les information d'un étudient
+    {
+
+        return rw.getCell(colPrenom).toString() +" "+ rw.getCell(colNom).toString();
+    }
+
+
+    private void showListOfEmails(ArrayList lsitEmails)//afficher la liste des emails
+    {
+        int j = 1;
+        if(lsitEmails.isEmpty())
+        {
+            System.out.println("ERREUR");
+        }
+        else
+        {
+            for(int i = 0; i < lsitEmails.size();i++)
+            {
+                System.out.println(j+" : "+lsitEmails.get(i).toString());
+                j++;
+                System.out.println("______________________");
+            }
+        }
+    }
+
+    
+
 
 
 
