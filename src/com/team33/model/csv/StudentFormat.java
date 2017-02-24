@@ -171,19 +171,19 @@ public class StudentFormat implements CSVFormat {
 
     }
 
-    private String nameForEmail(Row rw, int colNom, String repalceSapaceWit)// générer une chaine de carractère pour utiliser en comparaison pour trouver l'email
+    private String nameForEmail(Row rw, int colNom,int colPrenom, String repalceSapaceWit)// générer une chaine de carractère pour utiliser en comparaison pour trouver l'email
     {
         String str = new String();
 
         str = rw.getCell(colNom).toString();
         str = str.replace(" ", repalceSapaceWit);
         str = str.toLowerCase();
-        str = str + "@esi.dz";
+        str = rw.getCell(colPrenom).toString().toLowerCase().charAt(0)+str + "@esi.dz";
         return str;
 
     }
 
-    private ArrayList<String> findEmails(String namForEmail1,String namForEmail2,int indexOfEmailsSheet)// retourne un ArrayList contenant les emails douteux
+    private ArrayList<String> findListEmails(String namForEmail1,String namForEmail2,int indexOfEmailsSheet)// retourne un ArrayList contenant les emails douteux
     {
         ArrayList<String> listeEmails = new ArrayList<String>();
         Sheet sheet = this.workbookEmails.getSheetAt(indexOfEmailsSheet);
@@ -201,6 +201,7 @@ public class StudentFormat implements CSVFormat {
         }
         return listeEmails;
     }
+
 
     private String getStudentInoformations(Row rw, int colNom, int colPrenom)// avoir les information d'un étudient
     {
@@ -227,7 +228,7 @@ public class StudentFormat implements CSVFormat {
         }
     }
 
-    public String chooseEmail(ArrayList<String> listEmails, Row rw, int colNom, int colPrenom)// choisir un email de la liste
+    private String chooseEmail(ArrayList<String> listEmails, Row rw, int colNom, int colPrenom)// choisir un email de la liste
     {
         String email = new String();
 
@@ -248,7 +249,25 @@ public class StudentFormat implements CSVFormat {
         return email;
     }
 
+    private boolean existOtherStudents(char firstLetter,String name,int colNom, int colPrenom,int begin)
+    {
+        boolean exist = false;
+        Sheet sheet = this.workbookIn.getSheetAt(0);
+        String student = new String();
 
+        Iterator<Row> studentFinder = sheet.iterator();
+        Row row = sheet.getRow(begin);
+        while ((studentFinder.hasNext())&&(!exist))
+        {
+            row = studentFinder.next();
+            student = getStudentInoformations(row,colNom,colPrenom);
+            if((student.charAt(0) == firstLetter) && (row.getCell(colNom).toString().toLowerCase().equals(name.toLowerCase())))
+            {
+                exist = true;
+            }
+        }
+        return exist;
+    }
 
 
 
