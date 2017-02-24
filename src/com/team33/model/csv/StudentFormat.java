@@ -202,6 +202,25 @@ public class StudentFormat implements CSVFormat {
         return listeEmails;
     }
 
+    private String findEmail(String namForEmail1,String namForEmail2,int indexOfEmailsSheet)// retourne un ArrayList contenant les emails douteux
+    {
+        String email = new String();
+        Sheet sheet = this.workbookEmails.getSheetAt(indexOfEmailsSheet);
+        for(Row rw:sheet)
+        {
+            if(rowContains(rw,namForEmail1))
+            {
+                if (namForEmail1.equals(extractNameFromEmail(rw,rangOfCellContaining(rw,namForEmail1))))
+                    email = rw.getCell(rangOfCellContaining(rw,namForEmail1)).toString();
+            }else if (rowContains(rw,namForEmail2))
+            {
+                if (namForEmail2.equals(extractNameFromEmail(rw,rangOfCellContaining(rw,namForEmail2))))
+                    email  = rw.getCell(rangOfCellContaining(rw,namForEmail2)).toString();
+            }
+        }
+        return email;
+    }
+
 
     private String getStudentInoformations(Row rw, int colNom, int colPrenom)// avoir les information d'un étudient
     {
@@ -228,23 +247,23 @@ public class StudentFormat implements CSVFormat {
         }
     }
 
-    private String chooseEmail(ArrayList<String> listEmails, Row rw, int colNom, int colPrenom)// choisir un email de la liste
+    private String chooseEmail( Row rw, int colNom, int colPrenom,int indexOfEmailsSheet)// choisir un email de la liste
     {
         String email = new String();
-
-        if (listEmails.size() == 0)
+        if (!existOtherStudents(rw.getCell(colPrenom).toString().toLowerCase().charAt(0),rw.getCell(colNom).toString(),colNom,colPrenom,rw.getRowNum()))
         {
-            System.out.println("Erreur");
-            email = "";
-        }else if (listEmails.size() == 1){
-            email = listEmails.get(0);
-        }else{
+            email = findEmail(nameForEmail(rw,colNom,colPrenom,"_"),nameForEmail(rw,colNom,colPrenom,""),indexOfEmailsSheet);
+        }
+        else
+        {
+            ArrayList<String> listOfEmails = new ArrayList();
             System.out.println("Plusieurs emails peuvent correspendre à l'étudiant : "+getStudentInoformations(rw,colNom,colPrenom));
-            showListOfEmails(listEmails);
+            listOfEmails = findListEmails(nameForEmail(rw,colNom,colPrenom,"_"),nameForEmail(rw,colNom,colPrenom,""),indexOfEmailsSheet);
+            showListOfEmails(listOfEmails);
             System.out.print("Veuillez coisir le bon mail svp : ");
             Scanner sc = new Scanner(System.in);
             int i = sc.nextInt();
-            email = listEmails.get(i-1);
+            email = listOfEmails.get(i-1);
         }
         return email;
     }
