@@ -165,7 +165,7 @@ public class StudentFormat implements CSVFormat {
     {
         String name = new String();
         name = rw.getCell(index).toString();
-        name = name.replace(String.valueOf(name.charAt(0)),"");
+        name = name.replaceFirst(String.valueOf(name.charAt(0)),"");
         return name;
 
     }
@@ -225,30 +225,17 @@ public class StudentFormat implements CSVFormat {
     {
         String email = new String();
         Sheet sheet = this.workbookEmails.getSheetAt(indexOfEmailsSheet);
-        System.out.println(namForEmail1);
-        System.out.println(namForEmail2);
-        Row rw  = sheet.getRow(0);
-        int i = 0;
-        boolean found = false;
-        while ((rw != null) && (!found))
+        for(Row rw:sheet)
         {
             if(rowContains(rw,namForEmail1))
             {
                 if (namForEmail1.equals(extractNameFromEmail(rw,rangOfCellContaining(rw,namForEmail1))))
-                {
-                    email = rw.getCell(rangOfCellContaining(rw, namForEmail1)).toString();
-                    found = true;
-                }
+                    email = rw.getCell(rangOfCellContaining(rw,namForEmail1)).toString();
             }else if (rowContains(rw,namForEmail2))
             {
                 if (namForEmail2.equals(extractNameFromEmail(rw,rangOfCellContaining(rw,namForEmail2))))
-                {
-                    email  = rw.getCell(rangOfCellContaining(rw,namForEmail2)).toString();
-                    found = true;
-                }
+                    email = rw.getCell(rangOfCellContaining(rw,namForEmail2)).toString();
             }
-            i++;
-            rw = sheet.getRow(i);
         }
         return email;
     }
@@ -310,13 +297,11 @@ public class StudentFormat implements CSVFormat {
         int i = begin+1;
         while ((row != null)&&(!exist))
         {
-            System.out.print(i+1 +" : " );
             if (existInRow(row,optin))
             {
                 student = getStudentInoformations(row,colNom,colPrenom);
                 if((student.toLowerCase().charAt(0) == firstLetter) && (row.getCell(colNom).toString().toLowerCase().equals(name.toLowerCase())))
                 {
-                    System.out.println(student);
                     exist = true;
                 }
 
@@ -324,7 +309,6 @@ public class StudentFormat implements CSVFormat {
             i++;
             row = sheet.getRow(i);
         }
-        System.out.println(exist);
         return exist;
     }
 
@@ -354,7 +338,6 @@ public class StudentFormat implements CSVFormat {
                 colNom = column(rw,"Nom");
                 colPrenom = column(rw,"Prenom");
                 colGroupe = column(rw,"NG");
-                System.out.println("OK");
             }
             else
             {
@@ -374,7 +357,6 @@ public class StudentFormat implements CSVFormat {
 
                 generateRow(numRow,usernam,firtstname,lastname,email);
                 numRow++;
-                System.out.println(numRow);
 
             }
             rw = rowIterator.next();
