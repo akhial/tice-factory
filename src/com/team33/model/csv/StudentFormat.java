@@ -23,9 +23,10 @@ public class StudentFormat implements CSVFormat {
 
     public StudentFormat() {
         this.workbookIn = new XSSFWorkbook();
-        header = this.workbookIn.getSheetAt(0).getRow(0);
         this.workbookOut = new XSSFWorkbook();
         this.workbookOut.createSheet();
+        this.workbookOut.getSheetAt(0).createRow(0);
+        this.header = workbookOut.getSheetAt(0).getRow(0);
         this.workbookEmails = new XSSFWorkbook();
         this.filePathIn = new ArrayList<>();
     }
@@ -34,12 +35,10 @@ public class StudentFormat implements CSVFormat {
     {
 
         try {
-            this.workbookIn = (XSSFWorkbook) WorkbookFactory.create(new File(fiilePathIn));
+            this.workbookIn = new XSSFWorkbook(new FileInputStream(new File(fiilePathIn)));
         }catch (FileNotFoundException e){
             e.printStackTrace();
         }catch (IOException e){
-            e.printStackTrace();
-        } catch (InvalidFormatException e) {
             e.printStackTrace();
         }
 
@@ -72,7 +71,7 @@ public class StudentFormat implements CSVFormat {
 
     }
 
-    private void poenEmailWorkbook(String emailFilePath)// ouvrire le fichier contenant les e-mails
+    private void openEmailWorkbook(String emailFilePath)// ouvrire le fichier contenant les e-mails
     {
         try {
             this.workbookEmails = (XSSFWorkbook) WorkbookFactory.create(new File(emailFilePath));
@@ -166,11 +165,19 @@ public class StudentFormat implements CSVFormat {
     {
         String name = new String();
         name = rw.getCell(index).toString();
-        name = name.replace(String.valueOf(name.charAt(0))+name.charAt(1)+name.charAt(2),"");
+        name = name.replace(String.valueOf(name.charAt(0)),"");
         return name;
 
     }
 
+    private String secondPossibility(Row rw, int index)//extraire la partie du mail à utilisé comme référence pour comparaison
+    {
+        String name = new String();
+        name = rw.getCell(index).toString();
+        name = name.replace(String.valueOf(name.charAt(0))+name.charAt(1)+name.charAt(2),"");
+        return name;
+
+    }
     private String nameForEmail(Row rw, int colNom,int colPrenom, String repalceSapaceWit)// générer une chaine de carractère pour utiliser en comparaison pour trouver l'email
     {
         String str = new String();
@@ -178,7 +185,19 @@ public class StudentFormat implements CSVFormat {
         str = rw.getCell(colNom).toString();
         str = str.replace(" ", repalceSapaceWit);
         str = str.toLowerCase();
-        str = rw.getCell(colPrenom).toString().toLowerCase().charAt(0)+str + "@esi.dz";
+        str = rw.getCell(colPrenom).toString().toLowerCase().charAt(0)+"_"+str + "@esi.dz";
+        return str;
+
+    }
+
+    private String scondNameForEmail(Row rw, int colNom,int colPrenom, String repalceSapaceWit)// générer une chaine de carractère pour utiliser en comparaison pour trouver l'email
+    {
+        String str = new String();
+
+        str = rw.getCell(colNom).toString();
+        str = str.replace(" ", repalceSapaceWit);
+        str = str.toLowerCase();
+        str = str + "@esi.dz";
         return str;
 
     }
@@ -191,11 +210,11 @@ public class StudentFormat implements CSVFormat {
         {
             if(rowContains(rw,namForEmail1))
             {
-                if (namForEmail1.equals(extractNameFromEmail(rw,rangOfCellContaining(rw,namForEmail1))))
+                if (namForEmail1.equals(secondPossibility(rw,rangOfCellContaining(rw,namForEmail1))))
                     listeEmails.add(rw.getCell(rangOfCellContaining(rw,namForEmail1)).toString());
             }else if (rowContains(rw,namForEmail2))
             {
-                if (namForEmail2.equals(extractNameFromEmail(rw,rangOfCellContaining(rw,namForEmail2))))
+                if (namForEmail2.equals(secondPossibility(rw,rangOfCellContaining(rw,namForEmail2))))
                     listeEmails.add(rw.getCell(rangOfCellContaining(rw,namForEmail2)).toString());
             }
         }
@@ -206,17 +225,30 @@ public class StudentFormat implements CSVFormat {
     {
         String email = new String();
         Sheet sheet = this.workbookEmails.getSheetAt(indexOfEmailsSheet);
-        for(Row rw:sheet)
+        System.out.println(namForEmail1);
+        System.out.println(namForEmail2);
+        Row rw  = sheet.getRow(0);
+        int i = 0;
+        boolean found = false;
+        while ((rw != null) && (!found))
         {
             if(rowContains(rw,namForEmail1))
             {
                 if (namForEmail1.equals(extractNameFromEmail(rw,rangOfCellContaining(rw,namForEmail1))))
-                    email = rw.getCell(rangOfCellContaining(rw,namForEmail1)).toString();
+                {
+                    email = rw.getCell(rangOfCellContaining(rw, namForEmail1)).toString();
+                    found = true;
+                }
             }else if (rowContains(rw,namForEmail2))
             {
                 if (namForEmail2.equals(extractNameFromEmail(rw,rangOfCellContaining(rw,namForEmail2))))
+                {
                     email  = rw.getCell(rangOfCellContaining(rw,namForEmail2)).toString();
+                    found = true;
+                }
             }
+            i++;
+            rw = sheet.getRow(i);
         }
         return email;
     }
@@ -247,10 +279,10 @@ public class StudentFormat implements CSVFormat {
         }
     }
 
-    private String chooseEmail( Row rw, int colNom, int colPrenom,int indexOfEmailsSheet)// choisir un email de la liste
+    private String chooseEmail( Row rw, int colNom, int colPrenom,int indexOfEmailsSheet,String optin)// choisir un email de la liste
     {
         String email = new String();
-        if (!existOtherStudents(rw.getCell(colPrenom).toString().toLowerCase().charAt(0),rw.getCell(colNom).toString(),colNom,colPrenom,rw.getRowNum()))
+        if (!existOtherStudents(rw.getCell(colPrenom).toString().toLowerCase().charAt(0),rw.getCell(colNom).toString(),colNom,colPrenom,rw.getRowNum(),optin))
         {
             email = findEmail(nameForEmail(rw,colNom,colPrenom,"_"),nameForEmail(rw,colNom,colPrenom,""),indexOfEmailsSheet);
         }
@@ -258,7 +290,7 @@ public class StudentFormat implements CSVFormat {
         {
             ArrayList<String> listOfEmails = new ArrayList();
             System.out.println("Plusieurs emails peuvent correspendre à l'étudiant : "+getStudentInoformations(rw,colNom,colPrenom));
-            listOfEmails = findListEmails(nameForEmail(rw,colNom,colPrenom,"_"),nameForEmail(rw,colNom,colPrenom,""),indexOfEmailsSheet);
+            listOfEmails = findListEmails(scondNameForEmail(rw,colNom,colPrenom,"_"),scondNameForEmail(rw,colNom,colPrenom,""),indexOfEmailsSheet);
             showListOfEmails(listOfEmails);
             System.out.print("Veuillez coisir le bon mail svp : ");
             Scanner sc = new Scanner(System.in);
@@ -268,27 +300,88 @@ public class StudentFormat implements CSVFormat {
         return email;
     }
 
-    private boolean existOtherStudents(char firstLetter,String name,int colNom, int colPrenom,int begin)
+    private boolean existOtherStudents(char firstLetter,String name,int colNom, int colPrenom,int begin,String optin)
     {
         boolean exist = false;
         Sheet sheet = this.workbookIn.getSheetAt(0);
         String student = new String();
 
-        Iterator<Row> studentFinder = sheet.iterator();
-        Row row = sheet.getRow(begin);
-        while ((studentFinder.hasNext())&&(!exist))
+        Row row = sheet.getRow(begin+1);
+        int i = begin+1;
+        while ((row != null)&&(!exist))
         {
-            row = studentFinder.next();
-            student = getStudentInoformations(row,colNom,colPrenom);
-            if((student.charAt(0) == firstLetter) && (row.getCell(colNom).toString().toLowerCase().equals(name.toLowerCase())))
+            System.out.print(i+1 +" : " );
+            if (existInRow(row,optin))
             {
-                exist = true;
+                student = getStudentInoformations(row,colNom,colPrenom);
+                if((student.toLowerCase().charAt(0) == firstLetter) && (row.getCell(colNom).toString().toLowerCase().equals(name.toLowerCase())))
+                {
+                    System.out.println(student);
+                    exist = true;
+                }
+
             }
+            i++;
+            row = sheet.getRow(i);
         }
+        System.out.println(exist);
         return exist;
     }
 
+    public void createStudentListe(String filePathIn,String emailFilePath,int indexOfEmailsSheet,String filePathOut, String optin,String level) throws IOException {
+        int colNom = -1;
+        int colPrenom = -1;
+        int colGroupe = -1;
+        int numRow = 1;
+        ArrayList<String> listEmails = new ArrayList<String>();
+        openWorkbookIn(filePathIn);
+        openEmailWorkbook(emailFilePath);
+        Sheet sheet = workbookIn.getSheetAt(0);
+        Sheet sheetOut = workbookOut.createSheet();
+        Row rwOut = sheetOut.createRow(0);
 
+
+        generateHeader();
+
+        boolean found = false;
+        Iterator<Row> rowIterator = sheet.rowIterator();
+        Row rw = rowIterator.next();
+        while ((!found) && (rowIterator.hasNext()))
+        {
+            if(existInRow(rw,"Nom"))
+            {
+                found = true;
+                colNom = column(rw,"Nom");
+                colPrenom = column(rw,"Prenom");
+                colGroupe = column(rw,"NG");
+                System.out.println("OK");
+            }
+            else
+            {
+                rw = rowIterator.next();
+            }
+        }
+
+        while (rowIterator.hasNext())
+        {
+            if (existInRow(rw,optin))
+            {
+                String email = new String(chooseEmail(rw,colNom,colPrenom,indexOfEmailsSheet,optin));
+                String usernam = new String(rw.getCell(colPrenom).toString().toLowerCase().charAt(0)+"_"+(rw.getCell(colNom).toString().toLowerCase()));
+
+                String firtstname = new String(rw.getCell(colPrenom).toString());
+                String lastname = new String(generateUser(rw,colNom,level,colGroupe));
+
+                generateRow(numRow,usernam,firtstname,lastname,email);
+                numRow++;
+                System.out.println(numRow);
+
+            }
+            rw = rowIterator.next();
+        }
+        File file = new File(filePathOut);
+        saveStudentList(file);
+    }
 
     @Override
     public String buildCSV(ArrayList<String> workbooksPaths) {
