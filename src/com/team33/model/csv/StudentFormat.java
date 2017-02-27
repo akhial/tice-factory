@@ -268,7 +268,8 @@ public class StudentFormat implements CSVFormat {
 
     private String chooseEmail( Row rw, int colNom, int colPrenom,int indexOfEmailsSheet,String optin)// choisir un email de la liste
     {
-        String email = new String();
+        String email = new String("");
+        Scanner sc = new Scanner(System.in);
         if (!existOtherStudents(rw.getCell(colPrenom).toString().toLowerCase().charAt(0),rw.getCell(colNom).toString(),colNom,colPrenom,rw.getRowNum(),optin))
         {
             email = findEmail(nameForEmail(rw,colNom,colPrenom,"_"),nameForEmail(rw,colNom,colPrenom,""),indexOfEmailsSheet);
@@ -280,9 +281,14 @@ public class StudentFormat implements CSVFormat {
             listOfEmails = findListEmails(scondNameForEmail(rw,colNom,colPrenom,"_"),scondNameForEmail(rw,colNom,colPrenom,""),indexOfEmailsSheet);
             showListOfEmails(listOfEmails);
             System.out.print("Veuillez coisir le bon mail svp : ");
-            Scanner sc = new Scanner(System.in);
             int i = sc.nextInt();
             email = listOfEmails.get(i-1);
+        }
+        if (email.equals(""))
+        {
+            System.out.println("Nous n'avons pas trouvé l'e-mail correspondant à l'étudinat : "+getStudentInoformations(rw,colNom,colPrenom));
+            System.out.print("Veuillez le saisir manuellement svp : ");
+            email = sc.nextLine();
         }
         return email;
     }
@@ -310,6 +316,15 @@ public class StudentFormat implements CSVFormat {
             row = sheet.getRow(i);
         }
         return exist;
+    }
+
+    private String generateUsename(String emai)
+    {
+        String username = new String(emai);
+
+        username = emai.replaceFirst(String.valueOf(emai.charAt(0)),"");
+        username = username.replace("@esi.dz","");
+        return username;
     }
 
     public void createStudentListe(String filePathIn,String emailFilePath,int indexOfEmailsSheet,String filePathOut, String optin,String level) throws IOException {
@@ -350,7 +365,7 @@ public class StudentFormat implements CSVFormat {
             if (existInRow(rw,optin))
             {
                 String email = new String(chooseEmail(rw,colNom,colPrenom,indexOfEmailsSheet,optin));
-                String usernam = new String(rw.getCell(colPrenom).toString().toLowerCase().charAt(0)+"_"+(rw.getCell(colNom).toString().toLowerCase()));
+                String usernam = new String(generateUsename(email));
 
                 String firtstname = new String(rw.getCell(colPrenom).toString());
                 String lastname = new String(generateUser(rw,colNom,level,colGroupe));
