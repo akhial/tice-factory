@@ -21,16 +21,6 @@ public class CSVBuilder  {
         this.destination = destination;
     }
 
-    public CSVBuilder(ArrayList<String> workbooksPaths, CSVFormat format) {
-        this.workbooksPaths = workbooksPaths;
-        this.format = format;
-    }
-
-    public CSVBuilder(CSVFormat format) {
-        
-        this.format = format;
-    }
-
     public void buildCSV(){
         tempPath = format.buildCSV(workbooksPaths);
     }

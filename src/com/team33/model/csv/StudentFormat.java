@@ -380,6 +380,22 @@ public class StudentFormat implements CSVFormat {
         return "";
     }
 
+    private String getFileType(String filePath)
+    {
+        String reult = new String();
+
+        try  {
+            XSSFWorkbook workbook = new XSSFWorkbook(new FileInputStream(new File(filePath)));
+
+        }catch (FileNotFoundException e){
+            e.printStackTrace();
+        }catch (IOException e){
+            e.printStackTrace();
+        }
+
+        return reult;
+    }
+
 
     public void createStudentListe(String filePathIn,String emailFilePath,int indexOfEmailsSheet,String filePathOut, String optin,String level) throws IOException {
         int colNom = -1;
@@ -433,6 +449,7 @@ public class StudentFormat implements CSVFormat {
         File file = new File(filePathOut);
         saveStudentList(file);
     }
+
 
     @Override
     public String buildCSV(ArrayList<String> workbooksPaths) {
