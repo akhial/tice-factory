@@ -18,7 +18,6 @@ public class StudentFormat implements CSVFormat {
     private XSSFWorkbook workbookIn;
     private XSSFWorkbook workbookOut;
     private XSSFWorkbook workbookEmails;
-    private ArrayList<String> filePathIn;
     private Row header = null;
 
     public StudentFormat() {
@@ -28,7 +27,6 @@ public class StudentFormat implements CSVFormat {
         this.workbookOut.getSheetAt(0).createRow(0);
         this.header = workbookOut.getSheetAt(0).getRow(0);
         this.workbookEmails = new XSSFWorkbook();
-        this.filePathIn = new ArrayList<>();
     }
 
     private   void openWorkbookIn(File fileIn)//charger un fichier excel dans le wbin
@@ -139,7 +137,7 @@ public class StudentFormat implements CSVFormat {
         boolean contains = false;
         Iterator<Cell> cellIterator = rw.iterator();
         Cell cell = cellIterator.next();
-        while ((cell != null) && (contains == false))
+        while ((cell != null) && (!contains))
         {
             if(cell.toString().contains(str)) {
                 contains = true;
@@ -181,7 +179,7 @@ public class StudentFormat implements CSVFormat {
 
     }
 
-    private String scondNameForEmail(Row rw, int colNom,int colPrenom, String repalceSapaceWit)// générer une chaine de carractère pour utiliser en comparaison pour trouver l'email
+    private String scondNameForEmail(Row rw, int colNom, String repalceSapaceWit)// générer une chaine de carractère pour utiliser en comparaison pour trouver l'email
     {
         String str ;
 
@@ -195,7 +193,7 @@ public class StudentFormat implements CSVFormat {
 
     private ArrayList<String> findListEmails(String namForEmail1,String namForEmail2,int indexOfEmailsSheet)// retourne un ArrayList contenant les emails douteux
     {
-        ArrayList<String> listeEmails = new ArrayList<String>();
+        ArrayList<String> listeEmails = new ArrayList<>();
         Sheet sheet = this.workbookEmails.getSheetAt(indexOfEmailsSheet);
         for(Row rw:sheet)
         {
@@ -268,7 +266,7 @@ public class StudentFormat implements CSVFormat {
         {
             ArrayList<String> listOfEmails = new ArrayList();
             System.out.println("Plusieurs emails peuvent correspendre à l'étudiant : "+getStudentInoformations(rw,colNom,colPrenom));
-            listOfEmails = findListEmails(scondNameForEmail(rw,colNom,colPrenom,"_"),scondNameForEmail(rw,colNom,colPrenom,""),indexOfEmailsSheet);
+            listOfEmails = findListEmails(scondNameForEmail(rw,colNom, "_"),scondNameForEmail(rw,colNom, ""),indexOfEmailsSheet);
             showListOfEmails(listOfEmails);
             System.out.print("Veuillez coisir le bon mail svp : ");
             int i = sc.nextInt();
@@ -287,7 +285,7 @@ public class StudentFormat implements CSVFormat {
     {
         boolean exist = false;
         Sheet sheet = this.workbookIn.getSheetAt(0);
-        String student = new String();
+        String student;
 
         Row row = sheet.getRow(begin+1);
         int i = begin+1;
@@ -370,7 +368,7 @@ public class StudentFormat implements CSVFormat {
         return "";
     }
 
-    public String getFileType(File file)
+    private String getFileType(File file)
     {
 
         try  {
@@ -398,15 +396,12 @@ public class StudentFormat implements CSVFormat {
     }
 
 
-    public void createStudentList(int indexOfEmailsSheet,String filePathOut, String optin,String level)  {
+    private void createStudentList(int indexOfEmailsSheet, String filePathOut, String optin, String level)  {
         int colNom = -1;
         int colPrenom = -1;
         int colGroupe = -1;
         int numRow = 1;
-        ArrayList<String> listEmails = new ArrayList<String>();
         Sheet sheet = workbookIn.getSheetAt(0);
-        Sheet sheetOut = workbookOut.createSheet();
-        Row rwOut = sheetOut.createRow(0);
 
 
         generateHeader();
@@ -452,11 +447,11 @@ public class StudentFormat implements CSVFormat {
 
     @Override
     public String buildCSV(ArrayList<String> workbooksPaths)  {
-        for(int i = 0; i < workbooksPaths.size();i++)
-        {
-            File file = new File(workbooksPaths.get(i));
-            String  type = getFileType(file);
-            if(type.equals("Solarite")) openWorkbookIn(file); else openEmailWorkbook(file);
+        for (String workbooksPath : workbooksPaths) {
+            File file = new File(workbooksPath);
+            String type = getFileType(file);
+            if (type.equals("Solarite")) openWorkbookIn(file);
+            else openEmailWorkbook(file);
         }
         String level = getLevel();
         switch (level)
