@@ -10,6 +10,6 @@ public class Test {
 	// write your code here
 
         StudentFormat studentFormat = new StudentFormat();
-        studentFormat.createStudentListe("Listes-Etudiants_2CPI_S1_2016-2017(1) (2).xlsx","liste email tous les etudiants.xlsx",1,"test.xlsx","CPI","1CPI");
+        studentFormat.createStudentListe("Listes-Etudiants_2CPI_S1_2016-2017(1) (2).xlsx","liste email tous les etudiants.xlsx",1,"test.xlsx","CPI","2CPI");
     }
 }

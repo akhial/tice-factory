@@ -327,6 +327,60 @@ public class StudentFormat implements CSVFormat {
         return username;
     }
 
+
+    private String getAnswer( XSSFWorkbook wb){
+        int i=0;
+        String niveau = new String();
+        for (Sheet sh:wb) {
+            for (Row rw:sh) {
+                for (Cell cell:rw) {
+                    niveau = cell.toString();
+                    if(niveau.toUpperCase().contains("1CPI")){
+                        return "1CPI";
+                    }
+                    if(niveau.toUpperCase().contains("2CPI")){
+                        return  "2CPI";
+                    }
+                    if(niveau.toUpperCase().contains("SC")||niveau.toLowerCase().contains("1ère")){
+                        i=1;
+                    }
+                    if(niveau.toLowerCase().contains("2ème")){
+                        i=2;
+                    }
+                    if(niveau.toUpperCase().contains("CPI")&& i==1){
+                        i=3;
+                    }
+                    if(niveau.toUpperCase().contains("CPI")&& i==2){
+                        i=4;
+                    }
+                    if(niveau.toUpperCase().contains("SIL")){
+                        return  "2CS-SIL";
+                    }
+                    if(niveau.toUpperCase().contains("SIQ")){
+                        return  "2CS-SIQ";
+                    }
+                    if(niveau.toUpperCase().contains("SIT")){
+                        return  "2CS-SIT";
+                    }
+                }
+            }
+        }
+        if (i==1){
+            return "1CS";
+        }
+        if (i==2){
+            return "2CS";
+        }
+        if(i==3){
+            return "1CPI";
+        }
+        if(i==4){
+            return "2CPI";
+        }
+        return "";
+    }
+
+
     public void createStudentListe(String filePathIn,String emailFilePath,int indexOfEmailsSheet,String filePathOut, String optin,String level) throws IOException {
         int colNom = -1;
         int colPrenom = -1;
@@ -382,6 +436,7 @@ public class StudentFormat implements CSVFormat {
 
     @Override
     public String buildCSV(ArrayList<String> workbooksPaths) {
+
         return null;
     }
 }
