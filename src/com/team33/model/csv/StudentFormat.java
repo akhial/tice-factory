@@ -370,7 +370,7 @@ public class StudentFormat implements CSVFormat {
         return "";
     }
 
-    private String getFileType(File file)
+    public String getFileType(File file)
     {
 
         try  {
@@ -380,7 +380,7 @@ public class StudentFormat implements CSVFormat {
             Row rw = rowIterator.next();
             while (rowIterator.hasNext())
             {
-                if(existInRow(rw,"NG"))
+                if(existInRow(rw,"Prenom"))
                 {
                     return  "Solarite";
                 }
@@ -388,9 +388,8 @@ public class StudentFormat implements CSVFormat {
                 {
                     rw = rowIterator.next();
                 }
-                return "WEB";
             }
-
+        return "wab";
 
         }catch (IOException e){
             e.printStackTrace();
