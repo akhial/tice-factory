@@ -1,8 +1,11 @@
 package com.team33.model;
 
+import com.team33.model.csv.CSVBuilder;
 import com.team33.model.csv.StudentFormat;
 
+import java.io.File;
 import java.io.IOException;
+import java.util.ArrayList;
 
 public class Test {
 
@@ -10,6 +13,11 @@ public class Test {
 	// write your code here
 
         StudentFormat studentFormat = new StudentFormat();
-        studentFormat.createStudentListe("Listes-Etudiants_2CPI_S1_2016-2017(1) (2).xlsx","liste email tous les etudiants.xlsx",1,"test.xlsx","CPI","2CPI");
+        ArrayList<String> workbook = new ArrayList<>();
+        workbook.add("liste email tous les etudiants.xlsx");
+        workbook.add("Listes-Etudiants_2CPI_S1_2016-2017(1) (2).xlsx");
+        CSVBuilder csvBuilder = new CSVBuilder(workbook,new StudentFormat(),"resut");
+        csvBuilder.buildCSV();
+        csvBuilder.convertToCSV();
     }
 }
