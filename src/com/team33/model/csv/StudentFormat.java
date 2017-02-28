@@ -31,14 +31,12 @@ public class StudentFormat implements CSVFormat {
         this.filePathIn = new ArrayList<>();
     }
 
-    private   void openWorkbookIn(String fiilePathIn)//charger un fichier excel dans le wbin
+    private   void openWorkbookIn(File fileIn)//charger un fichier excel dans le wbin
     {
 
         try {
-            this.workbookIn = new XSSFWorkbook(new FileInputStream(new File(fiilePathIn)));
-        }catch (FileNotFoundException e){
-            e.printStackTrace();
-        }catch (IOException e){
+            this.workbookIn = (XSSFWorkbook) WorkbookFactory.create(fileIn);
+        }catch (IOException | InvalidFormatException e){
             e.printStackTrace();
         }
 
@@ -63,23 +61,17 @@ public class StudentFormat implements CSVFormat {
         try {
             FileOutputStream fos = new FileOutputStream(file);
             this.workbookOut.write(fos);
-        }catch (FileNotFoundException e){
-            e.printStackTrace();
         } catch (IOException e) {
             e.printStackTrace();
         }
 
     }
 
-    private void openEmailWorkbook(String emailFilePath)// ouvrire le fichier contenant les e-mails
+    private void openEmailWorkbook(File emailFile)// ouvrire le fichier contenant les e-mails
     {
         try {
-            this.workbookEmails = (XSSFWorkbook) WorkbookFactory.create(new File(emailFilePath));
-        }catch (FileNotFoundException e){
-            e.printStackTrace();
-        }catch (IOException e){
-            e.printStackTrace();
-        } catch (InvalidFormatException e) {
+            this.workbookEmails = (XSSFWorkbook) WorkbookFactory.create(emailFile);
+        }catch (IOException | InvalidFormatException e){
             e.printStackTrace();
         }
     }
@@ -100,7 +92,6 @@ public class StudentFormat implements CSVFormat {
 
     private    int column(Row rw,String colName)// retourne l'indice de la colone de valeur colNom dans la ligne rw
     {
-        boolean found = false;
         int colIndex = -1;
 
         for (Cell cell : rw) {
@@ -163,7 +154,7 @@ public class StudentFormat implements CSVFormat {
      *-----------------------------------------------------------------------------------------------------*/
     private String extractNameFromEmail(Row rw, int index)//extraire la partie du mail à utilisé comme référence pour comparaison
     {
-        String name = new String();
+        String name ;
         name = rw.getCell(index).toString();
         name = name.replaceFirst(String.valueOf(name.charAt(0)),"");
         return name;
@@ -172,7 +163,7 @@ public class StudentFormat implements CSVFormat {
 
     private String secondPossibility(Row rw, int index)//extraire la partie du mail à utilisé comme référence pour comparaison
     {
-        String name = new String();
+        String name ;
         name = rw.getCell(index).toString();
         name = name.replace(String.valueOf(name.charAt(0))+name.charAt(1)+name.charAt(2),"");
         return name;
@@ -180,7 +171,7 @@ public class StudentFormat implements CSVFormat {
     }
     private String nameForEmail(Row rw, int colNom,int colPrenom, String repalceSapaceWit)// générer une chaine de carractère pour utiliser en comparaison pour trouver l'email
     {
-        String str = new String();
+        String str ;
 
         str = rw.getCell(colNom).toString();
         str = str.replace(" ", repalceSapaceWit);
@@ -192,7 +183,7 @@ public class StudentFormat implements CSVFormat {
 
     private String scondNameForEmail(Row rw, int colNom,int colPrenom, String repalceSapaceWit)// générer une chaine de carractère pour utiliser en comparaison pour trouver l'email
     {
-        String str = new String();
+        String str ;
 
         str = rw.getCell(colNom).toString();
         str = str.replace(" ", repalceSapaceWit);
@@ -223,7 +214,7 @@ public class StudentFormat implements CSVFormat {
 
     private String findEmail(String namForEmail1,String namForEmail2,int indexOfEmailsSheet)// retourne un ArrayList contenant les emails douteux
     {
-        String email = new String();
+        String email = "";
         Sheet sheet = this.workbookEmails.getSheetAt(indexOfEmailsSheet);
         for(Row rw:sheet)
         {
@@ -257,9 +248,8 @@ public class StudentFormat implements CSVFormat {
         }
         else
         {
-            for(int i = 0; i < lsitEmails.size();i++)
-            {
-                System.out.println(j+" : "+lsitEmails.get(i).toString());
+            for (Object lsitEmail : lsitEmails) {
+                System.out.println(j + " : " + lsitEmail.toString());
                 j++;
                 System.out.println("______________________");
             }
@@ -268,7 +258,7 @@ public class StudentFormat implements CSVFormat {
 
     private String chooseEmail( Row rw, int colNom, int colPrenom,int indexOfEmailsSheet,String optin)// choisir un email de la liste
     {
-        String email = new String("");
+        String email = "";
         Scanner sc = new Scanner(System.in);
         if (!existOtherStudents(rw.getCell(colPrenom).toString().toLowerCase().charAt(0),rw.getCell(colNom).toString(),colNom,colPrenom,rw.getRowNum(),optin))
         {
@@ -320,7 +310,7 @@ public class StudentFormat implements CSVFormat {
 
     private String generateUsename(String emai)
     {
-        String username = new String(emai);
+        String username;
 
         username = emai.replaceFirst(String.valueOf(emai.charAt(0)),"");
         username = username.replace("@esi.dz","");
@@ -328,10 +318,10 @@ public class StudentFormat implements CSVFormat {
     }
 
 
-    private String getAnswer( XSSFWorkbook wb){
+    private String getLevel( ){
         int i=0;
-        String niveau = new String();
-        for (Sheet sh:wb) {
+        String niveau ;
+        for (Sheet sh:this.workbookIn) {
             for (Row rw:sh) {
                 for (Cell cell:rw) {
                     niveau = cell.toString();
@@ -380,31 +370,41 @@ public class StudentFormat implements CSVFormat {
         return "";
     }
 
-    private String getFileType(String filePath)
+    private String getFileType(File file)
     {
-        String reult = new String();
 
         try  {
-            XSSFWorkbook workbook = new XSSFWorkbook(new FileInputStream(new File(filePath)));
+            XSSFWorkbook workbook = new XSSFWorkbook(new FileInputStream(file));
+            Sheet sheet = workbook.getSheetAt(0);
+            Iterator<Row> rowIterator = sheet.rowIterator();
+            Row rw = rowIterator.next();
+            while (rowIterator.hasNext())
+            {
+                if(existInRow(rw,"NG"))
+                {
+                    return  "Solarite";
+                }
+                else
+                {
+                    rw = rowIterator.next();
+                }
+                return "WEB";
+            }
 
-        }catch (FileNotFoundException e){
-            e.printStackTrace();
+
         }catch (IOException e){
             e.printStackTrace();
         }
-
-        return reult;
+        return "";
     }
 
 
-    public void createStudentListe(String filePathIn,String emailFilePath,int indexOfEmailsSheet,String filePathOut, String optin,String level) throws IOException {
+    public void createStudentList(int indexOfEmailsSheet,String filePathOut, String optin,String level)  {
         int colNom = -1;
         int colPrenom = -1;
         int colGroupe = -1;
         int numRow = 1;
         ArrayList<String> listEmails = new ArrayList<String>();
-        openWorkbookIn(filePathIn);
-        openEmailWorkbook(emailFilePath);
         Sheet sheet = workbookIn.getSheetAt(0);
         Sheet sheetOut = workbookOut.createSheet();
         Row rwOut = sheetOut.createRow(0);
@@ -434,11 +434,11 @@ public class StudentFormat implements CSVFormat {
         {
             if (existInRow(rw,optin))
             {
-                String email = new String(chooseEmail(rw,colNom,colPrenom,indexOfEmailsSheet,optin));
-                String usernam = new String(generateUsename(email));
+                String email = chooseEmail(rw,colNom,colPrenom,indexOfEmailsSheet,optin);
+                String usernam = generateUsename(email);
 
-                String firtstname = new String(rw.getCell(colPrenom).toString());
-                String lastname = new String(generateUser(rw,colNom,level,colGroupe));
+                String firtstname = rw.getCell(colPrenom).toString();
+                String lastname = generateUser(rw,colNom,level,colGroupe);
 
                 generateRow(numRow,usernam,firtstname,lastname,email);
                 numRow++;
@@ -452,7 +452,34 @@ public class StudentFormat implements CSVFormat {
 
 
     @Override
-    public String buildCSV(ArrayList<String> workbooksPaths) {
+    public String buildCSV(ArrayList<String> workbooksPaths)  {
+        for(int i = 0; i < workbooksPaths.size();i++)
+        {
+            File file = new File(workbooksPaths.get(i));
+            String  type = getFileType(file);
+            if(type.equals("Solarite")) openWorkbookIn(file); else openEmailWorkbook(file);
+        }
+        String level = getLevel();
+        switch (level)
+        {
+            case "1CPI" :
+                createStudentList(0,"temp1CPI.xlsx","CPI","1CPI");
+                return "temp1CPI.xlsx";
+            case "2CPI" :
+                createStudentList(1,"temp2CPI.xlsx","CPI","2CPI");
+                return "temp2CPI.xlsx";
+            case "1CS" :
+                createStudentList(2,"tempCS.xlsx","SC","1CS");
+                return "tempCS.xlsx";
+            case "2CS-SIL" :
+                createStudentList(2,"temp2CS-SIL.xlsx","SIL","2CS-SIL");
+                return "temp2CS-SIL.xlsx";
+            case "2CS-SIT" :
+                createStudentList(2,"temp2CS-SIL.xlsx","SIT","2CS-SIT");
+                return "temp2CS-SIL.xlsx";
+            case "2CS-SIQ" :
+                createStudentList(2,"temp2CS-SIL.xlsx","SIQ","2CS-SIQ");
+        }
 
         return null;
     }
