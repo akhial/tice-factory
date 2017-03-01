@@ -3,6 +3,11 @@ package com.team33.model.csv;
 import org.apache.poi.openxml4j.exceptions.InvalidFormatException;
 import org.apache.poi.ss.usermodel.*;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
+import org.apache.poi.xwpf.extractor.XWPFWordExtractor;
+import org.apache.poi.xwpf.usermodel.XWPFDocument;
+import org.apache.poi.xwpf.usermodel.XWPFTable;
+import org.apache.poi.xwpf.usermodel.XWPFTableCell;
+import org.apache.poi.xwpf.usermodel.XWPFTableRow;
 
 import java.io.*;
 import java.util.ArrayList;
@@ -371,6 +376,7 @@ public class StudentFormat implements CSVFormat {
     private String getFileType(File file)
     {
 
+
         try  {
             XSSFWorkbook workbook = new XSSFWorkbook(new FileInputStream(file));
             Sheet sheet = workbook.getSheetAt(0);
@@ -387,12 +393,47 @@ public class StudentFormat implements CSVFormat {
                     rw = rowIterator.next();
                 }
             }
-        return "wab";
+        return "web";
 
         }catch (IOException e){
             e.printStackTrace();
         }
         return "";
+    }
+
+    public void ConvertWordTableToExcel(String wordPath,String excelName){
+        String type;
+        try {
+            FileInputStream fileInputStream = new FileInputStream(wordPath);
+            XWPFDocument xwpfDocument = new XWPFDocument(fileInputStream);
+            FileOutputStream fileOutputStream = new FileOutputStream(excelName+".xlsx");
+            XSSFWorkbook xssfWorkbook = new XSSFWorkbook();
+            Sheet sheet = xssfWorkbook.createSheet();
+            int i = 0 ;
+            int j = 0 ;
+            Row excelRow = sheet.createRow(j);
+            for (XWPFTable table:xwpfDocument.getTables()) {
+                for (XWPFTableRow row:table.getRows()) {
+
+                    for (XWPFTableCell cell:row.getTableCells()) {
+                        excelRow.createCell(i).setCellValue(cell.getText());
+                        i++;
+                    }
+                    i = 0 ;
+                    j++;
+                    excelRow = sheet.createRow(j);
+                }
+
+
+            }
+            xssfWorkbook.write(fileOutputStream);
+            fileInputStream.close();
+        } catch (FileNotFoundException e1) {
+            e1.printStackTrace();
+        } catch (IOException e1) {
+            e1.printStackTrace();
+        }
+
     }
 
 
@@ -447,13 +488,39 @@ public class StudentFormat implements CSVFormat {
 
     @Override
     public String buildCSV(ArrayList<String> workbooksPaths)  {
+        String type;
+        String excelName = "";
         for (String workbooksPath : workbooksPaths) {
             File file = new File(workbooksPath);
-            String type = getFileType(file);
+            if(file.getPath().contains(".docx"))
+            {
+
+                try {
+                    XWPFDocument xwpfDocument = new XWPFDocument(new FileInputStream(file));
+                    XWPFWordExtractor we = new XWPFWordExtractor(xwpfDocument);
+                    if(we.getText().contains("LISTE DES SUJETS DE PFE OPTION SIQ"))
+                    {
+                        excelName = "3CS-SIQ";
+                    }else if(we.getText().contains("LISTE DES SUJETS DE PFE OPTION SIT"))
+                    {
+                        excelName = "3CS-SIT";
+                    }else
+                    {
+                        excelName = "3CS-SIL";
+                    }
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+                ConvertWordTableToExcel(workbooksPath,"3CS");
+                file = new File("3CS.xlsx");
+            }
+             type = getFileType(file);
             if (type.equals("Solarite")) openWorkbookIn(file);
             else openEmailWorkbook(file);
         }
-        String level = getLevel();
+        String level = "";
+        if(excelName.equals("")) level = getLevel();
+        else level = excelName;
         switch (level)
         {
             case "1CPI" :
@@ -473,6 +540,7 @@ public class StudentFormat implements CSVFormat {
                 return "temp2CS-SIL.xlsx";
             case "2CS-SIQ" :
                 createStudentList(2,"temp2CS-SIL.xlsx","SIQ","2CS-SIQ");
+                return "temp2CS-SIQ.xlsx";
         }
 
         return null;
