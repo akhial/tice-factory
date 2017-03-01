@@ -13,11 +13,12 @@ public class Test {
 	// write your code here
 
         StudentFormat studentFormat = new StudentFormat();
-        ArrayList<String> workbook = new ArrayList<>();
+        /*ArrayList<String> workbook = new ArrayList<>();
         workbook.add("liste email tous les etudiants.xlsx");
         workbook.add("Listes-Etudiants_2CPI_S1_2016-2017(1) (2).xlsx");
         CSVBuilder csvBuilder = new CSVBuilder(workbook,new StudentFormat(),"resut");
         csvBuilder.buildCSV();
-        csvBuilder.convertToCSV();
+        csvBuilder.convertToCSV();*/
+        studentFormat.ConvertWordTableToExcel("LISTEDESSUJETSPFE20162017SIL.docx","3CS-SIL.xlsx");
     }
 }
