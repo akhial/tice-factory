@@ -5,43 +5,33 @@ import org.apache.poi.openxml4j.exceptions.InvalidFormatException;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Arrays;
 
 /**
  * Created by Amine on 13/02/2017.
  */
+
 public class CSVBuilder  {
-    private ArrayList<String> workbooksPaths ;
+    private ArrayList<String> workbookPaths;
     private CSVFormat format;
     private String destination;
     private String tempPath;
 
-    public CSVBuilder(ArrayList<String> workbooksPaths, CSVFormat format, String destination) {
-        this.workbooksPaths = workbooksPaths;
+    public CSVBuilder(CSVFormat format, String destination, String... workbookPaths) {
+        this.workbookPaths.addAll(Arrays.asList(workbookPaths));
         this.format = format;
         this.destination = destination;
     }
 
-    public CSVBuilder(ArrayList<String> workbooksPaths, CSVFormat format) {
-        this.workbooksPaths = workbooksPaths;
-        this.format = format;
-    }
-
-    public CSVBuilder(CSVFormat format) {
-        
-        this.format = format;
-    }
-
     public void buildCSV(){
-        tempPath = format.buildCSV(workbooksPaths);
+        tempPath = format.buildCSV((String[]) workbookPaths.toArray());
     }
 
     public void convertToCSV(){
         ToCSV toCSV = new ToCSV();
         try {
             toCSV.convertExcelToCSV(tempPath,destination);
-        } catch (IOException e) {
-            e.printStackTrace();
-        } catch (InvalidFormatException e) {
+        } catch (IOException | InvalidFormatException e) {
             e.printStackTrace();
         }
     }
