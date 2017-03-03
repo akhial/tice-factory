@@ -337,6 +337,9 @@ public class StudentFormat implements CSVFormat {
     private String getLevel( ){
         int i=0;
         String niveau ;
+        if(existInRow(this.workbookIn.getSheetAt(0).getRow(0),"3CS-SIL")) return "3CS-SIL";
+        if(existInRow(this.workbookIn.getSheetAt(0).getRow(0),"3CS-SIQ")) return "3CS-SIQ";
+        if(existInRow(this.workbookIn.getSheetAt(0).getRow(0),"3CS-SIT")) return "3CS-SIT";
         for (Sheet sh:this.workbookIn) {
             for (Row rw:sh) {
                 for (Cell cell:rw) {
@@ -397,7 +400,7 @@ public class StudentFormat implements CSVFormat {
             Row rw = rowIterator.next();
             while (rowIterator.hasNext())
             {
-                if(existInRow(rw,"Prenom"))
+                if(existInRow(rw,"NG"))
                 {
                     return  "Solarite";
                 }
@@ -414,16 +417,30 @@ public class StudentFormat implements CSVFormat {
         return "";
     }
 
-    public void ConvertWordTableToExcel(String wordPath,String excelName){
+    public String ConvertWordTableToExcel(String wordPath){
         String type;
         try {
             FileInputStream fileInputStream = new FileInputStream(wordPath);
             XWPFDocument xwpfDocument = new XWPFDocument(fileInputStream);
-            FileOutputStream fileOutputStream = new FileOutputStream(excelName+".xlsx");
+            XWPFWordExtractor we = new XWPFWordExtractor(xwpfDocument);
+            if(we.getText().contains("LISTE DES SUJETS DE PFE OPTION SIQ"))
+            {
+                type = "3CS-SIQ";
+            }else if(we.getText().contains("LISTE DES SUJETS DE PFE OPTION SIT"))
+            {
+                type = "3CS-SIT";
+            }else
+            {
+                type = "3CS-SIL";
+            }
+            String excelName = type + ".xlsx";
+            FileOutputStream fileOutputStream = new FileOutputStream(excelName);
             XSSFWorkbook xssfWorkbook = new XSSFWorkbook();
             Sheet sheet = xssfWorkbook.createSheet();
+            sheet.createRow(0).createCell(0).setCellValue(type);
             int i = 0 ;
-            int j = 0 ;
+            int j = 1 ;
+            int nbColumns = 0;
             Row excelRow = sheet.createRow(j);
             for (XWPFTable table:xwpfDocument.getTables()) {
                 for (XWPFTableRow row:table.getRows()) {
@@ -432,20 +449,23 @@ public class StudentFormat implements CSVFormat {
                         excelRow.createCell(i).setCellValue(cell.getText());
                         i++;
                     }
+                    excelRow.createCell(i).setCellValue(type);
+                    nbColumns = i;
                     i = 0 ;
                     j++;
                     excelRow = sheet.createRow(j);
                 }
-
-
+                sheet.getRow(j-table.getNumberOfRows()).getCell(nbColumns).setCellValue("NG");
             }
             xssfWorkbook.write(fileOutputStream);
             fileInputStream.close();
+            return excelName;
         } catch (FileNotFoundException e1) {
             e1.printStackTrace();
         } catch (IOException e1) {
             e1.printStackTrace();
         }
+        return "";
 
     }
 
@@ -472,11 +492,18 @@ public class StudentFormat implements CSVFormat {
         Row rw = rowIterator.next();
         while ((!found) && (rowIterator.hasNext()))
         {
-            if(existInRow(rw,"Nom"))
+            if(existInRow(rw,"Prenom"))
             {
                 found = true;
                 colNom = column(rw,"Nom");
                 colPrenom = column(rw,"Prenom");
+                colGroupe = column(rw,"NG");
+            }
+            else if (existInRow(rw,"Prénom"))
+            {
+                found = true;
+                colNom = column(rw,"Nom");
+                colPrenom = column(rw,"Prénom");
                 colGroupe = column(rw,"NG");
             }
             else
@@ -511,38 +538,17 @@ public class StudentFormat implements CSVFormat {
 =======
     public String buildCSV(ArrayList<String> workbooksPaths)  {
         String type;
-        String excelName = "";
         for (String workbooksPath : workbooksPaths) {
             File file = new File(workbooksPath);
             if(file.getPath().contains(".docx"))
             {
-
-                try {
-                    XWPFDocument xwpfDocument = new XWPFDocument(new FileInputStream(file));
-                    XWPFWordExtractor we = new XWPFWordExtractor(xwpfDocument);
-                    if(we.getText().contains("LISTE DES SUJETS DE PFE OPTION SIQ"))
-                    {
-                        excelName = "3CS-SIQ";
-                    }else if(we.getText().contains("LISTE DES SUJETS DE PFE OPTION SIT"))
-                    {
-                        excelName = "3CS-SIT";
-                    }else
-                    {
-                        excelName = "3CS-SIL";
-                    }
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
-                ConvertWordTableToExcel(workbooksPath,"3CS");
-                file = new File("3CS.xlsx");
+             file =  new File(ConvertWordTableToExcel(workbooksPath));
             }
              type = getFileType(file);
             if (type.equals("Solarite")) openWorkbookIn(file);
             else openEmailWorkbook(file);
         }
-        String level = "";
-        if(excelName.equals("")) level = getLevel();
-        else level = excelName;
+        String level = getLevel();
         switch (level)
         {
             case "1CPI" :
@@ -555,14 +561,23 @@ public class StudentFormat implements CSVFormat {
                 createStudentList(2,"tempCS.xlsx","SC","1CS");
                 return "tempCS.xlsx";
             case "2CS-SIL" :
-                createStudentList(2,"temp2CS-SIL.xlsx","SIL","2CS-SIL");
+                createStudentList(3,"temp2CS-SIL.xlsx","SIL","2CS-SIL");
                 return "temp2CS-SIL.xlsx";
             case "2CS-SIT" :
-                createStudentList(2,"temp2CS-SIL.xlsx","SIT","2CS-SIT");
+                createStudentList(4,"temp2CS-SIL.xlsx","SIT","2CS-SIT");
                 return "temp2CS-SIL.xlsx";
             case "2CS-SIQ" :
-                createStudentList(2,"temp2CS-SIL.xlsx","SIQ","2CS-SIQ");
+                createStudentList(5,"temp2CS-SIL.xlsx","SIQ","2CS-SIQ");
                 return "temp2CS-SIQ.xlsx";
+            case "3CS-SIL" :
+                createStudentList(6,"temp3CS-SIL.xlsx","3CS-SIL","");
+                return "temp3CS-SIL.xlsx";
+            case "3CS-SIT" :
+                createStudentList(7,"temp3CS-SIT.xlsx","3CS-SIT","");
+                return "temp3CS-SIT.xlsx";
+            case "3CS-SIQ" :
+                createStudentList(8,"temp3CS-SIQ.xlsx","3CS-SIQ","");
+                return "temp3CS-SIQ.xlsx";
         }
 
 >>>>>>> Removed excess constructors
