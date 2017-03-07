@@ -196,13 +196,13 @@ public class StudentFormat extends UserFormat implements CSVFormat {
         }
         else
         {
-            ArrayList<String> listOfEmails = new ArrayList();
+            ArrayList listOfEmails;
             System.out.println("Plusieurs emails peuvent correspendre à l'étudiant : "+getStudentInoformations(rw,colNom,colPrenom));
             listOfEmails = findListEmails(scondNameForEmail(rw,colNom, "_"),scondNameForEmail(rw,colNom, ""),indexOfEmailsSheet);
             showListOfEmails(listOfEmails);
             System.out.print("Veuillez coisir le bon mail svp : ");
             int i = sc.nextInt();
-            email = listOfEmails.get(i-1);
+            email = (String) listOfEmails.get(i-1);
         }
         if (email.equals(""))
         {
