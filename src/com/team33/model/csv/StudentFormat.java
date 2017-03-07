@@ -20,18 +20,11 @@ import java.util.Scanner;
 
 public class StudentFormat extends UserFormat implements CSVFormat {
 
-    private XSSFWorkbook workbookIn;
-    private XSSFWorkbook workbookOut;
-    private XSSFWorkbook workbookEmails;
+
     private Row header = null;
 
     public StudentFormat() {
-        this.workbookIn = new XSSFWorkbook();
-        this.workbookOut = new XSSFWorkbook();
-        this.workbookOut.createSheet();
-        this.workbookOut.getSheetAt(0).createRow(0);
-        this.header = workbookOut.getSheetAt(0).getRow(0);
-        this.workbookEmails = new XSSFWorkbook();
+
     }
 
     public void generateHeader()// gener le header ie ecrire dans la première ligne (username,fistname,lastname,email) -> le format accepté par moodle
@@ -52,21 +45,14 @@ public class StudentFormat extends UserFormat implements CSVFormat {
     {
         try {
             FileOutputStream fos = new FileOutputStream(file);
-            this.workbookOut.write(fos);
+            this.getWorkbookOut().write(fos);
         } catch (IOException e) {
             e.printStackTrace();
         }
 
     }
 
-    private void openEmailWorkbook(File emailFile)// ouvrire le fichier contenant les e-mails
-    {
-        try {
-            this.workbookEmails = (XSSFWorkbook) WorkbookFactory.create(emailFile);
-        }catch (IOException | InvalidFormatException e){
-            e.printStackTrace();
-        }
-    }
+
     /*
      *Méthodes utilitaires
      */
@@ -74,7 +60,7 @@ public class StudentFormat extends UserFormat implements CSVFormat {
 
     public void generateRow(int numRow, String username, String firstname, String lastname, String email)// générer une ligne cde fichier résultat contenant les coordonné d'un étudiant
     {
-        Row rw = workbookOut.getSheetAt(0).createRow(numRow);
+        Row rw = getWorkbookOut().getSheetAt(0).createRow(numRow);
         for (int j = 0; j < 4; j++) {
             rw.createCell(j);
         }
@@ -142,7 +128,7 @@ public class StudentFormat extends UserFormat implements CSVFormat {
     private ArrayList<String> findListEmails(String namForEmail1,String namForEmail2,int indexOfEmailsSheet)// retourne un ArrayList contenant les emails douteux
     {
         ArrayList<String> listeEmails = new ArrayList<>();
-        Sheet sheet = this.workbookEmails.getSheetAt(indexOfEmailsSheet);
+        Sheet sheet = this.getEmailsWorkbook().getSheetAt(indexOfEmailsSheet);
         for(Row rw:sheet)
         {
             if(rowContains(rw,namForEmail1))
@@ -161,7 +147,7 @@ public class StudentFormat extends UserFormat implements CSVFormat {
     private String findEmail(String namForEmail1,String namForEmail2,int indexOfEmailsSheet)// retourne un ArrayList contenant les emails douteux
     {
         String email = "";
-        Sheet sheet = this.workbookEmails.getSheetAt(indexOfEmailsSheet);
+        Sheet sheet = this.getEmailsWorkbook().getSheetAt(indexOfEmailsSheet);
         for(Row rw:sheet)
         {
             if(rowContains(rw,namForEmail1))
@@ -232,7 +218,7 @@ public class StudentFormat extends UserFormat implements CSVFormat {
     private boolean existOtherStudents(char firstLetter,String name,int colNom, int colPrenom,int begin,String optin)
     {
         boolean exist = false;
-        Sheet sheet = this.workbookIn.getSheetAt(0);
+        Sheet sheet = this.getWorkbookIn().getSheetAt(0);
         String student;
 
         Row row = sheet.getRow(begin+1);
@@ -267,10 +253,10 @@ public class StudentFormat extends UserFormat implements CSVFormat {
     private String getLevel( ){
         int i=0;
         String niveau ;
-        if(existInRow(this.workbookIn.getSheetAt(0).getRow(0),"3CS-SIL")) return "3CS-SIL";
-        if(existInRow(this.workbookIn.getSheetAt(0).getRow(0),"3CS-SIQ")) return "3CS-SIQ";
-        if(existInRow(this.workbookIn.getSheetAt(0).getRow(0),"3CS-SIT")) return "3CS-SIT";
-        for (Sheet sh:this.workbookIn) {
+        if(existInRow(this.getWorkbookIn().getSheetAt(0).getRow(0),"3CS-SIL")) return "3CS-SIL";
+        if(existInRow(this.getWorkbookIn().getSheetAt(0).getRow(0),"3CS-SIQ")) return "3CS-SIQ";
+        if(existInRow(this.getWorkbookIn().getSheetAt(0).getRow(0),"3CS-SIT")) return "3CS-SIT";
+        for (Sheet sh: this.getWorkbookIn()) {
             for (Row rw:sh) {
                 for (Cell cell:rw) {
                     niveau = cell.toString();
@@ -405,7 +391,7 @@ public class StudentFormat extends UserFormat implements CSVFormat {
         int colPrenom = -1;
         int colGroupe = -1;
         int numRow = 1;
-        Sheet sheet = workbookIn.getSheetAt(0);
+        Sheet sheet = getWorkbookIn().getSheetAt(0);
 
 
         generateHeader();
