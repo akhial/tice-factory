@@ -6,14 +6,13 @@ import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 
 import java.io.*;
 import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.Scanner;
 
 /**
  * Created by Amine on 13/02/2017.
  */
 
-public class StudentFormat implements CSVFormat {
+public class StudentFormat extends UserFormat implements CSVFormat {
 
     private XSSFWorkbook workbookIn;
     private XSSFWorkbook workbookOut;
@@ -23,29 +22,14 @@ public class StudentFormat implements CSVFormat {
 
     public StudentFormat() {
         this.workbookIn = new XSSFWorkbook();
-        header = this.workbookIn.getSheetAt(0).getRow(0);
         this.workbookOut = new XSSFWorkbook();
         this.workbookOut.createSheet();
+        this.header = workbookOut.getSheetAt(0).createRow(0);
         this.workbookEmails = new XSSFWorkbook();
         this.filePathIn = new ArrayList<>();
     }
 
-    private   void openWorkbookIn(String fiilePathIn)//charger un fichier excel dans le wbin
-    {
-
-        try {
-            this.workbookIn = (XSSFWorkbook) WorkbookFactory.create(new File(fiilePathIn));
-        }catch (FileNotFoundException e){
-            e.printStackTrace();
-        }catch (IOException e){
-            e.printStackTrace();
-        } catch (InvalidFormatException e) {
-            e.printStackTrace();
-        }
-
-    }
-
-    private void generateHeader()// gener le header ie ecrire dans la première ligne (username,fistname,lastname,email) -> le format accepté par moodle
+    public void generateHeader()// gener le header ie ecrire dans la première ligne (username,fistname,lastname,email) -> le format accepté par moodle
     {
 
         for (int i = 0; i < 4;i++)
@@ -88,31 +72,8 @@ public class StudentFormat implements CSVFormat {
      *Méthodes utilitaires
      */
 
-    private boolean existInRow(Row rw, String str)//verrifier si'il y a une case dans la ligne rw dont sa valeur (pas just contenir) est la chaine str
-    {
-        boolean exist = false;
-        for(Cell cell :rw )
-        {
-            if(str.equals(cell.toString())) exist = true;
-        }
-        return  exist;
-    }
 
-
-    private    int column(Row rw,String colName)// retourne l'indice de la colone de valeur colNom dans la ligne rw
-    {
-        boolean found = false;
-        int colIndex = -1;
-
-        for (Cell cell : rw) {
-            if (colName.equals(cell.toString())) {
-                colIndex = cell.getColumnIndex();
-            }
-        }
-        return colIndex;
-    }
-
-    private void generateRow(int numRow,String username,String firstname,String lastname, String email)// générer une ligne cde fichier résultat contenant les coordonné d'un étudiant
+    public void generateRow(int numRow, String username, String firstname, String lastname, String email)// générer une ligne cde fichier résultat contenant les coordonné d'un étudiant
     {
         Row rw = workbookOut.getSheetAt(0).createRow(numRow);
         for (int j = 0; j < 4; j++) {
@@ -133,38 +94,14 @@ public class StudentFormat implements CSVFormat {
 
 
 
-    private boolean rowContains(Row rw, String str)//verrifie si la ligne rw contient la chaine str
-    {
-        boolean contains = false;
-        for(Cell cell : rw)
-        {
-            if(cell.toString().contains(str)) contains = true;
-        }
-        return  contains;
-    }
 
-    private int rangOfCellContaining(Row rw,String str) // retourne l'indice de la colonne contenat la chaine str
-    {
-        int rang = -1;
-        boolean contains = false;
-        Iterator<Cell> cellIterator = rw.iterator();
-        Cell cell = cellIterator.next();
-        while ((cell != null) && (contains == false))
-        {
-            if(cell.toString().contains(str)) {
-                contains = true;
-                rang = cell.getColumnIndex();
-            }
-            else cell = cellIterator.next();
-        }
-        return  rang;
-    }
+
     /*------------------------------------------------------------------------------------------------------
      *                                          FINDING EMAILS                                             *
      *-----------------------------------------------------------------------------------------------------*/
     private String extractNameFromEmail(Row rw, int index)//extraire la partie du mail à utilisé comme référence pour comparaison
     {
-        String name = new String();
+        String name;
         name = rw.getCell(index).toString();
         name = name.replace(String.valueOf(name.charAt(0))+name.charAt(1)+name.charAt(2),"");
         return name;
@@ -173,7 +110,7 @@ public class StudentFormat implements CSVFormat {
 
     private String nameForEmail(Row rw, int colNom, String repalceSapaceWit)// générer une chaine de carractère pour utiliser en comparaison pour trouver l'email
     {
-        String str = new String();
+        String str;
 
         str = rw.getCell(colNom).toString();
         str = str.replace(" ", repalceSapaceWit);
@@ -185,7 +122,7 @@ public class StudentFormat implements CSVFormat {
 
     private ArrayList<String> findEmails(String namForEmail1,String namForEmail2,int indexOfEmailsSheet)// retourne un ArrayList contenant les emails douteux
     {
-        ArrayList<String> listeEmails = new ArrayList<String>();
+        ArrayList<String> listeEmails = new ArrayList<>();
         Sheet sheet = this.workbookEmails.getSheetAt(indexOfEmailsSheet);
         for(Row rw:sheet)
         {
@@ -202,34 +139,9 @@ public class StudentFormat implements CSVFormat {
         return listeEmails;
     }
 
-    private String getStudentInoformations(Row rw, int colNom, int colPrenom)// avoir les information d'un étudient
-    {
-
-        return rw.getCell(colPrenom).toString() +" "+ rw.getCell(colNom).toString();
-    }
-
-
-    private void showListOfEmails(ArrayList lsitEmails)//afficher la liste des emails
-    {
-        int j = 1;
-        if(lsitEmails.isEmpty())
-        {
-            System.out.println("ERREUR");
-        }
-        else
-        {
-            for(int i = 0; i < lsitEmails.size();i++)
-            {
-                System.out.println(j+" : "+lsitEmails.get(i).toString());
-                j++;
-                System.out.println("______________________");
-            }
-        }
-    }
-
     public String chooseEmail(ArrayList<String> listEmails, Row rw, int colNom, int colPrenom)// choisir un email de la liste
     {
-        String email = new String();
+        String email;
 
         if (listEmails.size() == 0)
         {
@@ -238,7 +150,7 @@ public class StudentFormat implements CSVFormat {
         }else if (listEmails.size() == 1){
             email = listEmails.get(0);
         }else{
-            System.out.println("Plusieurs emails peuvent correspendre à l'étudiant : "+getStudentInoformations(rw,colNom,colPrenom));
+            System.out.println("Plusieurs emails peuvent correspendre à l'étudiant : "+ getUserInformation(rw,colNom,colPrenom));
             showListOfEmails(listEmails);
             System.out.print("Veuillez coisir le bon mail svp : ");
             Scanner sc = new Scanner(System.in);

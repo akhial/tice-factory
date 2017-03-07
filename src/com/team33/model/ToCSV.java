@@ -275,7 +275,7 @@ public class ToCSV {
                     "file(s) cannot be found.");
         }
 
-        // Ensure thaat the folder the user has chosen to save the CSV files
+        // Ensure that the folder the user has chosen to save the CSV files
         // away into firstly exists and secondly is a folder rather than, for
         // instance, a data file.
         if(!destination.exists()) {
