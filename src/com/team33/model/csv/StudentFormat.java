@@ -21,7 +21,7 @@ import java.util.Scanner;
 public class StudentFormat extends UserFormat implements CSVFormat {
 
 
-    private Row header = null;
+
 
     public StudentFormat() {
 
@@ -32,13 +32,13 @@ public class StudentFormat extends UserFormat implements CSVFormat {
 
         for (int i = 0; i < 4;i++)
         {
-            this.header.createCell(i, CellType.STRING);
+            this.getHeader().createCell(i, CellType.STRING);
         }
 
-        this.header.getCell(0).setCellValue("username");
-        this.header.getCell(1).setCellValue("firstname");
-        this.header.getCell(2).setCellValue("lastname");
-        this.header.getCell(3).setCellValue("email");
+        this.getHeader().getCell(0).setCellValue("username");
+        this.getHeader().getCell(1).setCellValue("firstname");
+        this.getHeader().getCell(2).setCellValue("lastname");
+        this.getHeader().getCell(3).setCellValue("email");
     }
 
     private void saveStudentList(File file)//enregistrer les résultat obtenue dans wbout dans le disque dure
@@ -450,7 +450,8 @@ public class StudentFormat extends UserFormat implements CSVFormat {
             {
              workbooksPath = ConvertWordTableToExcel(workbooksPath);
             }
-             type = getFileType(new File(workbooksPath));
+            File file = new File(workbooksPath);
+             type = getFileType(file);
             if (type.equals("Solarite")) openWorkbookIn(workbooksPath);
             else openEmailWorkbook(workbooksPath);
         }
