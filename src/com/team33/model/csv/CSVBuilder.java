@@ -36,7 +36,7 @@ public class CSVBuilder  {
     }
 
     public void buildCSV(){
-        tempPath = format.buildCSV(workbooksPaths);
+        tempPath = format.buildCSV((String[]) workbooksPaths.toArray());
     }
 
     public void convertToCSV(){
