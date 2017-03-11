@@ -4,6 +4,7 @@ import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.ss.usermodel.Sheet;
 
 import java.io.File;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.Scanner;
@@ -77,22 +78,25 @@ public class TeacherFormat extends UserFormat implements CSVFormat {
     /**
      * Permet de choisir l'adresse mail adequate en éliminant les adresses déja traitées
      * */
-    private String ChooseEmail(ArrayList<String> listEmails, Row rw, int colNom, int colPrenom,ArrayList<String> addedEmails)
+    private String ChooseEmail(ArrayList<String> listEmails, Row rw, int colNom, int colPrenom,ArrayList<ArrayList<String>> unhandledEmails)
     {
         String email = null;
+        for (ArrayList<String> as:unhandledEmails) {
+            listEmails.removeAll(as);
 
+        }
         if ((listEmails.size() > 0)) {
-            listEmails.removeAll(addedEmails);
             if (listEmails.size() == 1){
                 email = listEmails.get(0);
             }else{
 
-                System.out.println("Plusieurs emails peuvent correspendre à l'enseignant : "+getUserInformation(rw,colNom,colPrenom));
+                unhandledEmails.add(listEmails);
+                /***System.out.println("Plusieurs emails peuvent correspendre à l'enseignant : "+getUserInformation(rw,colNom,colPrenom));
                 showListOfEmails(listEmails);
                 System.out.print("Veuillez coisir le bon mail svp : ");
                 Scanner sc = new Scanner(System.in);
                 int i = sc.nextInt();
-                email = listEmails.get(i-1);
+                email = listEmails.get(i-1);**/
             }
         }
         return email;
@@ -100,23 +104,27 @@ public class TeacherFormat extends UserFormat implements CSVFormat {
     /**
      * Retourne l'adresse mail corespondante au nom lastname
      * */
-    public  String EmailAdress(Row row,String lastname,int lastNameColumn,int firstNameColumn,ArrayList<String> addedEmails ){
+    public  String EmailAdress(Row row,String lastname,int lastNameColumn,int firstNameColumn,ArrayList<ArrayList<String>> unhandlededEmails ){
 
         String emailAdress;
         ArrayList<String> arrayList = ListEmails(lastname);
-        emailAdress = ChooseEmail(arrayList,row,lastNameColumn,firstNameColumn,addedEmails);
+        emailAdress = ChooseEmail(arrayList,row,lastNameColumn,firstNameColumn,unhandlededEmails);
 
         return emailAdress;
 
     }
 
-    public void creatTeachersList(String woorkbookPath,String emailWorkbookPath,String destinationPath){
+
+    @Override
+    public String buildCSV(String... workbooks) {
+        String workbookPath = workbooks[0];
+        String emailWorkbookPath = workbooks[1];
         int firstNameColumn = 0 ;
         int lastNameColumn = 0;
         String email;
         ArrayList<String> arrayList = new ArrayList<>();
-        ArrayList<String> addedEmails = new ArrayList<>();
-        openWorkbookIn(woorkbookPath);
+        ArrayList<ArrayList<String>> unhandleddEmails = new ArrayList<>();
+        openWorkbookIn(workbookPath);
         openEmailWorkbook(emailWorkbookPath);
         Sheet sheet = this.getWorkbookIn().getSheetAt(0);
         Row row ;
@@ -135,8 +143,7 @@ public class TeacherFormat extends UserFormat implements CSVFormat {
         int numRow = 1 ;
         while (iterator.hasNext()){
             row = iterator.next();
-            email = EmailAdress(row,row.getCell(lastNameColumn).toString(),lastNameColumn,firstNameColumn,addedEmails);
-            addedEmails.add(email);
+            email = EmailAdress(row,row.getCell(lastNameColumn).toString(),lastNameColumn,firstNameColumn,unhandleddEmails);
             if (email != null) arrayList.add( email.substring(0,email.indexOf("@"))) ;
             else  arrayList.add(null) ;
             arrayList.add(row.getCell(firstNameColumn).toString().toUpperCase()+" ENS:");
@@ -146,12 +153,16 @@ public class TeacherFormat extends UserFormat implements CSVFormat {
             arrayList.clear();
             numRow++;
         }
-        File file = new File(destinationPath);
+        File file = new File("TeachersList.xlsx");
         saveUsersList(file);
-    }
+        try {
+            getEmailsWorkbook().close();
+            getWorkbookIn().close();
+            getWorkbookOut().close();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
 
-    @Override
-    public String buildCSV(ArrayList<String> workbooksPaths) {
-        return null;
+        return file.getPath();
     }
 }

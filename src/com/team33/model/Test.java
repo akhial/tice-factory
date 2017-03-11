@@ -1,24 +1,16 @@
 package com.team33.model;
 
-import com.team33.model.csv.CSVBuilder;
-import com.team33.model.csv.StudentFormat;
+import com.team33.model.csv.AssigningTeacherToCourseFormat;
 
-import java.io.File;
 import java.io.IOException;
-import java.util.ArrayList;
 
 public class Test {
 
     public static void main(String[] args) throws IOException {
-	// write your code here
 
-        StudentFormat studentFormat = new StudentFormat();
-        ArrayList<String> workbook = new ArrayList<>();
-        workbook.add("liste email tous les etudiants.xlsx");
-        workbook.add("LISTEDESSUJETSPFE20162017SIL.docx");
-        CSVBuilder csvBuilder = new CSVBuilder(workbook,new StudentFormat(),"C:\\Users\\hamza\\IdeaProjects\\team-33");
-        csvBuilder.buildCSV();
-        csvBuilder.convertToCSV();
-     //   studentFormat.ConvertWordTableToExcel("LISTEDESSUJETSPFE20162017SIL.docx");
+        AssigningTeacherToCourseFormat affectingTeacherToCourseFormat = new AssigningTeacherToCourseFormat();
+        affectingTeacherToCourseFormat.buildCSV("C:\\Users\\Amine\\IdeaProjects\\" +
+                "FichierDeDonnées\\CHARGES_enseignants_Février2017_2016-2017 (1).xlsx","C:\\Users\\Amine\\IdeaProjects\\" +
+                "FichierDeDonnées\\Emails enseignants.xlsx");
     }
 }

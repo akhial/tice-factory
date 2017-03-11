@@ -44,6 +44,11 @@ public abstract class  UserFormat implements CSVFormat {
         return EmailsWorkbook;
     }
 
+    public void setWorkbookOut(XSSFWorkbook workbookOut) {
+        this.workbookOut = workbookOut;
+        header = workbookOut.getSheetAt(0).getRow(0);
+    }
+
     public void openWorkbookIn(String fiilePathIn)//charger un fichier excel dans le wbin
     {
 
@@ -66,6 +71,7 @@ public abstract class  UserFormat implements CSVFormat {
         try {
             FileOutputStream fos = new FileOutputStream(file);
             this.workbookOut.write(fos);
+            fos.close();
         }catch (FileNotFoundException e){
             e.printStackTrace();
         } catch (IOException e) {
@@ -179,7 +185,7 @@ public abstract class  UserFormat implements CSVFormat {
 
 
     @Override
-    public String buildCSV(ArrayList<String> workbooksPaths) {
+    public String buildCSV(String... workbooksPaths) {
         return null;
     }
 }

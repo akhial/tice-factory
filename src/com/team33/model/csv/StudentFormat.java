@@ -441,7 +441,7 @@ public class StudentFormat extends UserFormat implements CSVFormat {
 
 
     @Override
-    public String buildCSV(ArrayList<String> workbooksPaths)  {//
+    public String buildCSV(String... workbooksPaths)  {//
         String type;
         for (String workbooksPath : workbooksPaths) {
             if(workbooksPath.contains(".docx"))

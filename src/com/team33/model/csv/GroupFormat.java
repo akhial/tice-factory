@@ -8,7 +8,7 @@ import java.util.ArrayList;
 public class GroupFormat implements CSVFormat {
 
     @Override
-    public String buildCSV(ArrayList<String> workbooksPaths) {
+    public String buildCSV(String... workbooksPaths) {
         return null;
     }
 }
