@@ -94,15 +94,16 @@ public abstract class UserFormat implements CSVFormat {
     public void generateHeader()// gener le header ie ecrire dans la première ligne (username,fistname,lastname,email) -> le format accepté par moodle
     {
 
-        for (int i = 0; i < 4;i++)
+        for (int i = 0; i < 5;i++)
         {
             this.getHeader().createCell(i);
         }
 
         this.getHeader().getCell(0).setCellValue("username");
-        this.getHeader().getCell(1).setCellValue("firstname");
-        this.getHeader().getCell(2).setCellValue("lastname");
-        this.getHeader().getCell(3).setCellValue("email");
+        this.getHeader().getCell(1).setCellValue("password");
+        this.getHeader().getCell(2).setCellValue("firstname");
+        this.getHeader().getCell(3).setCellValue("lastname");
+        this.getHeader().getCell(4).setCellValue("email");
     }
 
 

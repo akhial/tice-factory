@@ -14,6 +14,7 @@ public class Student {
     private String optin;
     private String groupe;
     private String email;
+    private String password;
     private ArrayList<String> listOfEmails;
     private int positionInWorkbookIn;
     private int positionInWorkbookOut;
@@ -32,6 +33,14 @@ public class Student {
 
     public void setPositionInWorkbookIn(int positionInWorkbookIn) {
         this.positionInWorkbookIn = positionInWorkbookIn;
+    }
+
+    public String getPassword() {
+        return password;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
     }
 
     public int getPositionInWorkbookOut() {
@@ -146,12 +155,7 @@ public class Student {
 
     public boolean equals(Student student)
     {
-        return ((this.firstName.toLowerCase().equals(student.getfirstName().toLowerCase()) && (this.lastName.toLowerCase().charAt(0) == student.getLastName().toLowerCase().charAt(0))) && (this.positionInWorkbookIn != student.getPositionInWorkbookIn()));
-    }
-
-    public String getfirstName()
-    {
-        return firstName;
+        return ((this.firstName.toLowerCase().equals(student.getFirstName().toLowerCase()) && (this.lastName.toLowerCase().charAt(0) == student.getLastName().toLowerCase().charAt(0))) && (this.positionInWorkbookIn != student.getPositionInWorkbookIn()));
     }
 
     public Object clone() {

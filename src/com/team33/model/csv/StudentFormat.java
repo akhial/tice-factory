@@ -42,18 +42,11 @@ public class StudentFormat extends UserFormat implements CSVFormat {
             rw.createCell(j);
         }
         rw.getCell(0).setCellValue(student.getUsername());
-        rw.getCell(1).setCellValue(student.getFirstName());
-        rw.getCell(2).setCellValue(student.getLastNameInMoodle());
-        rw.getCell(3).setCellValue(student.getEmail());
+        rw.getCell(1).setCellValue(student.getPassword());
+        rw.getCell(2).setCellValue(student.getFirstName());
+        rw.getCell(3).setCellValue(student.getLastNameInMoodle());
+        rw.getCell(4).setCellValue(student.getEmail());
     }
-
-    private  String generateUser(Row rw,int indexOfNom,String level, int indexOfGroupe)// generer le nom de format moodle (a revoir en fonction des informations concernant le cycle superieur)
-    {
-        rw.getCell(indexOfGroupe).setCellType(CellType.STRING);
-        return  rw.getCell(indexOfNom).toString()+" "+ level+rw.getCell(indexOfGroupe).toString();
-
-    }
-
 
 
     private void createStudentList(int indexOfEmailsSheet, String filePathOut, String optin, String level)  {
@@ -102,6 +95,7 @@ public class StudentFormat extends UserFormat implements CSVFormat {
                     rw.getCell(colGroupe).setCellType(CellType.STRING);
                     student.setGroupe(rw.getCell(colGroupe).toString());
                     student.createLastNameInMoodle();
+                    student.setPassword(student.getLastName());
                     generateRow(numRow, student);
                     numRow++;
 

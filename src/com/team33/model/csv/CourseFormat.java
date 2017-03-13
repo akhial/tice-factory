@@ -92,4 +92,17 @@ public class CourseFormat  {
         }
     }
 
+    public int getNumberOfCourses(String level)
+    {
+        Sheet sheet  = this.workbook.getSheet(level);
+        if(level.equals("2CS"))
+        {
+            return (getListOfCourses(level).size() + 2);
+        }
+        else
+        {
+            return getListOfCourses(level).size();
+        }
+    }
+
 }
