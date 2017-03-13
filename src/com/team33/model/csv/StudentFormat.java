@@ -208,62 +208,53 @@ public class StudentFormat extends UserFormat implements CSVFormat {
         int colPrenom = -1;
         int colGroupe = -1;
         int numRow = 1;
-        Sheet sheet = getWorkbookIn().getSheetAt(0);
 
         generateHeader();
+        for(Sheet sheet : getWorkbookIn()) {
+            boolean found = false;
+            Iterator<Row> rowIterator = sheet.rowIterator();
+            Row rw = rowIterator.next();
+            while ((!found) && (rowIterator.hasNext())) {
+                if (Util.getInstance().existInRow(rw, "Prenom")) {
+                    found = true;
+                    colNom = Util.getInstance().column(rw, "Nom");
+                    colPrenom = Util.getInstance().column(rw, "Prenom");
+                    colGroupe = Util.getInstance().column(rw, "NG");
+                } else if (Util.getInstance().existInRow(rw, "Prénom")) {
+                    found = true;
+                    colNom = Util.getInstance().column(rw, "Nom");
+                    colPrenom = Util.getInstance().column(rw, "Prénom");
+                    colGroupe = Util.getInstance().column(rw, "NG");
+                } else {
+                    rw = rowIterator.next();
+                }
+            }
+            EmailFinder emailFinder = new EmailFinder(colNom, colPrenom, indexOfEmailsSheet, getEmailsWorkbook(), getWorkbookIn());
 
-        boolean found = false;
-        Iterator<Row> rowIterator = sheet.rowIterator();
-        Row rw = rowIterator.next();
-        while ((!found) && (rowIterator.hasNext()))
-        {
-            if(Util.getInstance().existInRow(rw,"Prenom"))
-            {
-                found = true;
-                colNom = Util.getInstance().column(rw,"Nom");
-                colPrenom = Util.getInstance().column(rw,"Prenom");
-                colGroupe = Util.getInstance().column(rw,"NG");
-            }
-            else if (Util.getInstance().existInRow(rw,"Prénom"))
-            {
-                found = true;
-                colNom = Util.getInstance().column(rw,"Nom");
-                colPrenom = Util.getInstance().column(rw,"Prénom");
-                colGroupe = Util.getInstance().column(rw,"NG");
-            }
-            else
-            {
+            while (rowIterator.hasNext()) {
+                if (Util.getInstance().existInRow(rw, optin)) {
+                    Student student = new Student();
+                    student.setFirstName(rw.getCell(colNom).toString());
+                    student.setLastName(rw.getCell(colPrenom).toString());
+                    student.setLevel(level);
+                    student.setPositionInWorkbookIn(rw.getRowNum());
+                    emailFinder.setStudent(student);
+                    emailFinder.getEmails(optin);
+                    student.setEmail();
+                    if (!student.hasEmail()) {
+                        student.setPositionInWorkbookOut(numRow);
+                        this.listOfStudentsWithoutEmail.add(student);
+                    }
+                    student.generateUsename();
+                    rw.getCell(colGroupe).setCellType(CellType.STRING);
+                    student.setGroupe(rw.getCell(colGroupe).toString());
+                    student.createLastNameInMoodle();
+                    generateRow(numRow, student);
+                    numRow++;
+
+                }
                 rw = rowIterator.next();
             }
-        }
-        EmailFinder emailFinder = new EmailFinder(colNom,colPrenom,indexOfEmailsSheet,getEmailsWorkbook(),getWorkbookIn());
-
-        while (rowIterator.hasNext())
-        {
-            if (Util.getInstance().existInRow(rw,optin))
-            {
-                Student student = new Student();
-                student.setFirstName(rw.getCell(colNom).toString());
-                student.setLastName(rw.getCell(colPrenom).toString());
-                student.setLevel(level);
-                student.setPositionInWorkbookIn(rw.getRowNum());
-                emailFinder.setStudent(student);
-                emailFinder.getEmails(optin);
-                student.setEmail();
-                if(!student.hasEmail())
-                {
-                    student.setPositionInWorkbookOut(numRow);
-                    this.listOfStudentsWithoutEmail.add(student);
-                }
-                student.generateUsename();
-                rw.getCell(colGroupe).setCellType(CellType.STRING);
-                student.setGroupe(rw.getCell(colGroupe).toString());
-                student.createLastNameInMoodle();
-                generateRow(numRow,student);
-                numRow++;
-
-            }
-            rw = rowIterator.next();
         }
         File file = new File(filePathOut);
         saveUsersList(file);
