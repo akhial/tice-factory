@@ -5,7 +5,7 @@ import java.util.ArrayList;
 /**
  * Created by hamza on 09/03/2017.
  */
-public class Student implements Cloneable{
+public class Student {
     private String username;
     private String firstName;
     private String lastName;
