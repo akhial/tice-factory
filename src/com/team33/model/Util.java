@@ -1,5 +1,6 @@
-package com.team33.model.csv;
+package com.team33.model;
 
+import com.team33.model.csv.Student;
 import org.apache.poi.ss.usermodel.Cell;
 import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
@@ -54,7 +55,7 @@ public class Util {
         return colIndex;
     }
 
-    public void generateRow(int numRow, Student student,XSSFWorkbook workbook)// générer une ligne cde fichier résultat contenant les coordonné d'un étudiant
+    public void generateRow(int numRow, Student student, XSSFWorkbook workbook)// générer une ligne cde fichier résultat contenant les coordonné d'un étudiant
     {
         Row rw = workbook.getSheetAt(0).createRow(numRow);
         for (int j = 0; j < 4; j++) {

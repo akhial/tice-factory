@@ -1,6 +1,6 @@
 package com.team33.model.csv;
 
-import org.apache.poi.openxml4j.exceptions.InvalidFormatException;
+import com.team33.model.Util;
 import org.apache.poi.ss.usermodel.*;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import org.apache.poi.xwpf.extractor.XWPFWordExtractor;
@@ -10,10 +10,8 @@ import org.apache.poi.xwpf.usermodel.XWPFTableCell;
 import org.apache.poi.xwpf.usermodel.XWPFTableRow;
 
 import java.io.*;
-import java.net.URI;
 import java.util.ArrayList;
 import java.util.Iterator;
-import java.util.Scanner;
 
 /**
  * Created by Amine on 13/02/2017.
