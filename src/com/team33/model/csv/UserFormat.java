@@ -1,7 +1,9 @@
 package com.team33.model.csv;
 
 import org.apache.poi.openxml4j.exceptions.InvalidFormatException;
-import org.apache.poi.ss.usermodel.*;
+import org.apache.poi.ss.usermodel.Cell;
+import org.apache.poi.ss.usermodel.Row;
+import org.apache.poi.ss.usermodel.WorkbookFactory;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 
 import java.io.File;
@@ -14,7 +16,7 @@ import java.util.Iterator;
 /**
  * Created by Amine on 28/02/2017.
  */
-public abstract class  UserFormat implements CSVFormat {
+public abstract class UserFormat implements CSVFormat {
     private XSSFWorkbook workbookIn;
     private XSSFWorkbook workbookOut;
     private XSSFWorkbook EmailsWorkbook;
@@ -89,30 +91,6 @@ public abstract class  UserFormat implements CSVFormat {
     /*
      *Méthodes utilitaires
      */
-
-    public boolean existInRow(Row rw, String str)//verrifier si'il y a une case dans la ligne rw dont sa valeur (pas just contenir) est la chaine str
-    {
-        boolean exist = false;
-        for(Cell cell :rw )
-        {
-            if(str.equals(cell.toString())) exist = true;
-        }
-        return  exist;
-    }
-
-
-    public int column(Row rw,String colName)// retourne l'indice de la colone de valeur colNom dans la ligne rw
-    {
-        boolean found = false;
-        int colIndex = -1;
-
-        for (Cell cell : rw) {
-            if (colName.equals(cell.toString())) {
-                colIndex = cell.getColumnIndex();
-            }
-        }
-        return colIndex;
-    }
     public void generateHeader()// gener le header ie ecrire dans la première ligne (username,fistname,lastname,email) -> le format accepté par moodle
     {
 
@@ -139,22 +117,6 @@ public abstract class  UserFormat implements CSVFormat {
         return  contains;
     }
 
-    public int rangOfCellContaining(Row rw,String str) // retourne l'indice de la colonne contenat la chaine str
-    {
-        int rang = -1;
-        boolean contains = false;
-        Iterator<Cell> cellIterator = rw.iterator();
-        Cell cell = cellIterator.next();
-        while ((cell != null) && (contains == false) )
-        {
-            if(cell.toString().contains(str)) {
-                contains = true;
-                rang = cell.getColumnIndex();
-            }
-            else cell = cellIterator.next();
-        }
-        return  rang;
-    }
     public String getUserInformation(Row rw, int colNom, int colPrenom)// avoir les information d'un utilisateur
     {
 
