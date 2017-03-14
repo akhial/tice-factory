@@ -2,6 +2,7 @@ package com.team33.model.csv;
 
 import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.ss.usermodel.Sheet;
+import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 
 import java.io.File;
 import java.io.IOException;
@@ -15,8 +16,6 @@ import java.util.Scanner;
 
 public class TeacherFormat extends UserFormat implements CSVFormat {
     public TeacherFormat() {
-
-
     }
 
     /**Permet d'extraire la partie (nom + "@esi.dz") de l'adresse mail
@@ -50,7 +49,7 @@ public class TeacherFormat extends UserFormat implements CSVFormat {
     public void generateRow(int numRow,ArrayList<String> arrayList)
     {
         Row rw = getWorkbookOut().getSheetAt(0).createRow(numRow);
-        for (int j = 0; j < 4; j++) {
+        for (int j = 0; j < arrayList.size(); j++) {
             rw.createCell(j);
             rw.getCell(j).setCellValue(arrayList.get(j));
         }
@@ -149,20 +148,13 @@ public class TeacherFormat extends UserFormat implements CSVFormat {
             arrayList.add(row.getCell(firstNameColumn).toString().toUpperCase()+" ENS:");
             arrayList.add(row.getCell(lastNameColumn).toString().toUpperCase());
             arrayList.add(email);
+            if (email != null) arrayList.add(String.valueOf(email.hashCode()));
             generateRow(numRow, (ArrayList<String>) arrayList.clone());
             arrayList.clear();
             numRow++;
         }
         File file = new File("TeachersList.xlsx");
         saveUsersList(file);
-        try {
-            getEmailsWorkbook().close();
-            getWorkbookIn().close();
-            getWorkbookOut().close();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-
         return file.getPath();
     }
 }

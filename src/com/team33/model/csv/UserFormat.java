@@ -32,6 +32,11 @@ public abstract class  UserFormat implements CSVFormat {
         this.EmailsWorkbook = new XSSFWorkbook();
     }
 
+    public UserFormat(XSSFWorkbook workbookOut) {
+        this.workbookOut = workbookOut;
+        this.header = workbookOut.getSheetAt(0).getRow(0);
+    }
+
     public XSSFWorkbook getWorkbookIn() {
         return workbookIn;
     }
@@ -72,6 +77,9 @@ public abstract class  UserFormat implements CSVFormat {
             FileOutputStream fos = new FileOutputStream(file);
             this.workbookOut.write(fos);
             fos.close();
+            EmailsWorkbook.close();
+            workbookIn.close();
+            workbookOut.close();
         }catch (FileNotFoundException e){
             e.printStackTrace();
         } catch (IOException e) {
@@ -122,7 +130,7 @@ public abstract class  UserFormat implements CSVFormat {
     public void generateHeader()// gener le header ie ecrire dans la première ligne (username,fistname,lastname,email) -> le format accepté par moodle
     {
 
-        for (int i = 0; i < 4;i++)
+        for (int i = 0; i < 5;i++)
         {
             this.getHeader().createCell(i);
         }
@@ -131,6 +139,7 @@ public abstract class  UserFormat implements CSVFormat {
         this.getHeader().getCell(1).setCellValue("firstname");
         this.getHeader().getCell(2).setCellValue("lastname");
         this.getHeader().getCell(3).setCellValue("email");
+        this.getHeader().getCell(4).setCellValue("password");
     }
 
 
@@ -185,7 +194,7 @@ public abstract class  UserFormat implements CSVFormat {
 
 
     @Override
-    public String buildCSV(String... workbooksPaths) {
+    public String buildCSV(String... workbooksPaths) throws IOException {
         return null;
     }
 }

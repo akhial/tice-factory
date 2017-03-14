@@ -31,7 +31,7 @@ public class CSVBuilder  {
         this.format = format;
     }
 
-    public void buildCSV(){
+    public void buildCSV() throws IOException {
         tempPath = format.buildCSV((String[]) workbooksPaths.toArray());
     }
 
