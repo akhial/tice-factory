@@ -65,13 +65,14 @@ public class Util {
     public void generateRow(int numRow, Student student, XSSFWorkbook workbook)// générer une ligne cde fichier résultat contenant les coordonné d'un étudiant
     {
         Row rw = workbook.getSheetAt(0).createRow(numRow);
-        for (int j = 0; j < 4; j++) {
+        for (int j = 0; j < 5; j++) {
             rw.createCell(j);
         }
         rw.getCell(0).setCellValue(student.getUsername());
-        rw.getCell(1).setCellValue(student.getFirstName());
-        rw.getCell(2).setCellValue(student.getLastNameInMoodle());
-        rw.getCell(3).setCellValue(student.getEmail());
+        rw.getCell(1).setCellValue(student.getPassword());
+        rw.getCell(2).setCellValue(student.getFirstName());
+        rw.getCell(3).setCellValue(student.getLastNameInMoodle());
+        rw.getCell(4).setCellValue(student.getEmail());
     }
 
 

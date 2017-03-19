@@ -35,10 +35,10 @@ public class StudentFormat extends UserFormat implements CSVFormat {
      */
 
 
-    private void generateRow(int numRow, Student student)// générer une ligne cde fichier résultat contenant les coordonné d'un étudiant
+    public void generateRow(int numRow, Student student)// générer une ligne cde fichier résultat contenant les coordonné d'un étudiant
     {
         Row rw = getWorkbookOut().getSheetAt(0).createRow(numRow);
-        for (int j = 0; j < 4; j++) {
+        for (int j = 0; j < 5; j++) {
             rw.createCell(j);
         }
         rw.getCell(0).setCellValue(student.getUsername());
@@ -83,10 +83,11 @@ public class StudentFormat extends UserFormat implements CSVFormat {
                     student.setFirstName(rw.getCell(colNom).toString());
                     student.setLastName(rw.getCell(colPrenom).toString());
                     student.setLevel(level);
+                    student.setOptin(optin);
                     student.setPositionInWorkbookIn(rw.getRowNum());
                     emailFinder.setStudent(student);
                     emailFinder.getEmails(optin);
-                    student.setEmail();
+                    student.tryToSetEmail();
                     if (!student.hasEmail()) {
                         student.setPositionInWorkbookOut(numRow);
                         this.listOfStudentsWithoutEmail.add(student);

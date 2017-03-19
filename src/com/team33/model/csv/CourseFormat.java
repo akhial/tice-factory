@@ -35,9 +35,9 @@ public class CourseFormat  {
             e.printStackTrace();
         }
     }
-    public CourseFormat(String coursesFile)
+    public CourseFormat()
     {
-        this.coursesFile = coursesFile;
+        this.coursesFile = "courses.xlsx";
         this.file = new File(getCoursesFile());
     }
 
@@ -97,7 +97,7 @@ public class CourseFormat  {
         Sheet sheet  = this.workbook.getSheet(level);
         if(level.equals("2CS"))
         {
-            return (getListOfCourses(level).size() + 2);
+            return (getListOfCourses(level).size() + 1);
         }
         else
         {

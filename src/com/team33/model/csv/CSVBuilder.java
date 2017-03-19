@@ -31,6 +31,10 @@ public class CSVBuilder  {
         this.format = format;
     }
 
+    public String getTempPath() {
+        return tempPath;
+    }
+
     public void buildCSV(){
         tempPath = format.buildCSV(workbooksPaths);
     }

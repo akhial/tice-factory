@@ -1,24 +1,72 @@
 package com.team33.model;
 
+import com.team33.model.csv.AffectingStudentToCourseFormat;
 import com.team33.model.csv.CSVBuilder;
 import com.team33.model.csv.StudentFormat;
+import com.team33.model.csv.Student;
+import org.apache.poi.openxml4j.exceptions.InvalidFormatException;
 
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Scanner;
 
 public class Test {
 
+    static ArrayList<String> listOfUsedEmails = new ArrayList<String>();
     public static void main(String[] args) throws IOException {
-	// write your code here
 
-        StudentFormat studentFormat = new StudentFormat();
-        ArrayList<String> workbook = new ArrayList<>();
-        workbook.add("liste email tous les etudiants.xlsx");
-        workbook.add("LISTEDESSUJETSPFE20162017SIL.docx");
-        CSVBuilder csvBuilder = new CSVBuilder(workbook,new StudentFormat(),"C:\\Users\\hamza\\IdeaProjects\\team-33");
+        ArrayList<String> workbooksPaths = new ArrayList<String>();
+
+        workbooksPaths.add("liste email tous les etudiants.xlsx");
+        workbooksPaths.add("Listes-Etudiants_2CPI_S1_2016-2017(1) (2).xlsx");
+        AffectingStudentToCourseFormat studentFormat = new AffectingStudentToCourseFormat();
+        CSVBuilder csvBuilder = new CSVBuilder(workbooksPaths,studentFormat,"C:/Users/hamza/IdeaProjects/team-33");
         csvBuilder.buildCSV();
-        csvBuilder.convertToCSV();
-     //   studentFormat.ConvertWordTableToExcel("LISTEDESSUJETSPFE20162017SIL.docx");
+        String email = null;
+        for(Student student : studentFormat.getListOfStudentsWithoutEmail())
+        {
+            System.out.print(student);
+
+            if(student.getListOfEmails().isEmpty())
+            { //poopup 1
+                System.out.println(" : ");
+                Scanner scanner = new Scanner(System.in);
+                email = scanner.nextLine();
+                student.setEmail(email);
+
+            }else
+            {
+                deleteUsedEmails(student);
+                System.out.println(student.getListOfEmails().size());
+                student.tryToSetEmail();
+                if(!student.hasEmail())
+                {
+                    System.out.println(student.getListOfEmails());
+                    Scanner scanner = new Scanner(System.in);
+                    int i = scanner.nextInt();
+                    email =(String) student.getListOfEmails().get(i);
+                    student.setEmail(email);
+                }
+            }
+            student.generateUsename();
+            studentFormat.generateRow(student.getPositionInWorkbookOut(),student);
+            listOfUsedEmails.add(email);
+        }
+        studentFormat.saveUsersList(new File(csvBuilder.getTempPath()));
+        ToCSV toCSV = new ToCSV();
+        try {
+            toCSV.convertExcelToCSV(csvBuilder.getTempPath(),"C:/Users/hamza/IdeaProjects/team-33");
+        } catch (InvalidFormatException e) {
+            e.printStackTrace();
+        }
+    }
+    public static void deleteUsedEmails(Student student)
+    {
+        for(int i = 0; i < student.getListOfEmails().size();i++)
+            if (listOfUsedEmails.contains((String) student.getListOfEmails().get(i)))
+            {
+                student.getListOfEmails().remove(student.getListOfEmails().get(i));
+            }
     }
 }

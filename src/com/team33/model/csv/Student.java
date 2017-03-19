@@ -18,6 +18,15 @@ public class Student {
     private ArrayList<String> listOfEmails;
     private int positionInWorkbookIn;
     private int positionInWorkbookOut;
+    private ArrayList<String> courses;
+
+    public ArrayList<String> getCourses() {
+        return courses;
+    }
+
+    public void setCourses(ArrayList<String> courses) {
+        this.courses = courses;
+    }
 
     public void setEmail(String email) {
         this.email = email;
@@ -63,7 +72,7 @@ public class Student {
         return email;
     }
 
-    public void setEmail() {
+    public void tryToSetEmail() {
         if(this.listOfEmails.size() == 1)
         {
             this.email = listOfEmails.get(0);
@@ -141,8 +150,17 @@ public class Student {
     }
 
     public void createLastNameInMoodle()
+
     {
-        this.lastNameInMoodle = this.lastName+" "+this.level+this.groupe;
+        if(this.optin.equals("CPI") || this.optin.equals("SC"))
+        {
+            this.lastNameInMoodle = this.lastName+" "+this.level+this.groupe;
+        }
+        else
+        {
+            this.lastNameInMoodle = this.lastName+" "+this.level+this.optin+this.groupe;
+        }
+
     }
 
     public String getUsername() {
