@@ -62,6 +62,13 @@ public class Student implements Cloneable{
         return lastName;
     }
 
+    public String getUsername() {
+        return username;
+    }
+    public String toString()
+    {
+        return this.firstName+" "+this.lastName;
+    }
     public void setPassword(String password) {
         this.password = password;
     }
@@ -85,6 +92,7 @@ public class Student implements Cloneable{
     public String getEmail() {
         return email;
     }
+
     public void setListOfEmails(ArrayList<String> listOfEmails) {
         this.listOfEmails = listOfEmails;
     }
@@ -130,13 +138,7 @@ public class Student implements Cloneable{
 
     }
 
-    public String getUsername() {
-        return username;
-    }
-    public String toString()
-    {
-        return this.firstName+" "+this.lastName;
-    }
+
 
     @Override
     public int hashCode() {
@@ -162,6 +164,7 @@ public class Student implements Cloneable{
         this.optin = row.getCell(this.box.getColOptin()).toString();
         row.getCell(this.box.getColGroupe()).setCellType(CellType.STRING);
         this.groupe = row.getCell(this.box.getColGroupe()).toString();
+        this.password = this.firstName;
     }
 
     public void setStudentInformations()
