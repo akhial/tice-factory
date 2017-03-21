@@ -1,4 +1,4 @@
-package com.team33.model.csv;
+package com.team33.model.csv.Students;
 
 import com.team33.model.Util;
 import org.apache.poi.ss.usermodel.Row;
@@ -6,40 +6,32 @@ import org.apache.poi.ss.usermodel.Sheet;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 
 /**
  * Created by hamza on 09/03/2017.
  */
-public class EmailFinder {
-    private int colNom;
-    private int colPrenom;
+public class EmailFinder  {
     private int indexOfEmailsSheet;
     private  XSSFWorkbook workbookEmails;
-    private XSSFWorkbook workbookIn;
     private Student student;
+    private HashMap<Student,Integer> studentIntegerHashMap;
     public void setIndexOfEmailsSheet(int indexOfEmailsSheet) {
         this.indexOfEmailsSheet = indexOfEmailsSheet;
     }
 
-    public EmailFinder(int colNom, int colPrenom, int indexOfEmailsSheet, XSSFWorkbook workbookEmails, XSSFWorkbook workbookIn) {
-        this.colNom = colNom;
-        this.colPrenom = colPrenom;
+    public EmailFinder(int indexOfEmailsSheet, XSSFWorkbook workbookEmails, HashMap<Student, Integer> studentIntegerHashMap)
+    {
         this.indexOfEmailsSheet = indexOfEmailsSheet;
         this.workbookEmails = workbookEmails;
-        this.workbookIn = workbookIn;
+        this.studentIntegerHashMap = studentIntegerHashMap;
     }
 
     public void setStudent(Student student) {
+
         this.student = student;
     }
 
-    public void setColNom(int colNom) {
-        this.colNom = colNom;
-    }
-
-    public void setColPrenom(int colPrenom) {
-        this.colPrenom = colPrenom;
-    }
 
     private String nameForEmail(String repalceSapaceWit)// générer une chaine de carractère pour utiliser en comparaison pour trouver l'email
     {
@@ -52,42 +44,23 @@ public class EmailFinder {
         return str;
 
     }
-    private void getStudentInoformations(Student student,Row rw)// avoir les information d'un étudient
+
+    private boolean existOtherStudents()
     {
-
-        student.setFirstName(rw.getCell(this.colNom).toString());
-        student.setLastName(rw.getCell(this.colPrenom).toString());
-        student.setPositionInWorkbookIn(rw.getRowNum());
-    }
-
-    private boolean existOtherStudents(String optin)
-    {
-        boolean exist = false;
-        Sheet sheet = this.workbookIn.getSheetAt(0);
-
-        int i = 0;
-        Row row = sheet.getRow(0);
-        while ((row != null)&&(!exist))
+        int i = studentIntegerHashMap.get(this.student);
+        if(i == 0)
         {
-            if (Util.getInstance().existInRow(row,optin))
-            {
-                Student student = new Student();
-                getStudentInoformations(student,row);
-                if((this.student.equals(student)))
-                {
-                    exist = true;
-                }
-
-            }
-            i++;
-            row = sheet.getRow(i);
+            System.out.println("ERROR");
+            return false;
         }
-        return exist;
+
+        else if(i > 1) return true;
+        else  return false;
     }
 
-    public void getEmails(String optin)// choisir un email de la liste
+    public void getEmails()// choisir un email de la liste
     {
-        if (!existOtherStudents(optin))
+        if (!existOtherStudents())
         {
             String email = findEmail(nameForEmail("_"),nameForEmail(""));
             if(!email.equals("")) {
@@ -97,24 +70,6 @@ public class EmailFinder {
         else
         {
             this.student.setListOfEmails(findListEmails(scondNameForEmail( "_"),scondNameForEmail( "")));
-        }
-    }
-
-
-    public void showListOfEmails(ArrayList lsitEmails)//afficher la liste des emails
-    {
-        int j = 1;
-        if(lsitEmails.isEmpty())
-        {
-            System.out.println("ERREUR");
-        }
-        else
-        {
-            for (Object lsitEmail : lsitEmails) {
-                System.out.println(j + " : " + lsitEmail.toString());
-                j++;
-                System.out.println("______________________");
-            }
         }
     }
 
@@ -184,4 +139,5 @@ public class EmailFinder {
         return name;
 
     }
+
 }

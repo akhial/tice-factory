@@ -1,18 +1,16 @@
-package com.team33.model.csv;
+package com.team33.model.csv.Students;
 
 import com.team33.model.Util;
-import org.apache.poi.openxml4j.exceptions.InvalidFormatException;
+import com.team33.model.csv.UserFormat;
+import org.apache.poi.ss.usermodel.Cell;
 import org.apache.poi.ss.usermodel.CellType;
 import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.ss.usermodel.Sheet;
-import org.apache.poi.ss.usermodel.WorkbookFactory;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 
 import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
-import java.io.IOException;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.Iterator;
 
 /**
@@ -22,7 +20,8 @@ public class AffectingStudentToCourseFormat extends UserFormat {
 
     private CourseFormat courseFormat;
     private ArrayList<Student> listOfStudentsWithoutEmail;
-
+    private XSSFWorkbook workbookSecondeSemester;
+    private HashMap<Student, Integer> studentHashMap;
 
     public AffectingStudentToCourseFormat() {
         this.courseFormat = new CourseFormat();
@@ -71,61 +70,72 @@ public class AffectingStudentToCourseFormat extends UserFormat {
         }
     }
 
-    private void createStudentList(int indexOfEmailsSheet, String filePathOut, String optin, String level)  {
-        int colNom = -1;
-        int colPrenom = -1;
+    private String extractOptionalModule(Row row)
+    {
+        String str = "";
+        for(Cell cell : row)
+        {
+            str = str + cell.toString();
+        }
+        str = str.replace("Modules optionnels","");
+        str = str.replace(":","");
+        str = str.replace(" ","");
+        return str;
+    }
+
+    public HashMap<String,String> extractOptionalModules(XSSFWorkbook workbook)
+    {
+        String str = null;
         int colGroupe = -1;
-        int numRow = 1;
-
-        generateHeader(level);
-        for(Sheet sheet : this.getWorkbookIn()) {
-            boolean found = false;
-            Iterator<Row> rowIterator = sheet.rowIterator();
-            Row rw = rowIterator.next();
-            while ((!found) && (rowIterator.hasNext())) {
-                if (Util.getInstance().existInRow(rw, "Prenom")) {
-                    found = true;
-                    colNom = Util.getInstance().column(rw, "Nom");
-                    colPrenom = Util.getInstance().column(rw, "Prenom");
-                    colGroupe = Util.getInstance().column(rw, "NG");
-                } else if (Util.getInstance().existInRow(rw, "Prénom")) {
-                    found = true;
-                    colNom = Util.getInstance().column(rw, "Nom");
-                    colPrenom = Util.getInstance().column(rw, "Prénom");
-                    colGroupe = Util.getInstance().column(rw, "NG");
-                } else {
-                    rw = rowIterator.next();
+        String key = "";
+        HashMap<String,String> optionalModules = new HashMap<String,String>();
+        for(Sheet sheet : workbook)
+        {
+            System.out.println(sheet.getSheetName());
+            for (Row row : sheet) {
+                if (Util.getInstance().rowContains(row, "Modules optionnels")) {
+                    str = extractOptionalModule(row);
                 }
-            }
-            EmailFinder emailFinder = new EmailFinder(colNom, colPrenom, indexOfEmailsSheet, this.getEmailsWorkbook(), this.getWorkbookIn());
-
-            while (rowIterator.hasNext()) {
-                if (Util.getInstance().existInRow(rw, optin)) {
-                    Student student = new Student();
-                    student.setFirstName(rw.getCell(colNom).toString());
-                    student.setLastName(rw.getCell(colPrenom).toString());
-                    student.setLevel(level);
-                    student.setOptin(optin);
-                    student.setPositionInWorkbookIn(rw.getRowNum());
-                    emailFinder.setStudent(student);
-                    emailFinder.getEmails(optin);
-                    student.tryToSetEmail();
-                    if (!student.hasEmail()) {
-                        student.setPositionInWorkbookOut(numRow);
-                        this.listOfStudentsWithoutEmail.add(student);
-                    }
-                    student.generateUsename();
-                    student.setCourses(courseFormat.getListOfCourses(level));
+                if (Util.getInstance().existInRow(row, "NG")) {
+                    colGroupe = Util.getInstance().column(row, "NG");
+                    Row rw = sheet.getRow(row.getRowNum() + 1);
                     rw.getCell(colGroupe).setCellType(CellType.STRING);
-                    student.setGroupe(rw.getCell(colGroupe).toString());
-                    student.createLastNameInMoodle();
-                    student.setPassword(student.getLastName());
-                    generateRow(numRow, student);
-                    numRow++;
+                    key = rw.getCell(colGroupe).getStringCellValue();
+                    optionalModules.put(key, str);
 
                 }
-                rw = rowIterator.next();
             }
+        }
+            return optionalModules;
+    }
+
+    private void createStudentList(int indexOfEmailsSheet, String filePathOut, String optin, String level)  {
+        int numRow = 1;
+        Sheet sheet = getWorkbookIn().getSheetAt(0);
+
+        generateHeader();
+
+        ColumnsInformationBox box = new ColumnsInformationBox(sheet);
+        box.extractInformationsFromFile();
+        FileInformationExtractor extractor = new FileInformationExtractor(box,sheet,optin);
+        ArrayList<Student> students = extractor.findStudents();
+        this.studentHashMap =  extractor.createStudentsHashMap();
+        EmailFinder emailFinder = new EmailFinder(indexOfEmailsSheet,getEmailsWorkbook(),this.studentHashMap);
+
+
+        for(Student student : students)
+        {
+            student.setLevel(level);
+            emailFinder.setStudent(student);
+            emailFinder.getEmails();
+            student.setStudentInformations();
+            if(!student.hasEmail())
+            {
+                student.setPositionInWorkbookOut(numRow);
+                this.listOfStudentsWithoutEmail.add(student);
+            }
+            generateRow(numRow,student);
+            numRow++;
         }
         File file = new File(filePathOut);
         saveUsersList(file);
