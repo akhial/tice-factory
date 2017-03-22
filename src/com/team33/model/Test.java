@@ -23,8 +23,8 @@ public class Test {
         ArrayList<String> workbooksPaths = new ArrayList<String>();
 
         workbooksPaths.add("liste email tous les etudiants.xlsx");
-        workbooksPaths.add("Listes-Etudiants_2CPI_S1_2016-2017(1) (2).xlsx");
-        AffectingStudentToCourseFormat studentFormat = new AffectingStudentToCourseFormat("2CPI","CPI","");
+        workbooksPaths.add("NOTES ORGA 1CS 2017 BENYAHIA.xlsx");
+        AffectingStudentToCourseFormat studentFormat = new AffectingStudentToCourseFormat("1CS","SC","");
         CSVBuilder csvBuilder = new CSVBuilder(workbooksPaths,studentFormat,"C:/Users/hamza/IdeaProjects/team-33");
         csvBuilder.buildCSV();
         String email = null;

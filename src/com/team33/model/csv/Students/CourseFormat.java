@@ -113,7 +113,7 @@ import java.util.Iterator;
         {
             return level + "-" + optin;
         }
-        return null;
+        return level;
     }
     /*
     * Add a given course for a given level (1CPI OR 2CPI) in a given semester

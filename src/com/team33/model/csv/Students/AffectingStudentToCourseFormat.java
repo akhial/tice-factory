@@ -155,7 +155,7 @@ public class AffectingStudentToCourseFormat extends UserFormat {
     {
         if(this.level.equals("1CPI")) return "1cpi";
         else if(this.level.equals("2CPI")) return "2cpi";
-        else if(this.level.equals("3CS")) return "3cs";
+        else if(this.level.equals("1CS")) return "1cs";
         else return this.level+this.optin;
     }
 
