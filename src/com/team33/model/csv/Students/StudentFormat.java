@@ -28,8 +28,7 @@ public class StudentFormat extends UserFormat implements CSVFormat {
 
 
     private ArrayList<Student> listOfStudentsWithoutEmail;
-    private  HashMap<Student,Integer> studentHashMap = new HashMap<>();
-    private ArrayList<Student> listeEtudiants = new ArrayList<>();
+
     public ArrayList<Student> getListOfStudentsWithoutEmail() {
         return listOfStudentsWithoutEmail;
     }
@@ -194,16 +193,13 @@ public class StudentFormat extends UserFormat implements CSVFormat {
 
     private void createStudentList(int indexOfEmailsSheet, String filePathOut, String optin, String level)  {
         int numRow = 1;
-        Sheet sheet = getWorkbookIn().getSheetAt(0);
 
         generateHeader();
 
-        ColumnsInformationBox box = new ColumnsInformationBox(sheet);
-        box.extractInformationsFromFile();
-        FileInformationExtractor extractor = new FileInformationExtractor(box,sheet,optin);
+        FileInformationExtractor extractor = new FileInformationExtractor(getWorkbookIn(),optin);
         ArrayList<Student> students = extractor.findStudents();
-        this.studentHashMap =  extractor.createStudentsHashMap();
-        EmailFinder emailFinder = new EmailFinder(indexOfEmailsSheet,getEmailsWorkbook(),this.studentHashMap);
+        HashMap<Student,Integer> studentHashMap  =  extractor.createStudentsHashMap();
+        EmailFinder emailFinder = new EmailFinder(indexOfEmailsSheet,getEmailsWorkbook(),studentHashMap);
 
 
         for(Student student : students)

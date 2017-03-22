@@ -2,6 +2,7 @@ package com.team33.model;
 
 import com.team33.model.csv.Students.AffectingStudentToCourseFormat;
 import com.team33.model.csv.CSVBuilder;
+import com.team33.model.csv.Students.CourseFormat;
 import com.team33.model.csv.Students.Student;
 import org.apache.poi.openxml4j.exceptions.InvalidFormatException;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
@@ -63,11 +64,12 @@ public class Test {
             e.printStackTrace();
         }*/
 
-        HashMap<String,String> optionalModules = studentFormat.extractOptionalModules(new XSSFWorkbook(new FileInputStream("Liste_Groupe_2CS_SIQ_S2_2014_2015.xlsx")));
+        /*HashMap<String,String> optionalModules = studentFormat.extractOptionalModules(new XSSFWorkbook(new FileInputStream("Liste_Groupe_2CS_SIQ_S2_2014_2015.xlsx"),));
         for(String key: optionalModules.keySet())
         {
             System.out.println(optionalModules.get(key));
-        }
+        }*/
+
     }
     public static void deleteUsedEmails(Student student)
     {

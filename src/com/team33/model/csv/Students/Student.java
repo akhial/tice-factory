@@ -4,11 +4,12 @@ import org.apache.poi.ss.usermodel.CellType;
 import org.apache.poi.ss.usermodel.Row;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 
 /**
  * Created by hamza on 09/03/2017.
  */
-public class Student implements Cloneable{
+public class Student {
     private String username;
     private String firstName;
     private String lastName;
@@ -27,10 +28,6 @@ public class Student implements Cloneable{
         return courses;
     }
 
-    public void setCourses(ArrayList<String> courses) {
-        this.courses = courses;
-    }
-
     public void setLevel(String level) {
         this.level = level;
     }
@@ -46,6 +43,7 @@ public class Student implements Cloneable{
     public String getLevel() {
         return level;
     }
+
     public String getLastNameInMoodle() {
         return lastNameInMoodle;
     }
@@ -174,7 +172,19 @@ public class Student implements Cloneable{
         createLastNameInMoodle();
     }
 
+    public void allocateCourses(CourseFormat courseFormat, HashMap<String,ArrayList<String>> optionalModules)
+    {
+        this.courses =  new ArrayList<>();
+        this.courses.addAll(courseFormat.getListOfCourses(this.level,this.optin));
+        if(level.equals("2CS")) 
+        {
+            this.courses.addAll(optionalModules.get(this.groupe));
+        }
+    }
 
 
+    public String getOptin() {
+        return optin;
+    }
 }
 

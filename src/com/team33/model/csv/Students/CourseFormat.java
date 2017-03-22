@@ -11,7 +11,7 @@ import java.util.Iterator;
 /**
  * Created by Amine on 13/02/2017.
  */
-public class CourseFormat  {
+    public class CourseFormat  {
 
     private String coursesFile;
     private XSSFWorkbook workbook;
@@ -35,25 +35,23 @@ public class CourseFormat  {
             e.printStackTrace();
         }
     }
+
     public CourseFormat()
     {
         this.coursesFile = "courses.xlsx";
         this.file = new File(getCoursesFile());
     }
 
-    public void setCoursesFile(String coursesFile) {
-        this.coursesFile = coursesFile;
-    }
 
     public String getCoursesFile() {
         return coursesFile;
     }
 
 
-    public ArrayList<String> getListOfCoursesSemestre(String level,int semestre)
+    public ArrayList<String> getListOfCoursesSemestre(String sheetName,int semestre)
     {
         ArrayList<String> listOfCourses = new ArrayList<>();
-        Sheet sheet = this.workbook.getSheet(level);
+        Sheet sheet = this.workbook.getSheet(sheetName);
         for(int i = 1; i <= sheet.getLastRowNum();i++)
         {
             Row rw = sheet.getRow(i);
@@ -63,18 +61,70 @@ public class CourseFormat  {
         return listOfCourses;
     }
 
-    public ArrayList<String> getListOfCourses(String level)
+    public ArrayList<String> getListOfCourses(String sheetName)
     {
-        ArrayList list = new ArrayList(getListOfCoursesSemestre(level,1));
-        list.addAll(getListOfCoursesSemestre(level,2));
+        ArrayList<String> listOfCourses = new ArrayList<>();
+        Sheet sheet = this.workbook.getSheet(sheetName);
+        for(Row row : sheet)
+        {
+            listOfCourses.add(row.getCell(0).toString());
+        }
+        return listOfCourses;
+    }
+
+    public ArrayList<String> getListOfCommonCourses()
+    {
+        return getListOfCourses("CoursCommun");
+    }
+
+    public ArrayList<String> getListOf3CSCourses()
+    {
+        return getListOfCourses("3CS");
+    }
+
+    public ArrayList<String> getListOfCourses(String level,String optin)
+    {
+        String sheetName = sheetName(level,optin);
+        ArrayList list = new ArrayList();
+        if(level.equals("3CS"))
+        {
+            list.addAll(getListOf3CSCourses());
+        }
+        else
+        {
+            list.addAll(getListOfCoursesSemestre(sheetName,1));
+            list.addAll(getListOfCoursesSemestre(sheetName,2));
+            if(level.equals("2CS"))
+            {
+                list.addAll(getListOfCommonCourses());
+            }
+        }
+
         return list;
     }
 
-    public void addCourse(String courseShortName,String level,int semestre)
+    private String sheetName(String level,String optin)
+    {
+        if(optin.equals("CPI"))
+            return level;
+        else if(level.equals("3CS"))
+            return level;
+        else if(level.equals("2CS"))
+        {
+            return level + "-" + optin;
+        }
+        return null;
+    }
+    /*
+    * Add a given course for a given level (1CPI OR 2CPI) in a given semester
+     */
+
+    public void addCourse(String courseShortName,String level,String optin,int semestre)
     {
         boolean found = false;
-        Sheet sheet  = this.workbook.getSheet(level);
-        Row rw = sheet.getRow(0);
+        String sheetName = sheetName(level,optin);
+        Sheet sheet  = this.workbook.getSheet(sheetName);
+        Row rw;
         int i = 1;
         while (!found)
         {
@@ -91,17 +141,36 @@ public class CourseFormat  {
             else i++;
         }
     }
-
-    public int getNumberOfCourses(String level)
+    /*
+    *Used to add a course for 3CS or a Common Course for 2CS
+     */
+    public void addCourse(String courseShortName,String sheetName)
     {
-        Sheet sheet  = this.workbook.getSheet(level);
+        Sheet sheet = this.workbook.getSheet(sheetName);
+        boolean added = false;
+        int i = 0;
+        while (!added)
+        {
+            Row rw = sheet.getRow(i);
+            if(rw == null)
+            {
+                rw = sheet.createRow(i);
+                rw.createCell(0).setCellValue(courseShortName);
+                added = true;
+            }
+        }
+    }
+
+    public int getNumberOfCourses(String level,String optin)
+    {
+        Sheet sheet  = this.workbook.getSheet(level+"-"+optin);
         if(level.equals("2CS"))
         {
-            return (getListOfCourses(level).size() + 1);
+            return (getListOfCourses(level,optin).size() + getListOfCommonCourses().size() + 2);
         }
         else
         {
-            return getListOfCourses(level).size();
+            return getListOfCourses(level,optin).size();
         }
     }
 

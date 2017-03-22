@@ -9,9 +9,11 @@ import org.apache.poi.ss.usermodel.Sheet;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 
 import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.Iterator;
 
 /**
  * Created by Amine on 13/02/2017.
@@ -20,13 +22,13 @@ public class AffectingStudentToCourseFormat extends UserFormat {
 
     private CourseFormat courseFormat;
     private ArrayList<Student> listOfStudentsWithoutEmail;
-    private XSSFWorkbook workbookSecondeSemester;
-    private HashMap<Student, Integer> studentHashMap;
+    private XSSFWorkbook workbookSecondSemester;
 
-    public AffectingStudentToCourseFormat() {
+    public AffectingStudentToCourseFormat(String workbookPathSecondSemester) throws IOException {
         this.courseFormat = new CourseFormat();
         this.courseFormat.openWrkbook();
         this.listOfStudentsWithoutEmail = new ArrayList<>();
+        this.workbookSecondSemester = new XSSFWorkbook(new FileInputStream(new File(workbookPathSecondSemester)));
 
     }
 
@@ -34,10 +36,10 @@ public class AffectingStudentToCourseFormat extends UserFormat {
         return listOfStudentsWithoutEmail;
     }
 
-    private void generateHeader(String level)// gener le header ie ecrire dans la première ligne (username,fistname,lastname,email) -> le format accepté par moodle
+    private void generateHeader(String level,String optin)// gener le header ie ecrire dans la première ligne (username,fistname,lastname,email) -> le format accepté par moodle
     {
 
-        for (int i = 0; i < (5+courseFormat.getNumberOfCourses(level));i++)
+        for (int i = 0; i < (5+courseFormat.getNumberOfCourses(level,optin));i++)
         {
             this.getHeader().createCell(i);
         }
@@ -47,7 +49,7 @@ public class AffectingStudentToCourseFormat extends UserFormat {
         this.getHeader().getCell(2).setCellValue("firstname");
         this.getHeader().getCell(3).setCellValue("lastname");
         this.getHeader().getCell(4).setCellValue("email");
-        for(int i = 0; i < courseFormat.getNumberOfCourses(level); i++)
+        for(int i = 0; i < courseFormat.getNumberOfCourses(level,optin); i++)
         {
             this.getHeader().getCell(i+5).setCellValue("course"+(i+1));
         }
@@ -56,7 +58,7 @@ public class AffectingStudentToCourseFormat extends UserFormat {
     public void generateRow(int numRow, Student student)// générer une ligne cde fichier résultat contenant les coordonné d'un étudiant
     {
         Row rw = this.getWorkbookOut().getSheetAt(0).createRow(numRow);
-        for (int i = 0; i < (5+courseFormat.getNumberOfCourses(student.getLevel()));i++) {
+        for (int i = 0; i < (5+courseFormat.getNumberOfCourses(student.getLevel(),student.getOptin()));i++) {
             rw.createCell(i);
         }
         rw.getCell(0).setCellValue(student.getUsername());
@@ -64,7 +66,7 @@ public class AffectingStudentToCourseFormat extends UserFormat {
         rw.getCell(2).setCellValue(student.getFirstName());
         rw.getCell(3).setCellValue(student.getLastNameInMoodle());
         rw.getCell(4).setCellValue(student.getEmail());
-        for(int i = 0; i < courseFormat.getNumberOfCourses(student.getLevel()); i++)
+        for(int i = 0; i < courseFormat.getNumberOfCourses(student.getLevel(),student.getOptin()); i++)
         {
             rw.getCell(i+5).setCellValue(student.getCourses().get(i));
         }
@@ -83,45 +85,53 @@ public class AffectingStudentToCourseFormat extends UserFormat {
         return str;
     }
 
-    public HashMap<String,String> extractOptionalModules(XSSFWorkbook workbook)
+    public HashMap<String,ArrayList<String>> extractOptionalModules()
     {
         String str = null;
         int colGroupe = -1;
         String key = "";
-        HashMap<String,String> optionalModules = new HashMap<String,String>();
-        for(Sheet sheet : workbook)
+        ArrayList<XSSFWorkbook> workbooks = new ArrayList<>();
+        workbooks.add(getWorkbookIn());
+        workbooks.add(workbookSecondSemester);
+        HashMap<String,ArrayList<String>> optionalModules = new HashMap<String,ArrayList<String>>();
+        for(XSSFWorkbook workbook : workbooks)
         {
-            System.out.println(sheet.getSheetName());
-            for (Row row : sheet) {
-                if (Util.getInstance().rowContains(row, "Modules optionnels")) {
-                    str = extractOptionalModule(row);
-                }
-                if (Util.getInstance().existInRow(row, "NG")) {
-                    colGroupe = Util.getInstance().column(row, "NG");
-                    Row rw = sheet.getRow(row.getRowNum() + 1);
-                    rw.getCell(colGroupe).setCellType(CellType.STRING);
-                    key = rw.getCell(colGroupe).getStringCellValue();
-                    optionalModules.put(key, str);
+            for(Sheet sheet : workbook)
+            {
+                System.out.println(sheet.getSheetName());
+                for (Row row : sheet) {
+                    if (Util.getInstance().rowContains(row, "Modules optionnels")) {
+                        str = extractOptionalModule(row);
+                    }
+                    if (Util.getInstance().existInRow(row, "NG")) {
+                        colGroupe = Util.getInstance().column(row, "NG");
+                        Row rw = sheet.getRow(row.getRowNum() + 1);
+                        rw.getCell(colGroupe).setCellType(CellType.STRING);
+                        key = rw.getCell(colGroupe).getStringCellValue();
+                        if(!optionalModules.containsKey(key))
+                        {
+                            optionalModules.put(key,new ArrayList<>());
+                        }
+                        optionalModules.get(key).add(str);
 
+                    }
                 }
             }
         }
+
             return optionalModules;
     }
 
     private void createStudentList(int indexOfEmailsSheet, String filePathOut, String optin, String level)  {
         int numRow = 1;
-        Sheet sheet = getWorkbookIn().getSheetAt(0);
 
         generateHeader();
 
-        ColumnsInformationBox box = new ColumnsInformationBox(sheet);
-        box.extractInformationsFromFile();
-        FileInformationExtractor extractor = new FileInformationExtractor(box,sheet,optin);
+        FileInformationExtractor extractor = new FileInformationExtractor(getWorkbookIn(),optin);
         ArrayList<Student> students = extractor.findStudents();
-        this.studentHashMap =  extractor.createStudentsHashMap();
-        EmailFinder emailFinder = new EmailFinder(indexOfEmailsSheet,getEmailsWorkbook(),this.studentHashMap);
-
+        HashMap<Student,Integer> studentHashMap  =  extractor.createStudentsHashMap();
+        EmailFinder emailFinder = new EmailFinder(indexOfEmailsSheet,getEmailsWorkbook(),studentHashMap);
+        HashMap<String,ArrayList<String>> optionalModules = extractOptionalModules();
 
         for(Student student : students)
         {
@@ -129,6 +139,7 @@ public class AffectingStudentToCourseFormat extends UserFormat {
             emailFinder.setStudent(student);
             emailFinder.getEmails();
             student.setStudentInformations();
+            student.allocateCourses(this.courseFormat,optionalModules);
             if(!student.hasEmail())
             {
                 student.setPositionInWorkbookOut(numRow);
@@ -144,19 +155,21 @@ public class AffectingStudentToCourseFormat extends UserFormat {
 
 
     @Override
-    public String buildCSV(ArrayList<String> workbooksPaths)  {//
-        String type;
+    public String buildCSV(ArrayList<String> workbooksPaths)  {
+        // WorkbooksPaths should contain only list of first semester and list of e-mails
+
+        /*String type;
         for (String workbooksPath : workbooksPaths) {
             if(workbooksPath.contains(".docx"))
             {
-                workbooksPath = Util.getInstance().ConvertWordTableToExcel(workbooksPath);
+                workbooksPath = ConvertWordTableToExcel(workbooksPath);
             }
             File file = new File(workbooksPath);
-            type = Util.getInstance().getFileType(file);
+            type = getFileType(file);
             if (type.equals("Solarite")) openWorkbookIn(workbooksPath);
             else openEmailWorkbook(workbooksPath);
         }
-        String level = Util.getInstance().getLevel(getWorkbookIn());
+        String level = getLevel(getWorkbookIn());
         switch (level) {
             case "1CPI":
                 createStudentList(0, "temp1CPI.xlsx", "CPI", "1CPI");
@@ -185,7 +198,7 @@ public class AffectingStudentToCourseFormat extends UserFormat {
             case "3CS-SIQ":
                 createStudentList(8, "temp3CS-SIQ.xlsx", "3CS-SIQ", "");
                 return "temp3CS-SIQ.xlsx";
-        }
+        }*/
 
         return null;
     }

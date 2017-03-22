@@ -11,7 +11,7 @@ import java.util.HashMap;
 /**
  * Created by hamza on 09/03/2017.
  */
-public class EmailFinder  {
+    class EmailFinder  {
     private int indexOfEmailsSheet;
     private  XSSFWorkbook workbookEmails;
     private Student student;

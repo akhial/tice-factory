@@ -12,60 +12,59 @@ import java.util.HashMap;
 /**
  * Created by hamza on 20/03/2017.
  */
-public class FileInformationExtractor {
-    private ColumnsInformationBox box;
-    private Sheet sheet;
+    class FileInformationExtractor {
+    private XSSFWorkbook workbook;
     private String optin;
 
-    public FileInformationExtractor(ColumnsInformationBox box, Sheet sheet, String optin) {
-        this.box = box;
-        this.sheet = sheet;
+    public FileInformationExtractor( XSSFWorkbook workbook, String optin) {
+        this.workbook = workbook;
         this.optin = optin;
     }
 
-    public ColumnsInformationBox getBox() {
-        return box;
-    }
-
-    public void setBox(ColumnsInformationBox box) {
-        this.box = box;
-    }
-
-    public void setSheet(Sheet sheet) {
-        this.sheet = sheet;
-    }
 
     public ArrayList<Student> findStudents() {
         ArrayList<Student> students = new ArrayList<Student>();
-        for (Row rw : this.sheet) {
-            if (Util.getInstance().existInRow(rw, optin)) {
-                Student student = new Student();
-                student.setBox(this.box);
-                student.rowToBasicInformations(rw);
-                students.add(student);
-            }
+        for(Sheet sheet : this.workbook)
+        {
+            ColumnsInformationBox box = new ColumnsInformationBox(sheet);
+            box.extractInformationsFromFile();
+            for (Row rw : sheet) {
+                if (Util.getInstance().existInRow(rw, optin)) {
+                    Student student = new Student();
+                    student.setBox(box);
+                    student.rowToBasicInformations(rw);
+                    students.add(student);
+                }
 
+            }
         }
+
         return students;
     }
 
     public HashMap<Student, Integer> createStudentsHashMap() {
         HashMap<Student, Integer> hashMap = new HashMap<Student, Integer>();
-        for (Row row : this.sheet) {
-            if (Util.getInstance().existInRow(row, this.optin)) {
-                Student student = new Student();
-                student.setBox(this.box);
-                student.rowToBasicInformations(row);
-                if (hashMap.containsKey(student)) {
-                    int i = hashMap.get(student);
-                    i++;
-                    hashMap.put(student, i);
-                } else {
-                    hashMap.put(student, 1);
+        for(Sheet sheet : this.workbook)
+        {
+            ColumnsInformationBox box = new ColumnsInformationBox(sheet);
+            box.extractInformationsFromFile();
+            for (Row row : sheet) {
+                if (Util.getInstance().existInRow(row, this.optin)) {
+                    Student student = new Student();
+                    student.setBox(box);
+                    student.rowToBasicInformations(row);
+                    if (hashMap.containsKey(student)) {
+                        int i = hashMap.get(student);
+                        i++;
+                        hashMap.put(student, i);
+                    } else {
+                        hashMap.put(student, 1);
+                    }
                 }
-            }
 
+            }
         }
+
         return hashMap;
     }
 

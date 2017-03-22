@@ -9,7 +9,7 @@ import java.util.Iterator;
 /**
  * Created by hamza on 19/03/2017.
  */
-public class ColumnsInformationBox {
+    class ColumnsInformationBox {
     private Sheet sheet;
     private int colNom;
     private int colPrenom;
