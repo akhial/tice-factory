@@ -163,14 +163,13 @@ import java.util.Iterator;
 
     public int getNumberOfCourses(String level,String optin)
     {
-        Sheet sheet  = this.workbook.getSheet(level+"-"+optin);
-        if(level.equals("2CS"))
-        {
-            return (getListOfCourses(level,optin).size() + getListOfCommonCourses().size() + 2);
-        }
-        else
-        {
-            return getListOfCourses(level,optin).size();
+        switch (level) {
+            case "2CS":
+                return (getListOfCourses(level, optin).size() + getListOfCommonCourses().size() + 2);
+            case "3CS":
+                return getListOf3CSCourses().size();
+            default:
+                return getListOfCourses(level, optin).size();
         }
     }
 

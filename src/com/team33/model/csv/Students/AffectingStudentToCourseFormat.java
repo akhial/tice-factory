@@ -23,13 +23,42 @@ public class AffectingStudentToCourseFormat extends UserFormat {
     private CourseFormat courseFormat;
     private ArrayList<Student> listOfStudentsWithoutEmail;
     private XSSFWorkbook workbookSecondSemester;
-
-    public AffectingStudentToCourseFormat(String workbookPathSecondSemester) throws IOException {
+    private String level;
+    private String optin;
+    private String filePathOut;
+    /*
+    * This constructor must be used in case the user creates list of 2CS level
+     */
+    public AffectingStudentToCourseFormat(String workbookPathSecondSemester,String level, String optin,String filePathOut) throws IOException {
         this.courseFormat = new CourseFormat();
         this.courseFormat.openWrkbook();
         this.listOfStudentsWithoutEmail = new ArrayList<>();
         this.workbookSecondSemester = new XSSFWorkbook(new FileInputStream(new File(workbookPathSecondSemester)));
+        this.level = level;
+        this.optin = optin;
+        if(filePathOut == null || filePathOut.equals(""))
+        {
+            if(optin.equals("CPI") || level.equals("1CS"))
+                filePathOut = level;
+            else filePathOut = level + optin ;
+        }
+        this.filePathOut = filePathOut+".xlsx";
 
+    }
+
+    public AffectingStudentToCourseFormat(String level, String optin,String filePathOut)  {
+        this.courseFormat = new CourseFormat();
+        this.courseFormat.openWrkbook();
+        this.listOfStudentsWithoutEmail = new ArrayList<>();
+        this.level = level;
+        this.optin = optin;
+        if(filePathOut == null || filePathOut.equals(""))
+        {
+            if(optin.equals("CPI") || level.equals("1CS"))
+                filePathOut = level + "courses";
+            else filePathOut = level + optin +"courses";
+        }
+        this.filePathOut = filePathOut+".xlsx";
     }
 
     public ArrayList<Student> getListOfStudentsWithoutEmail() {
@@ -49,7 +78,7 @@ public class AffectingStudentToCourseFormat extends UserFormat {
         this.getHeader().getCell(2).setCellValue("firstname");
         this.getHeader().getCell(3).setCellValue("lastname");
         this.getHeader().getCell(4).setCellValue("email");
-        for(int i = 0; i < courseFormat.getNumberOfCourses(level,optin); i++)
+        for(int i = 0; i < courseFormat.getNumberOfCourses(this.level,this.optin); i++)
         {
             this.getHeader().getCell(i+5).setCellValue("course"+(i+1));
         }
@@ -122,16 +151,26 @@ public class AffectingStudentToCourseFormat extends UserFormat {
             return optionalModules;
     }
 
-    private void createStudentList(int indexOfEmailsSheet, String filePathOut, String optin, String level)  {
+    private String nameOfEmailSheet()
+    {
+        if(this.level.equals("1CPI")) return "1cpi";
+        else if(this.level.equals("2CPI")) return "2cpi";
+        else if(this.level.equals("3CS")) return "3cs";
+        else return this.level+this.optin;
+    }
+
+    private void createStudentList()  {
         int numRow = 1;
 
-        generateHeader();
+        generateHeader(level,optin);
 
         FileInformationExtractor extractor = new FileInformationExtractor(getWorkbookIn(),optin);
         ArrayList<Student> students = extractor.findStudents();
         HashMap<Student,Integer> studentHashMap  =  extractor.createStudentsHashMap();
-        EmailFinder emailFinder = new EmailFinder(indexOfEmailsSheet,getEmailsWorkbook(),studentHashMap);
-        HashMap<String,ArrayList<String>> optionalModules = extractOptionalModules();
+        EmailFinder emailFinder = new EmailFinder(nameOfEmailSheet(),getEmailsWorkbook(),studentHashMap);
+
+        HashMap<String,ArrayList<String>> optionalModules = null;
+        if(level.equals("2CS")) optionalModules = extractOptionalModules();
 
         for(Student student : students)
         {
@@ -158,48 +197,21 @@ public class AffectingStudentToCourseFormat extends UserFormat {
     public String buildCSV(ArrayList<String> workbooksPaths)  {
         // WorkbooksPaths should contain only list of first semester and list of e-mails
 
-        /*String type;
+        String type;
+        FileInformationExtractor extractor = new FileInformationExtractor();
         for (String workbooksPath : workbooksPaths) {
             if(workbooksPath.contains(".docx"))
             {
-                workbooksPath = ConvertWordTableToExcel(workbooksPath);
+
+                workbooksPath = extractor.ConvertWordTableToExcel(workbooksPath);
             }
             File file = new File(workbooksPath);
-            type = getFileType(file);
+            type = extractor.getFileType(file);
             if (type.equals("Solarite")) openWorkbookIn(workbooksPath);
             else openEmailWorkbook(workbooksPath);
         }
-        String level = getLevel(getWorkbookIn());
-        switch (level) {
-            case "1CPI":
-                createStudentList(0, "temp1CPI.xlsx", "CPI", "1CPI");
-                return "temp1CPI.xlsx";
-            case "2CPI":
-                createStudentList(1, "temp2CPI.xlsx", "CPI", "2CPI");
-                return "temp2CPI.xlsx";
-            case "1CS":
-                createStudentList(2, "tempCS.xlsx", "SC", "1CS");
-                return "tempCS.xlsx";
-            case "2CS-SIL":
-                createStudentList(3, "temp2CS-SIL.xlsx", "SIL", "2CS-SIL");
-                return "temp2CS-SIL.xlsx";
-            case "2CS-SIT":
-                createStudentList(4, "temp2CS-SIL.xlsx", "SIT", "2CS-SIT");
-                return "temp2CS-SIL.xlsx";
-            case "2CS-SIQ":
-                createStudentList(5, "temp2CS-SIL.xlsx", "SIQ", "2CS-SIQ");
-                return "temp2CS-SIQ.xlsx";
-            case "3CS-SIL":
-                createStudentList(6, "temp3CS-SIL.xlsx", "3CS-SIL", "");
-                return "temp3CS-SIL.xlsx";
-            case "3CS-SIT":
-                createStudentList(7, "temp3CS-SIT.xlsx", "3CS-SIT", "");
-                return "temp3CS-SIT.xlsx";
-            case "3CS-SIQ":
-                createStudentList(8, "temp3CS-SIQ.xlsx", "3CS-SIQ", "");
-                return "temp3CS-SIQ.xlsx";
-        }*/
+        createStudentList();
 
-        return null;
+        return filePathOut;
     }
 }

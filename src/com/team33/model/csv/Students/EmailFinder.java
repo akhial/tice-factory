@@ -12,17 +12,14 @@ import java.util.HashMap;
  * Created by hamza on 09/03/2017.
  */
     class EmailFinder  {
-    private int indexOfEmailsSheet;
+    private String nameSheet;
     private  XSSFWorkbook workbookEmails;
     private Student student;
     private HashMap<Student,Integer> studentIntegerHashMap;
-    public void setIndexOfEmailsSheet(int indexOfEmailsSheet) {
-        this.indexOfEmailsSheet = indexOfEmailsSheet;
-    }
 
-    public EmailFinder(int indexOfEmailsSheet, XSSFWorkbook workbookEmails, HashMap<Student, Integer> studentIntegerHashMap)
+    public EmailFinder(String nameSheet, XSSFWorkbook workbookEmails, HashMap<Student, Integer> studentIntegerHashMap)
     {
-        this.indexOfEmailsSheet = indexOfEmailsSheet;
+        this.nameSheet = nameSheet;
         this.workbookEmails = workbookEmails;
         this.studentIntegerHashMap = studentIntegerHashMap;
     }
@@ -76,7 +73,7 @@ import java.util.HashMap;
     private String findEmail(String namForEmail1,String namForEmail2)// retourne un ArrayList contenant les emails douteux
     {
         String email = "";
-        Sheet sheet = this.workbookEmails.getSheetAt(this.indexOfEmailsSheet);
+        Sheet sheet = this.workbookEmails.getSheet(this.nameSheet);
         for(Row rw:sheet)
         {
             if(Util.getInstance().rowContains(rw,namForEmail1))
@@ -95,7 +92,7 @@ import java.util.HashMap;
     private ArrayList<String> findListEmails(String namForEmail1,String namForEmail2)// retourne un ArrayList contenant les emails douteux
     {
         ArrayList<String> listeEmails = new ArrayList<String>();
-        Sheet sheet = this.workbookEmails.getSheetAt(this.indexOfEmailsSheet);
+        Sheet sheet = this.workbookEmails.getSheet(this.nameSheet);
         for(Row rw:sheet)
         {
             if(Util.getInstance().rowContains(rw,namForEmail1))

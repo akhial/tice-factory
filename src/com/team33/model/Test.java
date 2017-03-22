@@ -4,6 +4,7 @@ import com.team33.model.csv.Students.AffectingStudentToCourseFormat;
 import com.team33.model.csv.CSVBuilder;
 import com.team33.model.csv.Students.CourseFormat;
 import com.team33.model.csv.Students.Student;
+import com.team33.model.csv.Students.StudentFormat;
 import org.apache.poi.openxml4j.exceptions.InvalidFormatException;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 
@@ -23,8 +24,8 @@ public class Test {
 
         workbooksPaths.add("liste email tous les etudiants.xlsx");
         workbooksPaths.add("Listes-Etudiants_2CPI_S1_2016-2017(1) (2).xlsx");
-        AffectingStudentToCourseFormat studentFormat = new AffectingStudentToCourseFormat();
-        /*CSVBuilder csvBuilder = new CSVBuilder(workbooksPaths,studentFormat,"C:/Users/hamza/IdeaProjects/team-33");
+        AffectingStudentToCourseFormat studentFormat = new AffectingStudentToCourseFormat("2CPI","CPI","");
+        CSVBuilder csvBuilder = new CSVBuilder(workbooksPaths,studentFormat,"C:/Users/hamza/IdeaProjects/team-33");
         csvBuilder.buildCSV();
         String email = null;
         for(Student student : studentFormat.getListOfStudentsWithoutEmail())
@@ -57,12 +58,7 @@ public class Test {
             listOfUsedEmails.add(email);
         }
         studentFormat.saveUsersList(new File(csvBuilder.getTempPath()));
-        ToCSV toCSV = new ToCSV();
-        try {
-            toCSV.convertExcelToCSV(csvBuilder.getTempPath(),"C:/Users/hamza/IdeaProjects/team-33");
-        } catch (InvalidFormatException e) {
-            e.printStackTrace();
-        }*/
+        csvBuilder.convertToCSV();
 
         /*HashMap<String,String> optionalModules = studentFormat.extractOptionalModules(new XSSFWorkbook(new FileInputStream("Liste_Groupe_2CS_SIQ_S2_2014_2015.xlsx"),));
         for(String key: optionalModules.keySet())
