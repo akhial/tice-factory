@@ -68,6 +68,23 @@ public class Util {
         return  contains;
     }
 
+    public boolean rowContainsIgnoreCase(Row rw, String str)
+    {
+        str = str.toLowerCase();
+        String row = null;
+        for(Cell cell : rw)
+        {
+            row = row + cell.toString();
+
+        }
+        if(row != null) {
+            row = row.toLowerCase();
+            return row.contains(str);
+        } else return false  ;
+
+
+    }
+
     public int rangOfCellContaining(Row rw,String str) // retourne l'indice de la colonne contenat la chaine str
     {
         Iterator<Cell> cellIterator = rw.iterator();

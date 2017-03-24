@@ -23,8 +23,8 @@ public class Test {
         ArrayList<String> workbooksPaths = new ArrayList<String>();
 
         workbooksPaths.add("liste email tous les etudiants.xlsx");
-        workbooksPaths.add("NOTES ORGA 1CS 2017 BENYAHIA.xlsx");
-        AffectingStudentToCourseFormat studentFormat = new AffectingStudentToCourseFormat("1CS","SC","");
+        workbooksPaths.add("Liste_Groupe_2CS_SIT_S2_2014_2015.xlsx");
+        AffectingStudentToCourseFormat studentFormat = new AffectingStudentToCourseFormat("2CS","SIT","");
         CSVBuilder csvBuilder = new CSVBuilder(workbooksPaths,studentFormat,"C:/Users/hamza/IdeaProjects/team-33");
         csvBuilder.buildCSV();
         String email = null;
@@ -60,11 +60,6 @@ public class Test {
         studentFormat.saveUsersList(new File(csvBuilder.getTempPath()));
         csvBuilder.convertToCSV();
 
-        /*HashMap<String,String> optionalModules = studentFormat.extractOptionalModules(new XSSFWorkbook(new FileInputStream("Liste_Groupe_2CS_SIQ_S2_2014_2015.xlsx"),));
-        for(String key: optionalModules.keySet())
-        {
-            System.out.println(optionalModules.get(key));
-        }*/
 
     }
     public static void deleteUsedEmails(Student student)

@@ -6,15 +6,12 @@ import org.apache.poi.ss.usermodel.Cell;
 import org.apache.poi.ss.usermodel.CellType;
 import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.ss.usermodel.Sheet;
-import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 
 import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
-
+import java.util.Set;
+import java.lang.Math;
 /**
  * Created by Amine on 13/02/2017.
  */
@@ -22,29 +19,10 @@ public class AffectingStudentToCourseFormat extends UserFormat {
 
     private CourseFormat courseFormat;
     private ArrayList<Student> listOfStudentsWithoutEmail;
-    private XSSFWorkbook workbookSecondSemester;
     private String level;
     private String optin;
     private String filePathOut;
-    /*
-    * This constructor must be used in case the user creates list of 2CS level
-     */
-    public AffectingStudentToCourseFormat(String workbookPathSecondSemester,String level, String optin,String filePathOut) throws IOException {
-        this.courseFormat = new CourseFormat();
-        this.courseFormat.openWrkbook();
-        this.listOfStudentsWithoutEmail = new ArrayList<>();
-        this.workbookSecondSemester = new XSSFWorkbook(new FileInputStream(new File(workbookPathSecondSemester)));
-        this.level = level;
-        this.optin = optin;
-        if(filePathOut == null || filePathOut.equals(""))
-        {
-            if(optin.equals("CPI") || level.equals("1CS"))
-                filePathOut = level;
-            else filePathOut = level + optin ;
-        }
-        this.filePathOut = filePathOut+".xlsx";
 
-    }
 
     public AffectingStudentToCourseFormat(String level, String optin,String filePathOut)  {
         this.courseFormat = new CourseFormat();
@@ -65,10 +43,10 @@ public class AffectingStudentToCourseFormat extends UserFormat {
         return listOfStudentsWithoutEmail;
     }
 
-    private void generateHeader(String level,String optin)// gener le header ie ecrire dans la première ligne (username,fistname,lastname,email) -> le format accepté par moodle
+    private void generateHeader(int numberOfOptionalModules)// gener le header ie ecrire dans la première ligne (username,fistname,lastname,email) -> le format accepté par moodle
     {
 
-        for (int i = 0; i < (5+courseFormat.getNumberOfCourses(level,optin));i++)
+        for (int i = 0; i < (5 + courseFormat.getNumberOfCourses(this.level,this.optin) + numberOfOptionalModules);i++)
         {
             this.getHeader().createCell(i);
         }
@@ -78,7 +56,7 @@ public class AffectingStudentToCourseFormat extends UserFormat {
         this.getHeader().getCell(2).setCellValue("firstname");
         this.getHeader().getCell(3).setCellValue("lastname");
         this.getHeader().getCell(4).setCellValue("email");
-        for(int i = 0; i < courseFormat.getNumberOfCourses(this.level,this.optin); i++)
+        for(int i = 0; i < courseFormat.getNumberOfCourses(this.level,this.optin)+numberOfOptionalModules; i++)
         {
             this.getHeader().getCell(i+5).setCellValue("course"+(i+1));
         }
@@ -87,7 +65,7 @@ public class AffectingStudentToCourseFormat extends UserFormat {
     public void generateRow(int numRow, Student student)// générer une ligne cde fichier résultat contenant les coordonné d'un étudiant
     {
         Row rw = this.getWorkbookOut().getSheetAt(0).createRow(numRow);
-        for (int i = 0; i < (5+courseFormat.getNumberOfCourses(student.getLevel(),student.getOptin()));i++) {
+        for (int i = 0; i < 5;i++) {
             rw.createCell(i);
         }
         rw.getCell(0).setCellValue(student.getUsername());
@@ -95,42 +73,58 @@ public class AffectingStudentToCourseFormat extends UserFormat {
         rw.getCell(2).setCellValue(student.getFirstName());
         rw.getCell(3).setCellValue(student.getLastNameInMoodle());
         rw.getCell(4).setCellValue(student.getEmail());
-        for(int i = 0; i < courseFormat.getNumberOfCourses(student.getLevel(),student.getOptin()); i++)
+        for(int i = 0; i < student.getCourses().size(); i++)
         {
-            rw.getCell(i+5).setCellValue(student.getCourses().get(i));
+
+            rw.createCell(i+5).setCellValue(student.getCourses().get(i));
         }
     }
 
-    private String extractOptionalModule(Row row)
+    private ArrayList<String> extractOptionalModule(Row row)
     {
+        ArrayList<String> modulesOptionnels = new ArrayList<>();
         String str = "";
         for(Cell cell : row)
         {
             str = str + cell.toString();
         }
-        str = str.replace("Modules optionnels","");
+        str = str.toLowerCase();
+        str = str.replace("modules","");
+        str = str.replace("optionnels","");
         str = str.replace(":","");
         str = str.replace(" ","");
-        return str;
+        str = str.toUpperCase();
+        char[] array = str.toCharArray();
+        str ="";
+        for(int i = 0; i < array.length;i++)
+        {
+            if((array[i] == '_'))
+            {
+                modulesOptionnels.add(str);
+                str ="";
+            }
+            else
+            {
+                str = str + array[i];
+                if(i == array.length - 1) modulesOptionnels.add(str);
+            }
+        }
+        return modulesOptionnels;
     }
 
-    public HashMap<String,ArrayList<String>> extractOptionalModules()
+    private HashMap<String,ArrayList<String>> extractOptionalModules()
     {
         String str = null;
         int colGroupe = -1;
         String key = "";
-        ArrayList<XSSFWorkbook> workbooks = new ArrayList<>();
-        workbooks.add(getWorkbookIn());
-        workbooks.add(workbookSecondSemester);
+
         HashMap<String,ArrayList<String>> optionalModules = new HashMap<String,ArrayList<String>>();
-        for(XSSFWorkbook workbook : workbooks)
-        {
-            for(Sheet sheet : workbook)
+        ArrayList<String> modules = null;
+            for(Sheet sheet : getWorkbookIn())
             {
-                System.out.println(sheet.getSheetName());
                 for (Row row : sheet) {
-                    if (Util.getInstance().rowContains(row, "Modules optionnels")) {
-                        str = extractOptionalModule(row);
+                    if (Util.getInstance().rowContainsIgnoreCase(row, "Modules Optionnels")) {
+                        modules = extractOptionalModule(row);
                     }
                     if (Util.getInstance().existInRow(row, "NG")) {
                         colGroupe = Util.getInstance().column(row, "NG");
@@ -139,16 +133,28 @@ public class AffectingStudentToCourseFormat extends UserFormat {
                         key = rw.getCell(colGroupe).getStringCellValue();
                         if(!optionalModules.containsKey(key))
                         {
-                            optionalModules.put(key,new ArrayList<>());
+                            optionalModules.put(key,modules);
                         }
-                        optionalModules.get(key).add(str);
 
                     }
                 }
             }
-        }
 
             return optionalModules;
+    }
+
+    private int maxNumberOfOptionalModules(HashMap<String,ArrayList<String>> optionalModules)
+    {
+        int max = 0;
+        if(optionalModules!=null)
+        {
+            Set<String> keySet = optionalModules.keySet();
+            for(String key : keySet)
+            {
+               max = java.lang.Math.max(max,optionalModules.get(key).size());
+            }
+        }
+        return max;
     }
 
     private String nameOfEmailSheet()
@@ -162,7 +168,7 @@ public class AffectingStudentToCourseFormat extends UserFormat {
     private void createStudentList()  {
         int numRow = 1;
 
-        generateHeader(level,optin);
+
 
         FileInformationExtractor extractor = new FileInformationExtractor(getWorkbookIn(),optin);
         ArrayList<Student> students = extractor.findStudents();
@@ -171,7 +177,7 @@ public class AffectingStudentToCourseFormat extends UserFormat {
 
         HashMap<String,ArrayList<String>> optionalModules = null;
         if(level.equals("2CS")) optionalModules = extractOptionalModules();
-
+        generateHeader(maxNumberOfOptionalModules(optionalModules));
         for(Student student : students)
         {
             student.setLevel(level);
@@ -210,8 +216,8 @@ public class AffectingStudentToCourseFormat extends UserFormat {
             if (type.equals("Solarite")) openWorkbookIn(workbooksPath);
             else openEmailWorkbook(workbooksPath);
         }
-        createStudentList();
 
+        createStudentList();
         return filePathOut;
     }
 }
