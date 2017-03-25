@@ -186,5 +186,15 @@ public class Student {
     public String getOptin() {
         return optin;
     }
+
+    public int numberOfCourses()
+    {
+        return courses.size();
+    }
+
+
+    public String getGroupe() {
+        return groupe;
+    }
 }
 

@@ -1,10 +1,7 @@
 package com.team33.model;
 
-import com.team33.model.csv.Students.AffectingStudentToCourseFormat;
+import com.team33.model.csv.Students.*;
 import com.team33.model.csv.CSVBuilder;
-import com.team33.model.csv.Students.CourseFormat;
-import com.team33.model.csv.Students.Student;
-import com.team33.model.csv.Students.StudentFormat;
 import org.apache.poi.openxml4j.exceptions.InvalidFormatException;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 
@@ -23,8 +20,8 @@ public class Test {
         ArrayList<String> workbooksPaths = new ArrayList<String>();
 
         workbooksPaths.add("liste email tous les etudiants.xlsx");
-        workbooksPaths.add("Liste_Groupe_2CS_SIT_S2_2014_2015.xlsx");
-        AffectingStudentToCourseFormat studentFormat = new AffectingStudentToCourseFormat("2CS","SIT","");
+        workbooksPaths.add("Listes-Etudiants_2CPI_S1_2016-2017(1) (2).xlsx");
+        GroupFormat studentFormat = new GroupFormat("2CPI","CPI","");
         CSVBuilder csvBuilder = new CSVBuilder(workbooksPaths,studentFormat,"C:/Users/hamza/IdeaProjects/team-33");
         csvBuilder.buildCSV();
         String email = null;

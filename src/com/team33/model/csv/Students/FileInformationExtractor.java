@@ -2,6 +2,7 @@ package com.team33.model.csv.Students;
 
 import com.team33.model.Util;
 import org.apache.poi.ss.usermodel.Cell;
+import org.apache.poi.ss.usermodel.CellType;
 import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.ss.usermodel.Sheet;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
@@ -147,5 +148,68 @@ import java.util.Iterator;
         return "";
 
 
+    }
+
+     HashMap<String,ArrayList<String>> extractOptionalModules()
+    {
+        String str = null;
+        int colGroupe = -1;
+        String key = "";
+
+        HashMap<String,ArrayList<String>> optionalModules = new HashMap<String,ArrayList<String>>();
+        ArrayList<String> modules = null;
+        for(Sheet sheet : this.workbook)
+        {
+            for (Row row : sheet) {
+                if (Util.getInstance().rowContainsIgnoreCase(row, "Modules Optionnels")) {
+                    modules = extractOptionalModule(row);
+                }
+                if (Util.getInstance().existInRow(row, "NG")) {
+                    colGroupe = Util.getInstance().column(row, "NG");
+                    Row rw = sheet.getRow(row.getRowNum() + 1);
+                    rw.getCell(colGroupe).setCellType(CellType.STRING);
+                    key = rw.getCell(colGroupe).getStringCellValue();
+                    if(!optionalModules.containsKey(key))
+                    {
+                        optionalModules.put(key,modules);
+                    }
+
+                }
+            }
+        }
+
+        return optionalModules;
+    }
+
+    private ArrayList<String> extractOptionalModule(Row row)
+    {
+        ArrayList<String> modulesOptionnels = new ArrayList<>();
+        String str = "";
+        for(Cell cell : row)
+        {
+            str = str + cell.toString();
+        }
+        str = str.toLowerCase();
+        str = str.replace("modules","");
+        str = str.replace("optionnels","");
+        str = str.replace(":","");
+        str = str.replace(" ","");
+        str = str.toUpperCase();
+        char[] array = str.toCharArray();
+        str ="";
+        for(int i = 0; i < array.length;i++)
+        {
+            if((array[i] == '_'))
+            {
+                modulesOptionnels.add(str);
+                str ="";
+            }
+            else
+            {
+                str = str + array[i];
+                if(i == array.length - 1) modulesOptionnels.add(str);
+            }
+        }
+        return modulesOptionnels;
     }
 }

@@ -73,74 +73,11 @@ public class AffectingStudentToCourseFormat extends UserFormat {
         rw.getCell(2).setCellValue(student.getFirstName());
         rw.getCell(3).setCellValue(student.getLastNameInMoodle());
         rw.getCell(4).setCellValue(student.getEmail());
-        for(int i = 0; i < student.getCourses().size(); i++)
+        for(int i = 0; i < student.numberOfCourses(); i++)
         {
 
             rw.createCell(i+5).setCellValue(student.getCourses().get(i));
         }
-    }
-
-    private ArrayList<String> extractOptionalModule(Row row)
-    {
-        ArrayList<String> modulesOptionnels = new ArrayList<>();
-        String str = "";
-        for(Cell cell : row)
-        {
-            str = str + cell.toString();
-        }
-        str = str.toLowerCase();
-        str = str.replace("modules","");
-        str = str.replace("optionnels","");
-        str = str.replace(":","");
-        str = str.replace(" ","");
-        str = str.toUpperCase();
-        char[] array = str.toCharArray();
-        str ="";
-        for(int i = 0; i < array.length;i++)
-        {
-            if((array[i] == '_'))
-            {
-                modulesOptionnels.add(str);
-                str ="";
-            }
-            else
-            {
-                str = str + array[i];
-                if(i == array.length - 1) modulesOptionnels.add(str);
-            }
-        }
-        return modulesOptionnels;
-    }
-
-    private HashMap<String,ArrayList<String>> extractOptionalModules()
-    {
-        String str = null;
-        int colGroupe = -1;
-        String key = "";
-
-        HashMap<String,ArrayList<String>> optionalModules = new HashMap<String,ArrayList<String>>();
-        ArrayList<String> modules = null;
-            for(Sheet sheet : getWorkbookIn())
-            {
-                for (Row row : sheet) {
-                    if (Util.getInstance().rowContainsIgnoreCase(row, "Modules Optionnels")) {
-                        modules = extractOptionalModule(row);
-                    }
-                    if (Util.getInstance().existInRow(row, "NG")) {
-                        colGroupe = Util.getInstance().column(row, "NG");
-                        Row rw = sheet.getRow(row.getRowNum() + 1);
-                        rw.getCell(colGroupe).setCellType(CellType.STRING);
-                        key = rw.getCell(colGroupe).getStringCellValue();
-                        if(!optionalModules.containsKey(key))
-                        {
-                            optionalModules.put(key,modules);
-                        }
-
-                    }
-                }
-            }
-
-            return optionalModules;
     }
 
     private int maxNumberOfOptionalModules(HashMap<String,ArrayList<String>> optionalModules)
@@ -176,7 +113,7 @@ public class AffectingStudentToCourseFormat extends UserFormat {
         EmailFinder emailFinder = new EmailFinder(nameOfEmailSheet(),getEmailsWorkbook(),studentHashMap);
 
         HashMap<String,ArrayList<String>> optionalModules = null;
-        if(level.equals("2CS")) optionalModules = extractOptionalModules();
+        if(level.equals("2CS")) optionalModules = extractor.extractOptionalModules();
         generateHeader(maxNumberOfOptionalModules(optionalModules));
         for(Student student : students)
         {
