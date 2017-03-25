@@ -124,7 +124,8 @@ public class GroupFormat extends UserFormat implements CSVFormat {
 
 
     @Override
-    public String buildCSV(ArrayList<String> workbooksPaths) {
+    public String buildCSV(ArrayList<String> workbooksPaths)
+    {
         // WorkbooksPaths should contain only list of first semester and list of e-mails
 
         String type;
