@@ -21,7 +21,7 @@ public class Test {
 
         workbooksPaths.add("liste email tous les etudiants.xlsx");
         workbooksPaths.add("Listes-Etudiants_2CPI_S1_2016-2017(1) (2).xlsx");
-        GroupFormat studentFormat = new GroupFormat("2CPI","CPI","");
+        StudentFormat studentFormat = new StudentFormat("2CPI","CPI","");
         CSVBuilder csvBuilder = new CSVBuilder(workbooksPaths,studentFormat,"C:/Users/hamza/IdeaProjects/team-33");
         csvBuilder.buildCSV();
         String email = null;

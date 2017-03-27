@@ -33,9 +33,39 @@ import java.util.Iterator;
         this.optin = optin;
     }
 
+    private void changeInvalidOptin()
+    {
+        boolean found = false;
+        int i = -1;
+        String fileOptin = "";
+        Iterator<Row> rowIterator = this.workbook.getSheetAt(0).iterator();
+        while (rowIterator.hasNext() && !found)
+        {
+            Row row = rowIterator.next();
+
+            if(Util.getInstance().existInRow(row,"Optin"))
+            {
+                found = true;
+                i = Util.getInstance().column(row,"Optin");
+                fileOptin = this.workbook.getSheetAt(0).getRow(row.getRowNum()+1).getCell(i).toString();
+            }
+        }
+        if(!fileOptin.equals(this.optin))
+        {
+            for(Sheet sheet : this.workbook)
+            {
+                for(Row  row : sheet)
+                    if(Util.getInstance().existInRow(row,fileOptin))
+                    {
+                        row.getCell(i).setCellValue(this.optin);
+                    }
+            }
+        }
+    }
 
     ArrayList<Student> findStudents() {
         ArrayList<Student> students = new ArrayList<Student>();
+        changeInvalidOptin();
         for (Sheet sheet : this.workbook) {
             ColumnsInformationBox box = new ColumnsInformationBox(sheet);
             box.extractInformationsFromFile();

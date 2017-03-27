@@ -1,12 +1,15 @@
 package com.team33.model.csv.Students;
 
+import com.team33.model.Util;
 import com.team33.model.csv.CSVFormat;
 import com.team33.model.csv.UserFormat;
 import org.apache.poi.ss.usermodel.Row;
+import org.apache.poi.ss.usermodel.Sheet;
 
 import java.io.File;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.Set;
 
 /**
@@ -71,7 +74,7 @@ public class GroupFormat extends UserFormat implements CSVFormat {
         for (int i = 0; i < student.numberOfCourses(); i++) {
 
             rw.createCell(i + 5).setCellValue(student.getCourses().get(i));
-            rw.createCell(i + 5+student.numberOfCourses()).setCellValue("Groupe"+student.getGroupe());
+            rw.createCell(i + 5+student.numberOfCourses()).setCellValue("Group "+student.getGroupe());
         }
     }
 
@@ -86,11 +89,21 @@ public class GroupFormat extends UserFormat implements CSVFormat {
         return max;
     }
 
-    private String nameOfEmailSheet() {
-        if (this.level.equals("1CPI")) return "1cpi";
-        else if (this.level.equals("2CPI")) return "2cpi";
-        else if (this.level.equals("1CS")) return "1cs";
-        else return this.level + this.optin;
+
+    private String nameOfEmailSheet()
+    {
+        String sheetName = "";
+        if(this.optin.equals("CPI"))
+        {
+            sheetName = this.level;
+        }
+        else sheetName = this.level + this.optin;
+
+        for(Sheet sheet : getEmailsWorkbook())
+        {
+            if(sheetName.equalsIgnoreCase(sheet.getSheetName())) return sheet.getSheetName();
+        }
+        return null;
     }
 
     private void createStudentList() {

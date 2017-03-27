@@ -10,6 +10,7 @@ import org.apache.poi.ss.usermodel.Sheet;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.Set;
 import java.lang.Math;
 /**
@@ -96,10 +97,18 @@ public class AffectingStudentToCourseFormat extends UserFormat {
 
     private String nameOfEmailSheet()
     {
-        if(this.level.equals("1CPI")) return "1cpi";
-        else if(this.level.equals("2CPI")) return "2cpi";
-        else if(this.level.equals("1CS")) return "1cs";
-        else return this.level+this.optin;
+        String sheetName = "";
+        if(this.optin.equals("CPI"))
+        {
+            sheetName = this.level;
+        }
+        else sheetName = this.level + this.optin;
+
+        for(Sheet sheet : getEmailsWorkbook())
+        {
+            if(sheetName.equalsIgnoreCase(sheet.getSheetName())) return sheet.getSheetName();
+        }
+        return null;
     }
 
     private void createStudentList()  {
