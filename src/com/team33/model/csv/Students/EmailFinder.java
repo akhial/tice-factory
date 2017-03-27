@@ -1,6 +1,7 @@
 package com.team33.model.csv.Students;
 
 import com.team33.model.Util;
+import org.apache.poi.ss.usermodel.Cell;
 import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.ss.usermodel.Sheet;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
@@ -16,12 +17,14 @@ import java.util.HashMap;
     private  XSSFWorkbook workbookEmails;
     private Student student;
     private HashMap<Student,Integer> studentIntegerHashMap;
+    private HashMap<String, ArrayList<String>> emailsHashMap;
 
     public EmailFinder(String nameSheet, XSSFWorkbook workbookEmails, HashMap<Student, Integer> studentIntegerHashMap)
     {
         this.nameSheet = nameSheet;
         this.workbookEmails = workbookEmails;
         this.studentIntegerHashMap = studentIntegerHashMap;
+        generateEmailsHashMap();
     }
 
     public void setStudent(Student student) {
@@ -55,86 +58,86 @@ import java.util.HashMap;
         else  return false;
     }
 
+
     public void getEmails()// choisir un email de la liste
     {
-        if (!existOtherStudents())
+        if(this.emailsHashMap.containsKey(student.getKey()))
         {
-            String email = findEmail(nameForEmail("_"),nameForEmail(""));
-            if(!email.equals("")) {
-                this.student.getListOfEmails().add(email);
+            ArrayList<String> listOfEmails = this.emailsHashMap.get(this.student.getKey());
+            if(listOfEmails.size() == 1) this.student.setListOfEmails(listOfEmails);
+            else if (!existOtherStudents()) {
+                String email = findEmail(listOfEmails);
+                if (!email.equals("")) {
+                    this.student.getListOfEmails().add(email);
+                }
+            } else {
+                this.student.setListOfEmails(listOfEmails);
             }
-        }
-        else
-        {
-            this.student.setListOfEmails(findListEmails(scondNameForEmail( "_"),scondNameForEmail( "")));
         }
     }
 
-    private String findEmail(String namForEmail1,String namForEmail2)// retourne un ArrayList contenant les emails douteux
+
+    private String generateKey(String email)
+    {
+        String name ;
+        name = email;
+        name = name.replace(String.valueOf(name.charAt(0))+name.charAt(1)+name.charAt(2),"");
+        name = name.replace("@esi.dz","");
+        name = name.replace("_","");
+        return name;
+    }
+
+    private int findColumn()
+    {
+        Sheet sheet =  workbookEmails.getSheet(nameSheet);
+        for(Row row : sheet)
+        {
+            if(Util.getInstance().rowContainsIgnoreCase(row,"Adresse e-mail"))
+            {
+                for(Cell cell : row)
+                {
+                    if(cell.toString().equalsIgnoreCase("Adresse e-mail")) return cell.getColumnIndex();
+                }
+            }
+        }
+        return -1;
+    }
+
+    private void generateEmailsHashMap()
+    {
+        this.emailsHashMap = new HashMap<>();
+        int index = findColumn();
+        for(Row row : workbookEmails.getSheet(nameSheet))
+        {
+            if(Util.getInstance().rowContains(row,"@esi.dz"))
+            {
+                String email = row.getCell(index).toString();
+                String key = generateKey(email);
+                if(!this.emailsHashMap.containsKey(key)) this.emailsHashMap.put(key,new ArrayList<>());
+                this.emailsHashMap.get(key).add(email);
+            }
+        }
+
+    }
+
+    private String findEmail(ArrayList<String> list)
     {
         String email = "";
-        Sheet sheet = this.workbookEmails.getSheet(this.nameSheet);
-        for(Row rw:sheet)
+        String firstPossibility = nameForEmail("");
+        for(String str : list)
         {
-            if(Util.getInstance().rowContains(rw,namForEmail1))
+            if(str.contains(firstPossibility)) email = str;
+        }
+
+        if(email.equals(""))
+        {
+            String secondPossibility = nameForEmail("_");
+            for(String str : list)
             {
-                if (namForEmail1.equals(extractNameFromEmail(rw,Util.getInstance().rangOfCellContaining(rw,namForEmail1))))
-                    email = rw.getCell(Util.getInstance().rangOfCellContaining(rw,namForEmail1)).toString();
-            }else if (Util.getInstance().rowContains(rw,namForEmail2))
-            {
-                if (namForEmail2.equals(extractNameFromEmail(rw,Util.getInstance().rangOfCellContaining(rw,namForEmail2))))
-                    email = rw.getCell(Util.getInstance().rangOfCellContaining(rw,namForEmail2)).toString();
+                if(str.contains(secondPossibility)) email = str;
             }
         }
         return email;
-    }
-
-    private ArrayList<String> findListEmails(String namForEmail1,String namForEmail2)// retourne un ArrayList contenant les emails douteux
-    {
-        ArrayList<String> listeEmails = new ArrayList<String>();
-        Sheet sheet = this.workbookEmails.getSheet(this.nameSheet);
-        for(Row rw:sheet)
-        {
-            if(Util.getInstance().rowContains(rw,namForEmail1))
-            {
-                if (namForEmail1.equals(secondPossibility(rw,Util.getInstance().rangOfCellContaining(rw,namForEmail1))))
-                    listeEmails.add(rw.getCell(Util.getInstance().rangOfCellContaining(rw,namForEmail1)).toString());
-            }else if (Util.getInstance().rowContains(rw,namForEmail2))
-            {
-                if (namForEmail2.equals(secondPossibility(rw,Util.getInstance().rangOfCellContaining(rw,namForEmail2))))
-                    listeEmails.add(rw.getCell(Util.getInstance().rangOfCellContaining(rw,namForEmail2)).toString());
-            }
-        }
-        return listeEmails;
-    }
-
-    private String scondNameForEmail(String repalceSapaceWit)// générer une chaine de carractère pour utiliser en comparaison pour trouver l'email
-    {
-        String str ;
-
-        str = this.student.getFirstName();
-        str = str.replace(" ", repalceSapaceWit);
-        str = str.toLowerCase();
-        str = str + "@esi.dz";
-        return str;
-
-    }
-    private String extractNameFromEmail(Row rw, int index)//extraire la partie du mail à utiliser comme référence pour comparaison
-    {
-        String name;
-        name = rw.getCell(index).toString();
-        name = name.replaceFirst(String.valueOf(name.charAt(0)),"");
-        return name;
-
-    }
-
-    private String secondPossibility(Row rw, int index)//extraire la partie du mail à utilisé comme référence pour comparaison
-    {
-        String name ;
-        name = rw.getCell(index).toString();
-        name = name.replace(String.valueOf(name.charAt(0))+name.charAt(1)+name.charAt(2),"");
-        return name;
-
     }
 
 }

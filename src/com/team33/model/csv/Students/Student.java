@@ -23,6 +23,7 @@ public class Student {
     private int positionInWorkbookOut;
     private ArrayList<String> courses;
     private ColumnsInformationBox box;
+    private String key;
 
     public ArrayList<String> getCourses() {
         return courses;
@@ -195,6 +196,11 @@ public class Student {
 
     public String getGroupe() {
         return groupe;
+    }
+    public String getKey()
+    {
+        this.key = this.firstName.toLowerCase().replace(" ","");
+        return this.key;
     }
 }
 
