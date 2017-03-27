@@ -5,6 +5,7 @@ import org.apache.poi.ss.usermodel.Sheet;
 
 import java.io.File;
 import java.util.*;
+import java.util.Map.Entry;
 
 /**
  * Created by Amine on 13/02/2017.
@@ -61,15 +62,17 @@ public class TeacherFormat extends UserFormat implements CSVFormat {
         int emailColumn = rangOfCellContaining(sheet.rowIterator().next(),"@esi.dz");
         ArrayList<String> arrayList = new ArrayList<>();
         Iterator<Row> rowIterator = sheet.rowIterator();
-
-        while (rowIterator.hasNext()){
-            row = rowIterator.next();
-            if (row.getCell(emailColumn).toString().contains(lastname.toLowerCase().replace(" ","_"))){
-                if (extractNameFromEmail(row,emailColumn).toString().compareTo(nameForEmail(lastname))== 0){
-                    arrayList.add(row.getCell(emailColumn).toString());
+        if (!unHandledEmails.containsKey(lastname.toLowerCase())){
+            while (rowIterator.hasNext()){
+                row = rowIterator.next();
+                if (row.getCell(emailColumn).toString().contains(lastname.toLowerCase().replace(" ","_"))){
+                    if (extractNameFromEmail(row,emailColumn).toString().compareTo(nameForEmail(lastname))== 0){
+                        arrayList.add(row.getCell(emailColumn).toString());
+                    }
                 }
             }
         }
+
         return arrayList;
     }
     /**
@@ -82,9 +85,8 @@ public class TeacherFormat extends UserFormat implements CSVFormat {
             if (listEmails.size() == 1){
                 email = listEmails.get(0);
             }else{
-                if (!unHandledEmails.containsKey(rw.getCell(colNom).toString().toLowerCase())){
+
                     unHandledEmails.put(rw.getCell(colNom).toString().toLowerCase(),listEmails);
-                }
                 
                 /***System.out.println("Plusieurs emails peuvent correspendre à l'enseignant : "+getUserInformation(rw,colNom,colPrenom));
                 showListOfEmails(listEmails);
