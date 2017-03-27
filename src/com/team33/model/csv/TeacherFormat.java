@@ -2,20 +2,18 @@ package com.team33.model.csv;
 
 import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.ss.usermodel.Sheet;
-import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 
 import java.io.File;
-import java.io.IOException;
-import java.util.ArrayList;
-import java.util.Iterator;
-import java.util.Scanner;
+import java.util.*;
 
 /**
  * Created by Amine on 13/02/2017.
  */
 
 public class TeacherFormat extends UserFormat implements CSVFormat {
+    private HashMap<String,ArrayList<String>> unHandledEmails;
     public TeacherFormat() {
+        unHandledEmails = new HashMap<>();
     }
 
     /**Permet d'extraire la partie (nom + "@esi.dz") de l'adresse mail
@@ -77,19 +75,17 @@ public class TeacherFormat extends UserFormat implements CSVFormat {
     /**
      * Permet de choisir l'adresse mail adequate en éliminant les adresses déja traitées
      * */
-    private String ChooseEmail(ArrayList<String> listEmails, Row rw, int colNom, int colPrenom,ArrayList<ArrayList<String>> unhandledEmails)
+    private String ChooseEmail(ArrayList<String> listEmails, Row rw, int colNom, int colPrenom)
     {
         String email = null;
-        for (ArrayList<String> as:unhandledEmails) {
-            listEmails.removeAll(as);
-
-        }
         if ((listEmails.size() > 0)) {
             if (listEmails.size() == 1){
                 email = listEmails.get(0);
             }else{
-
-                unhandledEmails.add(listEmails);
+                if (!unHandledEmails.containsKey(rw.getCell(colNom).toString().toLowerCase())){
+                    unHandledEmails.put(rw.getCell(colNom).toString().toLowerCase(),listEmails);
+                }
+                
                 /***System.out.println("Plusieurs emails peuvent correspendre à l'enseignant : "+getUserInformation(rw,colNom,colPrenom));
                 showListOfEmails(listEmails);
                 System.out.print("Veuillez coisir le bon mail svp : ");
@@ -103,11 +99,11 @@ public class TeacherFormat extends UserFormat implements CSVFormat {
     /**
      * Retourne l'adresse mail corespondante au nom lastname
      * */
-    public  String EmailAdress(Row row,String lastname,int lastNameColumn,int firstNameColumn,ArrayList<ArrayList<String>> unhandlededEmails ){
+    public  String EmailAdress(Row row,String lastname,int lastNameColumn,int firstNameColumn){
 
         String emailAdress;
         ArrayList<String> arrayList = ListEmails(lastname);
-        emailAdress = ChooseEmail(arrayList,row,lastNameColumn,firstNameColumn,unhandlededEmails);
+        emailAdress = ChooseEmail(arrayList,row,lastNameColumn,firstNameColumn);
 
         return emailAdress;
 
@@ -142,7 +138,7 @@ public class TeacherFormat extends UserFormat implements CSVFormat {
         int numRow = 1 ;
         while (iterator.hasNext()){
             row = iterator.next();
-            email = EmailAdress(row,row.getCell(lastNameColumn).toString(),lastNameColumn,firstNameColumn,unhandleddEmails);
+            email = EmailAdress(row,row.getCell(lastNameColumn).toString(),lastNameColumn,firstNameColumn);
             if (email != null) arrayList.add( email.substring(0,email.indexOf("@"))) ;
             else  arrayList.add(null) ;
             arrayList.add(row.getCell(firstNameColumn).toString().toUpperCase()+" ENS:");
@@ -153,6 +149,7 @@ public class TeacherFormat extends UserFormat implements CSVFormat {
             arrayList.clear();
             numRow++;
         }
+
         File file = new File("TeachersList.xlsx");
         saveUsersList(file);
         return file.getPath();
