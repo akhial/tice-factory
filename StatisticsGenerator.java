@@ -9,13 +9,7 @@
     import com.aspose.cells.Workbook;
     import com.aspose.cells.Worksheet;
 
-    import java.io.File;
-
-    import java.io.FileInputStream;
-    import java.io.FileOutputStream;
-
-    import java.io.FileNotFoundException;
-    import java.io.IOException;
+    import java.io.*:
 
     import org.apache.poi.ss.usermodel.Cell;
     import org.apache.poi.ss.usermodel.Row;
@@ -177,4 +171,138 @@
 
         //}
 
+        
+        
+        
+        
+        
+        
+        
+        
+         public void Statter() throws IOException {
+        XSSFWorkbook wb = null;
+        String searcher = "";
+        String reference = "";
+        int occurence;
+        //------------------------------
+        String excelFileName = "resultSerious.xlsx";//name of excel file
+        String sheetName = "Sheet1";//name of sheet
+        XSSFWorkbook w = new XSSFWorkbook();
+        Sheet s = w.createSheet(sheetName);
+        int index = 0;
+        String compare;
+        final int FORMATCHOISI=1;
+        //---------------------------------
+        try {
+            wb = new XSSFWorkbook(new FileInputStream(new File("trié.xlsx")));
+            Sheet sheet = wb.getSheetAt(0);
+            /*for (Sheet sh : wb) { */
+            int i = sheet.getFirstRowNum()+1;
+            String a,b;
+            Row rw = sheet.getRow(i);
+            a=rw.getCell(5).getStringCellValue();
+            b=dateFormat(rw.getCell(0).getStringCellValue(),FORMATCHOISI);
+            occurence=1;
+            i++;
+            while (i <= sheet.getLastRowNum()){
+                rw=sheet.getRow(i);
+                System.out.println(rw.getCell(5).getStringCellValue());
+                if(rw.getCell(5).getStringCellValue().equals(a)){//on voit la colonne F si elle correspond à notre reference
+
+                     if(rw.getCell(0).getStringCellValue().contains(b)){// si oui on regarde la date
+                        occurence++;
+                     }else{// si la date est differente on ecrit les anciennes données et on travaille avec les nouvelles
+                         System.out.println(a+"    "+b);
+                         System.out.println(occurence);
+                         Row r = s.createRow(index);
+                         Cell d= r.createCell(0);
+                         d.setCellValue(a);
+                         Cell c = r.createCell(1);
+                         //c.setCellValue(dateFormat(rw.getCell(0).getStringCellValue(),FORMATCHOISI));
+                         c.setCellValue(dateFormat(b,FORMATCHOISI));
+                         c = r.createCell(2);
+                         c.setCellValue(occurence);
+                         index++;
+                         b=dateFormat(rw.getCell(0).getStringCellValue(),FORMATCHOISI);
+                         occurence = 1;
+                     }
+                }else{//si l'evenement est different on ecrit les anciennes donnees et on prend les nouvelles
+                    System.out.println(a+"    "+b);
+                    System.out.println(occurence);
+                    Row r = s.createRow(index);
+                    Cell d= r.createCell(0);
+                    d.setCellValue(a);
+                    Cell c = r.createCell(1);
+                    c.setCellValue(dateFormat(b,FORMATCHOISI));
+                    c = r.createCell(2);
+                    c.setCellValue(occurence);
+                    index++;
+                    a=rw.getCell(5).getStringCellValue();
+                    b=dateFormat(rw.getCell(0).getStringCellValue(),FORMATCHOISI);
+                    occurence = 1;
+                }
+                i++;
+            }
+                // ici c'est le cas du dernier élément
+            Row r = s.createRow(index);
+            Cell d= r.createCell(0);
+            d.setCellValue(a);
+            Cell c = r.createCell(1);
+            c.setCellValue(dateFormat(rw.getCell(0).getStringCellValue(),FORMATCHOISI));
+            c = r.createCell(2);
+            c.setCellValue(occurence);
+            index++;
+            a=rw.getCell(5).getStringCellValue();
+
+            FileOutputStream fileOut = new FileOutputStream(excelFileName);
+            w.write(fileOut);
+            fileOut.flush();
+            fileOut.close();
+
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        } finally {
+            try {
+                if (wb != null) wb.close();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+    }
+
+    public static String dateFormat(String date, int format){
+        if (date.equals("")||(date.length()==0)||(!date.contains("/"))){
+            return date;
+        }
+        try {
+            switch (format){
+                case 0:
+                    return date;
+
+                case 1:
+                    StringBuffer retour=new StringBuffer("");
+                    retour.append(date.split("(/)|(,)")[0]);
+                    retour.append("/");
+                    retour.append(date.split("(/)|(,)")[1]);
+                    retour.append("/");
+                    retour.append(date.split("(/)|(,)")[2]);
+                    return retour.toString();
+
+                case 2:
+                    retour=new StringBuffer("");
+                    retour.append(date.split("(/)|(,)")[1]);
+                    retour.append("/");
+                    retour.append(date.split("(/)|(,)")[2]);
+                    return retour.toString();
+
+                default: return date; }
+        }catch (Exception e){return date;}
+    }
+}
+        
+        
+        
+        
     }
