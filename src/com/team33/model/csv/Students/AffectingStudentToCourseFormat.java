@@ -155,7 +155,7 @@ public class AffectingStudentToCourseFormat extends UserFormat {
             if(workbooksPath.contains(".docx"))
             {
 
-                workbooksPath = extractor.ConvertWordTableToExcel(workbooksPath);
+                workbooksPath = extractor.ConvertWordTableToExcel(workbooksPath,this.optin);
             }
             File file = new File(workbooksPath);
             type = extractor.getFileType(file);

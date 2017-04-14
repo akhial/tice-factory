@@ -108,26 +108,17 @@ import java.util.Iterator;
         return hashMap;
     }
 
-     String ConvertWordTableToExcel(String wordPath) {
-        String type;
+     String ConvertWordTableToExcel(String wordPath, String optin) {
         try {
             FileInputStream fileInputStream = new FileInputStream(wordPath);
             XWPFDocument xwpfDocument = new XWPFDocument(fileInputStream);
             XWPFWordExtractor we = new XWPFWordExtractor(xwpfDocument);
-            if (we.getText().contains("LISTE DES SUJETS DE PFE OPTION SIQ")) {
-                type = "3CS-SIQ";
-            } else if (we.getText().contains("LISTE DES SUJETS DE PFE OPTION SIT")) {
-                type = "3CS-SIT";
-            } else {
-                type = "3CS-SIL";
-            }
-            String excelName = type + ".xlsx";
+            String excelName = optin + ".xlsx";
             FileOutputStream fileOutputStream = new FileOutputStream(excelName);
             XSSFWorkbook xssfWorkbook = new XSSFWorkbook();
             Sheet sheet = xssfWorkbook.createSheet();
-            sheet.createRow(0).createCell(0).setCellValue(type);
             int i = 0;
-            int j = 1;
+            int j = 0;
             int nbColumns = 0;
             Row excelRow = sheet.createRow(j);
             for (XWPFTable table : xwpfDocument.getTables()) {
@@ -137,13 +128,13 @@ import java.util.Iterator;
                         excelRow.createCell(i).setCellValue(cell.getText());
                         i++;
                     }
-                    excelRow.createCell(i).setCellValue(type);
+                    excelRow.createCell(i).setCellValue(optin);
                     nbColumns = i;
                     i = 0;
                     j++;
                     excelRow = sheet.createRow(j);
                 }
-                sheet.getRow(j - table.getNumberOfRows()).getCell(nbColumns).setCellValue("NG");
+                sheet.getRow(j - table.getNumberOfRows()).getCell(nbColumns).setCellValue("Optin");
             }
             xssfWorkbook.write(fileOutputStream);
             fileInputStream.close();
@@ -164,7 +155,7 @@ import java.util.Iterator;
             Iterator<Row> rowIterator = sheet.rowIterator();
             Row rw = rowIterator.next();
             while (rowIterator.hasNext()) {
-                if (Util.getInstance().existInRow(rw, "NG")) {
+                if (Util.getInstance().existInRow(rw, "Optin")) {
                     return "Solarite";
                 } else {
                     rw = rowIterator.next();

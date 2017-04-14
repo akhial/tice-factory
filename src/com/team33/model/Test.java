@@ -20,11 +20,11 @@ public class Test {
         ArrayList<String> workbooksPaths = new ArrayList<String>();
 
         workbooksPaths.add("liste email tous les etudiants.xlsx");
-        workbooksPaths.add("Listes-Etudiants_2CPI_S1_2016-2017(1) (2).xlsx");
-        StudentFormat studentFormat = new StudentFormat("2CPI","CPI","");
+        workbooksPaths.add("Liste_Groupe_2CS_SIT_S2_2014_2015.xlsx");
+        GroupFormat studentFormat = new GroupFormat("2CS","SIT","");
         CSVBuilder csvBuilder = new CSVBuilder(workbooksPaths,studentFormat,"C:/Users/hamza/IdeaProjects/team-33");
         csvBuilder.buildCSV();
-        String email = null;
+        /*String email = null;
         for(Student student : studentFormat.getListOfStudentsWithoutEmail())
         {
             System.out.print(student);
@@ -54,10 +54,8 @@ public class Test {
             studentFormat.generateRow(student.getPositionInWorkbookOut(),student);
             listOfUsedEmails.add(email);
         }
-        studentFormat.saveUsersList(new File(csvBuilder.getTempPath()));
+        studentFormat.saveUsersList(new File(csvBuilder.getTempPath()));*/
         csvBuilder.convertToCSV();
-
-
     }
     public static void deleteUsedEmails(Student student)
     {

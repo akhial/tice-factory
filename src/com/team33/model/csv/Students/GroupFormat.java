@@ -22,6 +22,7 @@ public class GroupFormat extends UserFormat implements CSVFormat {
     private String level;
     private String optin;
     private String filePathOut;
+    private int maxNbOptionalsModules;
 
 
     public GroupFormat(String level, String optin, String filePathOut) {
@@ -54,9 +55,11 @@ public class GroupFormat extends UserFormat implements CSVFormat {
         this.getHeader().getCell(2).setCellValue("firstname");
         this.getHeader().getCell(3).setCellValue("lastname");
         this.getHeader().getCell(4).setCellValue("email");
+        int j = 5;
         for (int i = 0; i < courseFormat.getNumberOfCourses(this.level, this.optin) + numberOfOptionalModules; i++) {
-            this.getHeader().createCell(i + 5).setCellValue("course" + (i + 1));
-            this.getHeader().createCell(i + 5 + (courseFormat.getNumberOfCourses(this.level, this.optin) + numberOfOptionalModules)).setCellValue("group" + (i + 1));
+            this.getHeader().createCell(i + j).setCellValue("course" + (i + 1));
+            this.getHeader().createCell(i + j + 1).setCellValue("group" + (i + 1));
+            j = j + 1;
         }
     }
 
@@ -71,10 +74,12 @@ public class GroupFormat extends UserFormat implements CSVFormat {
         rw.getCell(2).setCellValue(student.getFirstName());
         rw.getCell(3).setCellValue(student.getLastNameInMoodle());
         rw.getCell(4).setCellValue(student.getEmail());
+        int j = 5;
         for (int i = 0; i < student.numberOfCourses(); i++) {
 
-            rw.createCell(i + 5).setCellValue(student.getCourses().get(i));
-            rw.createCell(i + 5+student.numberOfCourses()).setCellValue("Group "+student.getGroupe());
+            rw.createCell(i + j).setCellValue(student.getCourses().get(i));
+            rw.createCell(i + j +1 ).setCellValue("Groupe "+student.getGroupe());
+            j = j +1;
         }
     }
 
@@ -117,7 +122,8 @@ public class GroupFormat extends UserFormat implements CSVFormat {
 
         HashMap<String, ArrayList<String>> optionalModules = null;
         if (level.equals("2CS")) optionalModules = extractor.extractOptionalModules();
-        generateHeader(maxNumberOfOptionalModules(optionalModules));
+        this.maxNbOptionalsModules = maxNumberOfOptionalModules(optionalModules);
+        generateHeader(this.maxNbOptionalsModules);
         for (Student student : students) {
             student.setLevel(level);
             emailFinder.setStudent(student);
@@ -146,7 +152,7 @@ public class GroupFormat extends UserFormat implements CSVFormat {
         for (String workbooksPath : workbooksPaths) {
             if (workbooksPath.contains(".docx")) {
 
-                workbooksPath = extractor.ConvertWordTableToExcel(workbooksPath);
+                workbooksPath = extractor.ConvertWordTableToExcel(workbooksPath,this.optin);
             }
             File file = new File(workbooksPath);
             type = extractor.getFileType(file);

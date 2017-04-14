@@ -57,13 +57,12 @@ public class StudentFormat extends UserFormat implements CSVFormat {
     public void generateRow(int numRow, Student student)// générer une ligne cde fichier résultat contenant les coordonné d'un étudiant
     {
         Row rw = getWorkbookOut().getSheetAt(0).createRow(numRow);
-        for (int j = 0; j < 4; j++) {
-            rw.createCell(j);
-        }
-        rw.getCell(0).setCellValue(student.getUsername());
-        rw.getCell(1).setCellValue(student.getFirstName());
-        rw.getCell(2).setCellValue(student.getLastNameInMoodle());
-        rw.getCell(3).setCellValue(student.getEmail());
+
+        rw.createCell(0).setCellValue(student.getUsername());
+        rw.createCell(1).setCellValue(student.getPassword());
+        rw.createCell(2).setCellValue(student.getFirstName());
+        rw.createCell(3).setCellValue(student.getLastNameInMoodle());
+        rw.createCell(4).setCellValue(student.getEmail());
     }
 
 
@@ -125,7 +124,7 @@ public class StudentFormat extends UserFormat implements CSVFormat {
             if(workbooksPath.contains(".docx"))
             {
 
-                workbooksPath = extractor.ConvertWordTableToExcel(workbooksPath);
+                workbooksPath = extractor.ConvertWordTableToExcel(workbooksPath,this.optin);
             }
             File file = new File(workbooksPath);
             type = extractor.getFileType(file);

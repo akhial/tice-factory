@@ -24,6 +24,11 @@ public class Student {
     private ArrayList<String> courses;
     private ColumnsInformationBox box;
     private String key;
+    private String idnumber;
+
+    public String getIdnumber() {
+        return idnumber;
+    }
 
     public ArrayList<String> getCourses() {
         return courses;
@@ -161,8 +166,12 @@ public class Student {
         this.lastName = row.getCell(this.box.getColPrenom()).toString();
         this.firstName =  row.getCell(this.box.getColNom()).toString();
         this.optin = row.getCell(this.box.getColOptin()).toString();
-        row.getCell(this.box.getColGroupe()).setCellType(CellType.STRING);
-        this.groupe = row.getCell(this.box.getColGroupe()).toString();
+        if (box.getColGroupe() != -1)
+        {
+            row.getCell(this.box.getColGroupe()).setCellType(CellType.STRING);
+            this.groupe = row.getCell(this.box.getColGroupe()).toString();
+        }
+        if(box.getColMatrin() != -1) this.idnumber = row.getCell(box.getColMatrin()).toString().replace("/","");
         this.password = this.firstName;
     }
 
@@ -197,6 +206,7 @@ public class Student {
     public String getGroupe() {
         return groupe;
     }
+
     public String getKey()
     {
         this.key = this.firstName.toLowerCase().replace(" ","");

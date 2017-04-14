@@ -15,6 +15,7 @@ import java.util.Iterator;
     private int colPrenom;
     private int colGroupe;
     private int  colOptin;
+    private int colMatrin;
 
     public ColumnsInformationBox(Sheet sheet)
     {
@@ -37,6 +38,10 @@ import java.util.Iterator;
         return colOptin;
     }
 
+    public int getColMatrin() {
+        return colMatrin;
+    }
+
     public void setSheet(Sheet sheet) {
         this.sheet = sheet;
     }
@@ -53,16 +58,20 @@ import java.util.Iterator;
                 this.colPrenom = Util.getInstance().column(rw, "Prenom");
                 this.colGroupe = Util.getInstance().column(rw, "NG");
                 this.colOptin = Util.getInstance().column(rw, "Optin");
+                this.colMatrin = Util.getInstance().column(rw,"Matrin");
             } else if (Util.getInstance().existInRow(rw, "Prénom")) {
                 found = true;
                 this.colNom = Util.getInstance().column(rw, "Nom");
                 this.colPrenom = Util.getInstance().column(rw, "Prénom");
                 this.colGroupe = Util.getInstance().column(rw, "NG");
                 this.colOptin = Util.getInstance().column(rw, "Optin");
+                this.colMatrin = Util.getInstance().column(rw,"Matrin");
             } else {
                 rw = rowIterator.next();
             }
         }
+
+        System.out.println("ColNom = "+this.colNom+", ColPrenom = "+this.colPrenom+", ColOptin = "+this.colOptin+", ColGroup = "+this.colGroupe);
     }
 
 

@@ -1,5 +1,6 @@
 package com.team33.model.csv.Students;
 
+import org.apache.poi.ss.usermodel.Cell;
 import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.ss.usermodel.Sheet;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
@@ -169,6 +170,55 @@ import java.util.Iterator;
             default:
                 return getListOfCourses(level, optin).size();
         }
+    }
+
+
+    public void ajouterSpecialite(String optin)
+    {
+        Sheet sheet = this.workbook.createSheet("2CS-"+optin);
+        sheet.createRow(0);
+        for (int i = 0 ; i < 2 ; i++)
+        {
+            sheet.getRow(0).createCell(i).setCellValue("semestre"+(i+1));
+        }
+    }
+
+    public void deleteCourse(String courseShortName,String level,String optin,int semestre)
+    {
+        ArrayList<String> list = getListOfCourses(level,optin);
+        Sheet sheet = this.workbook.getSheet(sheetName(level,optin));
+        list.remove(courseShortName);
+        int i = 1;
+        for(String course : list)
+        {
+            sheet.getRow(i).createCell(semestre-1).setCellValue(course);
+        }
+        deleteLastCourse(semestre,sheet);
+    }
+
+    private void deleteLastCourse(int semester,Sheet sheet)
+    {
+       boolean found =false;
+       int i = 1;
+       while (!found)
+       {
+           Row row = sheet.getRow(i);
+           if(row == null)
+           {
+               sheet.getRow(i -1).removeCell(sheet.getRow(i -1).getCell(semester -1));
+               found = true;
+           }
+           else
+           {
+               Cell cell = row.getCell(semester-1);
+               if (cell == null)
+            {
+               sheet.getRow(i -1).removeCell(sheet.getRow(i -1).getCell(semester -1));
+               found = true;
+            }
+           }
+           i++;
+       }
     }
 
 }
