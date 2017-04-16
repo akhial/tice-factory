@@ -70,8 +70,6 @@ import java.util.Iterator;
                 rw = rowIterator.next();
             }
         }
-
-        System.out.println("ColNom = "+this.colNom+", ColPrenom = "+this.colPrenom+", ColOptin = "+this.colOptin+", ColGroup = "+this.colGroupe);
     }
 
 

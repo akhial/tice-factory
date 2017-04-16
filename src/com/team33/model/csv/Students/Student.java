@@ -3,13 +3,14 @@ package com.team33.model.csv.Students;
 import org.apache.poi.ss.usermodel.CellType;
 import org.apache.poi.ss.usermodel.Row;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.HashMap;
 
 /**
  * Created by hamza on 09/03/2017.
  */
-public class Student {
+public class Student implements Serializable{
     private String username;
     private String firstName;
     private String lastName;
@@ -19,10 +20,10 @@ public class Student {
     private String groupe;
     private String email;
     private String password;
-    private ArrayList<String> listOfEmails;
+    private  ArrayList<String> listOfEmails;
     private int positionInWorkbookOut;
-    private ArrayList<String> courses;
-    private ColumnsInformationBox box;
+    private transient ArrayList<String> courses;
+    private transient ColumnsInformationBox box;
     private String key;
     private String idnumber;
 

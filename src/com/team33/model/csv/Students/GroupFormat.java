@@ -7,15 +7,13 @@ import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.ss.usermodel.Sheet;
 
 import java.io.File;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Iterator;
-import java.util.Set;
+import java.io.IOException;
+import java.util.*;
 
 /**
  * Created by Amine on 13/02/2017.
  */
-public class GroupFormat extends UserFormat implements CSVFormat {
+public abstract class GroupFormat extends UserFormat implements CSVFormat {
 
     private CourseFormat courseFormat;
     private ArrayList<Student> listOfStudentsWithoutEmail;
@@ -39,11 +37,36 @@ public class GroupFormat extends UserFormat implements CSVFormat {
         this.filePathOut = filePathOut + ".xlsx";
     }
 
+    public CourseFormat getCourseFormat() {
+        return courseFormat;
+    }
+
+
+    public String getLevel() {
+        return level;
+    }
+
+    public String getOptin() {
+        return optin;
+    }
+
+    public String getFilePathOut() {
+        return filePathOut;
+    }
+
+    public int getMaxNbOptionalsModules() {
+        return maxNbOptionalsModules;
+    }
+
+    public void setMaxNbOptionalsModules(int maxNbOptionalsModules) {
+        this.maxNbOptionalsModules = maxNbOptionalsModules;
+    }
+
     public ArrayList<Student> getListOfStudentsWithoutEmail() {
         return listOfStudentsWithoutEmail;
     }
 
-    private void generateHeader(int numberOfOptionalModules)// gener le header ie ecrire dans la première ligne (username,fistname,lastname,email) -> le format accepté par moodle
+    protected void generateHeader(int numberOfOptionalModules)// gener le header ie ecrire dans la première ligne (username,fistname,lastname,email) -> le format accepté par moodle
     {
 
         for (int i = 0; i < 5 ; i++) {
@@ -63,7 +86,7 @@ public class GroupFormat extends UserFormat implements CSVFormat {
         }
     }
 
-    public void generateRow(int numRow, Student student)// générer une ligne cde fichier résultat contenant les coordonné d'un étudiant
+    protected void generateRow(int numRow, Student student)// générer une ligne cde fichier résultat contenant les coordonné d'un étudiant
     {
         Row rw = this.getWorkbookOut().getSheetAt(0).createRow(numRow);
         for (int i = 0; i < 5; i++) {
@@ -83,7 +106,13 @@ public class GroupFormat extends UserFormat implements CSVFormat {
         }
     }
 
-    private int maxNumberOfOptionalModules(HashMap<String, ArrayList<String>> optionalModules) {
+    public void upadateRow(int numRow,Student student)
+    {
+        getWorkbookOut().getSheetAt(0).getRow(numRow).getCell(0).setCellValue(student.getUsername());
+        getWorkbookOut().getSheetAt(0).getRow(numRow).getCell(4).setCellValue(student.getEmail());
+    }
+
+    protected int maxNumberOfOptionalModules(HashMap<String, ArrayList<String>> optionalModules) {
         int max = 0;
         if (optionalModules != null) {
             Set<String> keySet = optionalModules.keySet();
@@ -95,7 +124,7 @@ public class GroupFormat extends UserFormat implements CSVFormat {
     }
 
 
-    private String nameOfEmailSheet()
+    protected String nameOfEmailSheet()
     {
         String sheetName = "";
         if(this.optin.equals("CPI"))
@@ -111,35 +140,7 @@ public class GroupFormat extends UserFormat implements CSVFormat {
         return null;
     }
 
-    private void createStudentList() {
-        int numRow = 1;
-
-
-        FileInformationExtractor extractor = new FileInformationExtractor(getWorkbookIn(), optin);
-        ArrayList<Student> students = extractor.findStudents();
-        HashMap<Student, Integer> studentHashMap = extractor.createStudentsHashMap();
-        EmailFinder emailFinder = new EmailFinder(nameOfEmailSheet(), getEmailsWorkbook(), studentHashMap);
-
-        HashMap<String, ArrayList<String>> optionalModules = null;
-        if (level.equals("2CS")) optionalModules = extractor.extractOptionalModules();
-        this.maxNbOptionalsModules = maxNumberOfOptionalModules(optionalModules);
-        generateHeader(this.maxNbOptionalsModules);
-        for (Student student : students) {
-            student.setLevel(level);
-            emailFinder.setStudent(student);
-            emailFinder.getEmails();
-            student.setStudentInformations();
-            student.allocateCourses(this.courseFormat, optionalModules);
-            if (!student.hasEmail()) {
-                student.setPositionInWorkbookOut(numRow);
-                this.listOfStudentsWithoutEmail.add(student);
-            }
-            generateRow(numRow, student);
-            numRow++;
-        }
-        File file = new File(filePathOut);
-        saveUsersList(file);
-    }
+    protected abstract void createStudentList() throws IOException;
 
 
     @Override
@@ -160,7 +161,11 @@ public class GroupFormat extends UserFormat implements CSVFormat {
             else openEmailWorkbook(workbooksPath);
         }
 
-        createStudentList();
+        try {
+            createStudentList();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
         return filePathOut;
     }
 }

@@ -16,6 +16,7 @@ import java.io.*;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
+import java.util.Map;
 
 /**
  * Created by hamza on 20/03/2017.
@@ -63,8 +64,8 @@ import java.util.Iterator;
         }
     }
 
-    ArrayList<Student> findStudents() {
-        ArrayList<Student> students = new ArrayList<Student>();
+    HashMap<String,Student> findStudents() {
+        HashMap<String,Student> students = new HashMap<>();
         changeInvalidOptin();
         for (Sheet sheet : this.workbook) {
             ColumnsInformationBox box = new ColumnsInformationBox(sheet);
@@ -74,7 +75,7 @@ import java.util.Iterator;
                     Student student = new Student();
                     student.setBox(box);
                     student.rowToBasicInformations(rw);
-                    students.add(student);
+                    students.put(student.getIdnumber(),student);
                 }
 
             }
@@ -232,5 +233,23 @@ import java.util.Iterator;
             }
         }
         return modulesOptionnels;
+    }
+
+    HashMap<String,Student> existingStudents(String path) throws IOException {
+        HashMap<String,Student> students = new HashMap<>();
+        ObjectInputStream ois = null;
+        try {
+             ois = new ObjectInputStream(new BufferedInputStream(new FileInputStream(path)));
+             students = (HashMap<String, Student>) ois.readObject();
+            for (Map.Entry<String,Student> entry : students.entrySet())
+            {
+                Student student = entry.getValue(); System.out.println(student.getLastNameInMoodle());}
+        }catch (IOException | ClassNotFoundException e){
+            e.printStackTrace();
+        } finally {
+            if(ois != null) ois.close();
+        }
+
+        return students;
     }
 }

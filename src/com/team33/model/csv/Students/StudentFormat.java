@@ -15,10 +15,7 @@ import org.apache.poi.xwpf.usermodel.XWPFTableRow;
 import java.io.*;
 import java.net.URI;
 import java.security.Key;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Iterator;
-import java.util.Scanner;
+import java.util.*;
 
 /**
  * Created by Amine on 13/02/2017.
@@ -30,7 +27,7 @@ public class StudentFormat extends UserFormat implements CSVFormat {
     private String optin;
     private String filePathOut;
     private ArrayList<Student> listOfStudentsWithoutEmail;
-
+    private HashMap<String,Student> students;
     public ArrayList<Student> getListOfStudentsWithoutEmail() {
         return listOfStudentsWithoutEmail;
     }
@@ -54,7 +51,7 @@ public class StudentFormat extends UserFormat implements CSVFormat {
      */
 
 
-    public void generateRow(int numRow, Student student)// générer une ligne cde fichier résultat contenant les coordonné d'un étudiant
+    private void generateRow(int numRow, Student student)// générer une ligne cde fichier résultat contenant les coordonné d'un étudiant
     {
         Row rw = getWorkbookOut().getSheetAt(0).createRow(numRow);
 
@@ -65,11 +62,17 @@ public class StudentFormat extends UserFormat implements CSVFormat {
         rw.createCell(4).setCellValue(student.getEmail());
     }
 
+    public void updateRow(int numRow,Student student)
+    {
+        getWorkbookOut().getSheetAt(0).getRow(numRow).getCell(0).setCellValue(student.getUsername());
+        getWorkbookOut().getSheetAt(0).getRow(numRow).getCell(4).setCellValue(student.getEmail());
+    }
+
 
     private String nameOfEmailSheet()
     {
         String sheetName = "";
-        if(this.optin.equals("CPI"))
+        if(this.optin.equals("CPI") || this.optin.equals("SC"))
         {
             sheetName = this.level;
         }
@@ -91,11 +94,15 @@ public class StudentFormat extends UserFormat implements CSVFormat {
         generateHeader();
 
         FileInformationExtractor extractor = new FileInformationExtractor(getWorkbookIn(), optin);
-        ArrayList<Student> students = extractor.findStudents();
+        this.students = extractor.findStudents();
+
         HashMap<Student, Integer> studentHashMap = extractor.createStudentsHashMap();
         EmailFinder emailFinder = new EmailFinder(nameOfEmailSheet(), getEmailsWorkbook(), studentHashMap);
 
-        for (Student student : students) {
+        for (Map.Entry<String,Student> entry : students.entrySet())
+        {
+            Student student = entry.getValue();
+            System.out.println(entry.getKey());
             student.setLevel(level);
             emailFinder.setStudent(student);
             emailFinder.getEmails();
@@ -110,7 +117,14 @@ public class StudentFormat extends UserFormat implements CSVFormat {
         File file = new File(filePathOut);
         saveUsersList(file);
         System.out.println("Temps d'execution : " + (System.currentTimeMillis()-startTime));
+    }
 
+    public void saveCreatedUsers() throws IOException
+    {
+        ObjectOutputStream oos = new ObjectOutputStream(new BufferedOutputStream(new FileOutputStream(this.level+this.optin+".data")));
+
+        oos.writeObject(students);
+        oos.close();
     }
 
 
