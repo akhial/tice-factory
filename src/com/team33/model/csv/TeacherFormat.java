@@ -114,9 +114,9 @@ public class TeacherFormat extends UserFormat implements CSVFormat {
 
 
     @Override
-    public String buildCSV(String... workbooks) {
-        String workbookPath = workbooks[0];
-        String emailWorkbookPath = workbooks[1];
+    public String buildCSV(ArrayList<String> workbooks) {
+        String workbookPath = workbooks.get(0);
+        String emailWorkbookPath = workbooks.get(1);
         int firstNameColumn = 0 ;
         int lastNameColumn = 0;
         String email;

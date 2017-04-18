@@ -66,13 +66,13 @@ public class AssigningTeacherToCourseFormat extends UserFormat implements CSVFor
         }
     }
     @Override
-    public String buildCSV(String... workbooksPaths) throws IOException {
-        String workbookPath = workbooksPaths[0];
-        String emailWorkbookPath = workbooksPaths[1];
+    public String buildCSV(ArrayList<String> workbooksPaths) throws IOException {
+        String workbookPath = workbooksPaths.get(0);
+        String emailWorkbookPath = workbooksPaths.get(1);
         openWorkbookIn(workbookPath);
         openEmailWorkbook(emailWorkbookPath);
         TeacherFormat teacherFormat = new TeacherFormat();
-        String tempFile = teacherFormat.buildCSV(workbookPath,emailWorkbookPath);
+        String tempFile = teacherFormat.buildCSV(workbooksPaths);
         File file = new File("Affectations" +
                 "DesEnseignants.xlsx");
         XSSFWorkbook workbook = new XSSFWorkbook(tempFile);

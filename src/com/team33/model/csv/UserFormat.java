@@ -34,10 +34,6 @@ public abstract class UserFormat implements CSVFormat {
         this.EmailsWorkbook = new XSSFWorkbook();
     }
 
-    public void setWorkbookOut(XSSFWorkbook workbookOut) {
-        this.workbookOut = workbookOut;
-    }
-
     public XSSFWorkbook getWorkbookIn() {
         return workbookIn;
     }
@@ -152,7 +148,7 @@ public abstract class UserFormat implements CSVFormat {
 
 
     @Override
-    public String buildCSV(String... workbooksPaths) {
+    public String buildCSV(ArrayList<String> workbooks) throws IOException {
         return null;
     }
 }
