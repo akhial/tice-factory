@@ -1,0 +1,13 @@
+#user-label{
+    -fx-background-color: #102530;
+    -fx-text-fill: white;
+    -fx-font: 14 verdana;
+}
+
+#back {
+  -fx-background-color: lime;
+}
+
+.background {
+  -fx-background-color: #102530;
+}
