@@ -24,7 +24,7 @@ public abstract class GroupFormat extends UserFormat implements CSVFormat {
     private int maxNbOptionalsModules;
 
 
-    public GroupFormat(String level, String optin, String filePathOut) {
+    public GroupFormat(String level, String optin, String filePathOut) throws IOException {
         this.courseFormat = new CourseFormat();
         this.courseFormat.openWrkbook();
         this.listOfStudentsWithoutEmail = new ArrayList<>();
@@ -147,8 +147,7 @@ public abstract class GroupFormat extends UserFormat implements CSVFormat {
 
 
     @Override
-    public String buildCSV(ArrayList<String> workbooksPaths)
-    {
+    public String buildCSV(ArrayList<String> workbooksPaths) throws IOException {
         // WorkbooksPaths should contain only list of first semester and list of e-mails
 
         String type;
@@ -164,11 +163,7 @@ public abstract class GroupFormat extends UserFormat implements CSVFormat {
             else openEmailWorkbook(workbooksPath);
         }
 
-        try {
             createStudentList();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
         return filePathOut;
     }
 }

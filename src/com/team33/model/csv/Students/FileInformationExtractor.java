@@ -109,8 +109,7 @@ import java.util.Map;
         return hashMap;
     }
 
-     String ConvertWordTableToExcel(String wordPath, String optin) {
-        try {
+     String ConvertWordTableToExcel(String wordPath, String optin) throws IOException {
             FileInputStream fileInputStream = new FileInputStream(wordPath);
             XWPFDocument xwpfDocument = new XWPFDocument(fileInputStream);
             XWPFWordExtractor we = new XWPFWordExtractor(xwpfDocument);
@@ -140,17 +139,11 @@ import java.util.Map;
             xssfWorkbook.write(fileOutputStream);
             fileInputStream.close();
             return excelName;
-        } catch (IOException e1) {
-            e1.printStackTrace();
         }
-        return "";
 
-    }
-
-     String getFileType(File file) {
+     String getFileType(File file) throws IOException {
 
 
-        try {
             XSSFWorkbook workbook = new XSSFWorkbook(new FileInputStream(file));
             Sheet sheet = workbook.getSheetAt(0);
             Iterator<Row> rowIterator = sheet.rowIterator();
@@ -164,13 +157,7 @@ import java.util.Map;
             }
             return "web";
 
-        } catch (IOException e) {
-            e.printStackTrace();
         }
-        return "";
-
-
-    }
 
      HashMap<String,ArrayList<String>> extractOptionalModules()
     {
@@ -235,21 +222,4 @@ import java.util.Map;
         return modulesOptionnels;
     }
 
-    HashMap<String,Student> existingStudents(String path) throws IOException {
-        HashMap<String,Student> students = new HashMap<>();
-        ObjectInputStream ois = null;
-        try {
-             ois = new ObjectInputStream(new BufferedInputStream(new FileInputStream(path)));
-             students = (HashMap<String, Student>) ois.readObject();
-            for (Map.Entry<String,Student> entry : students.entrySet())
-            {
-                Student student = entry.getValue(); System.out.println(student.getLastNameInMoodle());}
-        }catch (IOException | ClassNotFoundException e){
-            e.printStackTrace();
-        } finally {
-            if(ois != null) ois.close();
-        }
-
-        return students;
-    }
 }

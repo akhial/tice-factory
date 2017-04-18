@@ -135,7 +135,7 @@ public class StudentFormat extends UserFormat implements CSVFormat {
 
 
     @Override
-    public String buildCSV(ArrayList<String> workbooksPaths)  {
+    public String buildCSV(ArrayList<String> workbooksPaths) throws IOException {
         // WorkbooksPaths should contain only list of first semester and list of e-mails
 
         String type;

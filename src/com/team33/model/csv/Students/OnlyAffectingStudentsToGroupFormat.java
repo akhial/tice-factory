@@ -11,7 +11,7 @@ import java.util.Map;
  */
 public class OnlyAffectingStudentsToGroupFormat extends GroupFormat {
     private String csvFileName;
-    public OnlyAffectingStudentsToGroupFormat(String level, String optin, String filePathOut,String csvFileName) {
+    public OnlyAffectingStudentsToGroupFormat(String level, String optin, String filePathOut,String csvFileName) throws IOException {
         super(level, optin, filePathOut);
         this.csvFileName = csvFileName;
     }

@@ -11,7 +11,7 @@ import java.util.Map;
  */
 public class OnlyAffectingStudentsToCourseFormat extends AffectingStudentToCourseFormat {
     private String csvFileName;
-    public OnlyAffectingStudentsToCourseFormat(String level, String optin, String filePathOut,String csvFileName) {
+    public OnlyAffectingStudentsToCourseFormat(String level, String optin, String filePathOut,String csvFileName) throws IOException {
         super(level, optin, filePathOut);
         this.csvFileName = csvFileName;
     }

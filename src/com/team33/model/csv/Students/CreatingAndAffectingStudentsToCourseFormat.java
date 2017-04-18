@@ -1,6 +1,7 @@
 package com.team33.model.csv.Students;
 
 import java.io.File;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
@@ -9,7 +10,7 @@ import java.util.Map;
  * Created by hamza on 15/04/2017.
  */
 public class CreatingAndAffectingStudentsToCourseFormat extends AffectingStudentToCourseFormat {
-    public CreatingAndAffectingStudentsToCourseFormat(String level, String optin, String filePathOut) {
+    public CreatingAndAffectingStudentsToCourseFormat(String level, String optin, String filePathOut) throws IOException {
         super(level, optin, filePathOut);
     }
     protected void createStudentList()  {

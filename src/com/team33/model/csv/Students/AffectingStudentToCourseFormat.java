@@ -23,7 +23,7 @@ public abstract class AffectingStudentToCourseFormat extends UserFormat {
     private String filePathOut;
 
 
-    public AffectingStudentToCourseFormat(String level, String optin,String filePathOut)  {
+    public AffectingStudentToCourseFormat(String level, String optin,String filePathOut) throws IOException {
         this.courseFormat = new CourseFormat();
         this.courseFormat.openWrkbook();
         this.listOfStudentsWithoutEmail = new ArrayList<>();
@@ -138,7 +138,7 @@ public abstract class AffectingStudentToCourseFormat extends UserFormat {
     abstract protected void createStudentList() throws IOException;
 
     @Override
-    public String buildCSV(ArrayList<String> workbooksPaths)  {
+    public String buildCSV(ArrayList<String> workbooksPaths) throws IOException {
         // WorkbooksPaths should contain only list of first semester and list of e-mails
 
         String type;
@@ -154,11 +154,8 @@ public abstract class AffectingStudentToCourseFormat extends UserFormat {
             if (type.equals("Solarite")) openWorkbookIn(workbooksPath);
             else openEmailWorkbook(workbooksPath);
         }
-        try {
             createStudentList();
-        }catch (IOException e){
-            e.printStackTrace();
-        }
+
 
         return filePathOut;
     }

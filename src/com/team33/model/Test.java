@@ -52,7 +52,6 @@ public class Test {
         }
         studentFormat.saveUsersList(new File(csvBuilder.getTempPath()));
         csvBuilder.convertToCSV();
-        //studentFormat.saveCreatedUsers();
     }
     public static void deleteUsedEmails(Student student)
     {
