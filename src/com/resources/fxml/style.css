@@ -1,11 +1,35 @@
-#user-label{
-    -fx-background-color: #102530;
-    -fx-text-fill: white;
-    -fx-font: 14 verdana;
+@font-face {
+    src: url("../fonts/OpenSans-Light.ttf");
+    src: url("../fonts/OpenSans-Regular.ttf");
+    src: url("../fonts/OpenSans-Semibold.ttf");
+    src: url("../fonts/OpenSans-Bold.ttf");
+    src: url("../fonts/OpenSans-Extrabold.ttf");
+    src: url("../fonts/OpenSans-LightItalic.ttf");
+    src: url("../fonts/OpenSans-Italic.ttf");
+    src: url("../fonts/OpenSans-SemiboldItalic.ttf");
+    src: url("../fonts/OpenSans-BoldItalic.ttf");
+    src: url("../fonts/OpenSans-ExtraboldItalic.ttf");
+}
+
+#user-pane {
+    -fx-background-color: #26A69A;
+}
+
+.label {
+    -fx-fill: white;
+    -fx-font-family: "Open Sans Light";
+}
+
+#top-bar {
+    -fx-background-color: #00897B;
+}
+
+#left-drawer {
+    -fx-background-color: #37474F;
 }
 
 #back {
-  -fx-background-color: lime;
+  -fx-background-color: #263238;
 }
 
 .background {

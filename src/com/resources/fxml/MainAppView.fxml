@@ -4,11 +4,14 @@
 <?import com.jfoenix.controls.JFXHamburger?>
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Label?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.ColumnConstraints?>
 <?import javafx.scene.layout.GridPane?>
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.RowConstraints?>
 <?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
 
 <GridPane id="back" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="501.0" prefWidth="713.0" xmlns="http://javafx.com/javafx/8.0.111" xmlns:fx="http://javafx.com/fxml/1">
   <columnConstraints>
@@ -48,7 +51,6 @@
             <Insets top="15.0" />
          </padding>
       </VBox>
-      <Label id="user-label" prefHeight="98.0" prefWidth="159.0" stylesheets="@style.css" text="  Username here" />
       <HBox prefHeight="100.0" prefWidth="200.0" GridPane.columnIndex="1">
          <children>
             <HBox prefHeight="45.0" prefWidth="579.0">
@@ -64,6 +66,26 @@
                   <Insets />
                </HBox.margin>
             </HBox>
+         </children>
+      </HBox>
+      <HBox id="user-pane" prefHeight="100.0" prefWidth="200.0" stylesheets="@style.css">
+         <children>
+            <ImageView fitHeight="59.0" fitWidth="59.0" pickOnBounds="true">
+               <HBox.margin>
+                  <Insets top="5.0" />
+               </HBox.margin>
+               <image>
+                  <Image url="@../../../../../../Documents/AI%20Illustrations/T33.png" />
+               </image>
+            </ImageView>
+            <Label id="user-label" stylesheets="@style.css" text="USERNAME">
+               <padding>
+                  <Insets top="30.0" />
+               </padding>
+               <font>
+                  <Font name="Arial Unicode MS" size="12.0" />
+               </font>
+            </Label>
          </children>
       </HBox>
    </children>
