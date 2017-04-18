@@ -34,6 +34,10 @@ public abstract class UserFormat implements CSVFormat {
         this.EmailsWorkbook = new XSSFWorkbook();
     }
 
+    public void setWorkbookOut(XSSFWorkbook workbookOut) {
+        this.workbookOut = workbookOut;
+    }
+
     public XSSFWorkbook getWorkbookIn() {
         return workbookIn;
     }

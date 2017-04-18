@@ -8,4 +8,6 @@ import java.util.ArrayList;
  */
 public interface CSVFormat {
      String buildCSV(String... workbooksPaths) throws IOException;
+
+    String buildCSV(ArrayList<String> workbooksPaths);
 }

@@ -44,7 +44,7 @@ public class Util {
     }
 
 
-    public    int column(Row rw,String colName)// retourne l'indice de la colone de valeur colNom dans la ligne rw
+    public int column(Row rw,String colName)// retourne l'indice de la colone de valeur colNom dans la ligne rw
     {
         boolean found = false;
         int colIndex = -1;

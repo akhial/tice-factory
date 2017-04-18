@@ -1,15 +1,13 @@
 package com.team33.model;
 
-import com.team33.model.csv.Students.*;
 import com.team33.model.csv.CSVBuilder;
-import org.apache.poi.openxml4j.exceptions.InvalidFormatException;
-import org.apache.poi.xssf.usermodel.XSSFWorkbook;
+import com.team33.model.csv.Students.ExistingStudentsGradesFormat;
+import com.team33.model.csv.Students.GradesFormat;
+import com.team33.model.csv.Students.Student;
 
 import java.io.File;
-import java.io.FileInputStream;
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.Scanner;
 
 public class Test {

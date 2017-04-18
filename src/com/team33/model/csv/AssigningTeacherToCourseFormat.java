@@ -1,5 +1,6 @@
 package com.team33.model.csv;
 
+import com.team33.model.Util;
 import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 
@@ -84,7 +85,7 @@ public class AssigningTeacherToCourseFormat extends UserFormat implements CSVFor
             if (rowContains(row,"NOM")) found = true;
             else row = rowIterator.next();
         }
-        int firstCourseColumn = column(row,"COURS\n" + "SEMESTRE1");
+        int firstCourseColumn = Util.getInstance().column(row,"COURS\n" + "SEMESTRE1");
         ArrayList<String>  arrayList = new ArrayList<>();
         int numRow = 1 ;
         while (rowIterator.hasNext()){
