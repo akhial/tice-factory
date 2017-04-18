@@ -1,4 +1,4 @@
-package com.team33.model;
+package com.team33.model.Utilities;
 
 
 import java.io.BufferedWriter;

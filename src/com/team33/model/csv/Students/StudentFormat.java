@@ -1,6 +1,6 @@
 package com.team33.model.csv.Students;
 
-import com.team33.model.Util;
+import com.team33.model.Utilities.Util;
 import com.team33.model.csv.CSVFormat;
 import com.team33.model.csv.UserFormat;
 import org.apache.poi.openxml4j.exceptions.InvalidFormatException;

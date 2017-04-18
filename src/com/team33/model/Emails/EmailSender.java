@@ -101,11 +101,6 @@ public class EmailSender {
                     }
                     transport.close();
 
-
-
-
-
-
         }
 
     }

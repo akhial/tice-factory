@@ -1,4 +1,4 @@
-package com.team33.model;
+package com.team33.model.Utilities;
 
 /**
  * Created by Amine on 17/02/2017.
