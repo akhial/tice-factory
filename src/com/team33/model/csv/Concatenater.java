@@ -15,7 +15,7 @@ import java.util.Iterator;
  */
 public class Concatenater {
 
-    public void Concatenate(String...workbooks) throws IOException, InvalidFormatException {
+    public void Concatenate(String destination,String...workbooks) throws IOException, InvalidFormatException {
         ArrayList<XSSFWorkbook> xssfWorkbooks = new ArrayList<>();
         Workbook workbookOut = new XSSFWorkbook();
         for (String s:workbooks){
@@ -59,7 +59,7 @@ public class Concatenater {
             j++;
         }
 
-        FileOutputStream fos = new FileOutputStream(new File("Result.xlsx"));
+        FileOutputStream fos = new FileOutputStream(new File(destination));
         workbookOut.write(fos);
         fos.close();
         for (XSSFWorkbook xs:xssfWorkbooks) {

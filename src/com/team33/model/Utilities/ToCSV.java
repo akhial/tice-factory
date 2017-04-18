@@ -363,7 +363,6 @@ public class ToCSV {
             IOException, InvalidFormatException {
         FileInputStream fis = null;
         try {
-            System.out.println("Opening workbook [" + file.getName() + "]");
 
             fis = new FileInputStream(file);
 
@@ -392,7 +391,6 @@ public class ToCSV {
         int lastRowNum = 0;
         this.csvData = new ArrayList<ArrayList<String>>();
 
-        System.out.println("Converting files contents to CSV format.");
 
         // Discover how many sheets there are in the workbook....
         int numSheets = this.workbook.getNumberOfSheets();
@@ -439,7 +437,6 @@ public class ToCSV {
         String csvLineElement = null;
         try {
 
-            System.out.println("Saving the CSV file [" + file.getName() + "]");
 
             // Open a writer onto the CSV file.
             fw = new FileWriter(file);

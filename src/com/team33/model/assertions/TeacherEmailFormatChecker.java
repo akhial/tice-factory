@@ -19,7 +19,6 @@ public class TeacherEmailFormatChecker implements  ExcelFormat {
     @Override
 
     public boolean checkDoublants(File f1) {
-        Scanner input=new Scanner(System.in);
         try {
             XSSFWorkbook wB = new XSSFWorkbook(new FileInputStream(f1));
             XSSFSheet sheet = wB.getSheetAt(0);
@@ -37,7 +36,6 @@ public class TeacherEmailFormatChecker implements  ExcelFormat {
                     while (rowIterator2.hasNext()) {
                         if (row2.getCell(1).getStringCellValue().equals(str2) && ligne2 < ligne1) {
                             System.out.println("---------------------------------------------------------------------------------------------------------------");
-
                             System.out.println("Duplicate : " + str2 );
                             System.out.println("first : line  "+ ligne2 + " , Nom du prof : " + sheet.getRow(ligne2-1).getCell(0).getStringCellValue());
                             System.out.println("Second : line  "+ ligne1 + " , Nom du prof : " + sheet.getRow(ligne1-1).getCell(0).getStringCellValue());
