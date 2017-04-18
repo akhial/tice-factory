@@ -15,7 +15,7 @@ import java.util.Iterator;
 import java.util.Scanner;
 
 /**
- * Created by Amine on 13/02/2017.
+ * Created by Mitchell on 13/02/2017.
  */
 
 public class StudentFormat implements CSVFormat {
