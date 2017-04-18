@@ -70,7 +70,7 @@ public abstract class GroupFormat extends UserFormat implements CSVFormat {
     protected void generateHeader(int numberOfOptionalModules)// gener le header ie ecrire dans la première ligne (username,fistname,lastname,email) -> le format accepté par moodle
     {
 
-        for (int i = 0; i < 5 ; i++) {
+        for (int i = 0; i < 6 ; i++) {
             this.getHeader().createCell(i);
         }
 
@@ -79,7 +79,8 @@ public abstract class GroupFormat extends UserFormat implements CSVFormat {
         this.getHeader().getCell(2).setCellValue("firstname");
         this.getHeader().getCell(3).setCellValue("lastname");
         this.getHeader().getCell(4).setCellValue("email");
-        int j = 5;
+        this.getHeader().createCell(5).setCellValue("idnumber");
+        int j = 6;
         for (int i = 0; i < courseFormat.getNumberOfCourses(this.level, this.optin) + numberOfOptionalModules; i++) {
             this.getHeader().createCell(i + j).setCellValue("course" + (i + 1));
             this.getHeader().createCell(i + j + 1).setCellValue("group" + (i + 1));
@@ -90,7 +91,7 @@ public abstract class GroupFormat extends UserFormat implements CSVFormat {
     protected void generateRow(int numRow, Student student)// générer une ligne cde fichier résultat contenant les coordonné d'un étudiant
     {
         Row rw = this.getWorkbookOut().getSheetAt(0).createRow(numRow);
-        for (int i = 0; i < 5; i++) {
+        for (int i = 0; i < 6; i++) {
             rw.createCell(i);
         }
         rw.getCell(0).setCellValue(student.getUsername());
@@ -98,7 +99,8 @@ public abstract class GroupFormat extends UserFormat implements CSVFormat {
         rw.getCell(2).setCellValue(student.getFirstName());
         rw.getCell(3).setCellValue(student.getLastNameInMoodle());
         rw.getCell(4).setCellValue(student.getEmail());
-        int j = 5;
+        rw.createCell(5).setCellValue(student.getIdnumber());
+        int j = 6;
         for (int i = 0; i < student.numberOfCourses(); i++) {
 
             rw.createCell(i + j).setCellValue(student.getCourses().get(i));
@@ -107,7 +109,7 @@ public abstract class GroupFormat extends UserFormat implements CSVFormat {
         }
     }
 
-    public void upadateRow(int numRow,Student student)
+    public void updateRow(int numRow,Student student)
     {
         getWorkbookOut().getSheetAt(0).getRow(numRow).getCell(0).setCellValue(student.getUsername());
         getWorkbookOut().getSheetAt(0).getRow(numRow).getCell(4).setCellValue(student.getEmail());

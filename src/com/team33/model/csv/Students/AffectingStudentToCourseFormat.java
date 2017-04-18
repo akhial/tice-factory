@@ -63,7 +63,7 @@ public abstract class AffectingStudentToCourseFormat extends UserFormat {
     protected void generateHeader(int numberOfOptionalModules)// gener le header ie ecrire dans la première ligne (username,fistname,lastname,email) -> le format accepté par moodle
     {
 
-        for (int i = 0; i < (5 + courseFormat.getNumberOfCourses(this.level,this.optin) + numberOfOptionalModules);i++)
+        for (int i = 0; i < (6 + courseFormat.getNumberOfCourses(this.level,this.optin) + numberOfOptionalModules);i++)
         {
             this.getHeader().createCell(i);
         }
@@ -73,16 +73,17 @@ public abstract class AffectingStudentToCourseFormat extends UserFormat {
         this.getHeader().getCell(2).setCellValue("firstname");
         this.getHeader().getCell(3).setCellValue("lastname");
         this.getHeader().getCell(4).setCellValue("email");
+        this.getHeader().createCell(5).setCellValue("idnumber");
         for(int i = 0; i < courseFormat.getNumberOfCourses(this.level,this.optin)+numberOfOptionalModules; i++)
         {
-            this.getHeader().getCell(i+5).setCellValue("course"+(i+1));
+            this.getHeader().getCell(i+6).setCellValue("course"+(i+1));
         }
     }
 
     protected void generateRow(int numRow, Student student)// générer une ligne cde fichier résultat contenant les coordonné d'un étudiant
     {
         Row rw = this.getWorkbookOut().getSheetAt(0).createRow(numRow);
-        for (int i = 0; i < 5;i++) {
+        for (int i = 0; i < 6;i++) {
             rw.createCell(i);
         }
         rw.getCell(0).setCellValue(student.getUsername());
@@ -90,14 +91,15 @@ public abstract class AffectingStudentToCourseFormat extends UserFormat {
         rw.getCell(2).setCellValue(student.getFirstName());
         rw.getCell(3).setCellValue(student.getLastNameInMoodle());
         rw.getCell(4).setCellValue(student.getEmail());
+        rw.createCell(5).setCellValue(student.getIdnumber());
         for(int i = 0; i < student.numberOfCourses(); i++)
         {
 
-            rw.createCell(i+5).setCellValue(student.getCourses().get(i));
+            rw.createCell(i+6).setCellValue(student.getCourses().get(i));
         }
     }
 
-    public void upadateRow(int numRow,Student student)
+    public void updateRow(int numRow,Student student)
     {
         getWorkbookOut().getSheetAt(0).getRow(numRow).getCell(0).setCellValue(student.getUsername());
         getWorkbookOut().getSheetAt(0).getRow(numRow).getCell(4).setCellValue(student.getEmail());

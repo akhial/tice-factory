@@ -19,7 +19,6 @@ public class CreatingAndAffectingStudentToCrourseFormat extends GroupFormat {
         HashMap<String,Student> students = extractor.findStudents();
         HashMap<Student, Integer> studentHashMap = extractor.createStudentsHashMap();
         EmailFinder emailFinder = new EmailFinder(nameOfEmailSheet(), getEmailsWorkbook(), studentHashMap);
-
         HashMap<String, ArrayList<String>> optionalModules = null;
         if (getLevel().equals("2CS")) optionalModules = extractor.extractOptionalModules();
         setMaxNbOptionalsModules(maxNumberOfOptionalModules(optionalModules));
@@ -27,6 +26,7 @@ public class CreatingAndAffectingStudentToCrourseFormat extends GroupFormat {
         for (Map.Entry<String,Student> entry : students.entrySet())
         {
             Student student = entry.getValue();
+            student.setLevel(getLevel());
             emailFinder.setStudent(student);
             emailFinder.getEmails();
             student.setStudentInformations();

@@ -15,9 +15,11 @@ public class ExistingStudentsGradesFormat extends GradesFormat {
 
 
     private HashMap<String, Student> students;
+    private String csvFileName;
 
-    public ExistingStudentsGradesFormat(String level, String optin, String filePathOut) {
+    public ExistingStudentsGradesFormat(String level, String optin, String filePathOut,String csvFileName) {
         super(level, optin, filePathOut);
+        this.csvFileName = csvFileName;
     }
 
     @Override
@@ -25,7 +27,7 @@ public class ExistingStudentsGradesFormat extends GradesFormat {
         int numRow = 1;
         generateHeader();
 
-        ExistingStudents existingStudents = new ExistingStudents(getLevel(),getOptin());
+        ExistingStudents existingStudents = new ExistingStudents(this.csvFileName);
         existingStudents.loadExistingStudents();
         this.students = existingStudents.getStudents();
 

@@ -1,6 +1,7 @@
 package com.team33.model.csv;
 
-import com.team33.model.ToCSV;
+
+import com.team33.model.Utilities.ToCSV;
 import org.apache.poi.openxml4j.exceptions.InvalidFormatException;
 
 import java.io.IOException;

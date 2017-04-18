@@ -14,14 +14,10 @@ public class CreatingAndAffectingStudentsToCourseFormat extends AffectingStudent
     }
     protected void createStudentList()  {
         int numRow = 1;
-
-
-
         FileInformationExtractor extractor = new FileInformationExtractor(getWorkbookIn(), getOptin());
         HashMap<String,Student> students = extractor.findStudents();
         HashMap<Student,Integer> studentHashMap  =  extractor.createStudentsHashMap();
         EmailFinder emailFinder = new EmailFinder(nameOfEmailSheet(),getEmailsWorkbook(),studentHashMap);
-
         HashMap<String,ArrayList<String>> optionalModules = null;
         if(getLevel().equals("2CS")) optionalModules = extractor.extractOptionalModules();
         generateHeader(maxNumberOfOptionalModules(optionalModules));
@@ -33,8 +29,7 @@ public class CreatingAndAffectingStudentsToCourseFormat extends AffectingStudent
             emailFinder.getEmails();
             student.setStudentInformations();
             student.allocateCourses(this.getCourseFormat(),optionalModules);
-            if(!student.hasEmail())
-            {
+            if(!student.hasEmail()) {
                 student.setPositionInWorkbookOut(numRow);
                 this.getListOfStudentsWithoutEmail().add(student);
             }
