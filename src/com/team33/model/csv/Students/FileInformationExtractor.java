@@ -34,7 +34,7 @@ import java.util.Map;
         this.optin = optin;
     }
 
-    private void changeInvalidOptin()
+     void changeInvalidOptin()
     {
         boolean found = false;
         int i = -1;
