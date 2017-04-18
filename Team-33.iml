@@ -11,7 +11,7 @@
     <orderEntry type="module-library" exported="">
       <library>
         <CLASSES>
-          <root url="jar://$USER_HOME$/Documents/Projet/poi-3.16-beta1/poi-3.16-beta1.jar!/" />
+          <root url="jar://$MODULE_DIR$/src/lib/aspose-cells-17.02.0.jar!/" />
         </CLASSES>
         <JAVADOC />
         <SOURCES />
@@ -20,7 +20,7 @@
     <orderEntry type="module-library" exported="">
       <library>
         <CLASSES>
-          <root url="jar://$USER_HOME$/Documents/Projet/poi-3.16-beta1/poi-examples-3.16-beta1.jar!/" />
+          <root url="jar://$MODULE_DIR$/src/lib/aspose-gridweb-17.02.0.jar!/" />
         </CLASSES>
         <JAVADOC />
         <SOURCES />
@@ -29,7 +29,7 @@
     <orderEntry type="module-library" exported="">
       <library>
         <CLASSES>
-          <root url="jar://$USER_HOME$/Documents/Projet/poi-3.16-beta1/poi-excelant-3.16-beta1.jar!/" />
+          <root url="jar://$MODULE_DIR$/src/lib/bcprov-jdk16-146.jar!/" />
         </CLASSES>
         <JAVADOC />
         <SOURCES />
@@ -38,7 +38,7 @@
     <orderEntry type="module-library" exported="">
       <library>
         <CLASSES>
-          <root url="jar://$USER_HOME$/Documents/Projet/poi-3.16-beta1/poi-ooxml-schemas-3.16-beta1.jar!/" />
+          <root url="jar://$MODULE_DIR$/src/lib/commons-codec-1.10.jar!/" />
         </CLASSES>
         <JAVADOC />
         <SOURCES />
@@ -47,7 +47,7 @@
     <orderEntry type="module-library" exported="">
       <library>
         <CLASSES>
-          <root url="jar://$USER_HOME$/Documents/Projet/poi-3.16-beta1/poi-ooxml-3.16-beta1.jar!/" />
+          <root url="jar://$MODULE_DIR$/src/lib/commons-collections4-4.1.jar!/" />
         </CLASSES>
         <JAVADOC />
         <SOURCES />
@@ -56,7 +56,7 @@
     <orderEntry type="module-library" exported="">
       <library>
         <CLASSES>
-          <root url="jar://$USER_HOME$/Documents/Projet/poi-3.16-beta1/poi-scratchpad-3.16-beta1.jar!/" />
+          <root url="jar://$MODULE_DIR$/src/lib/commons-logging-1.2.jar!/" />
         </CLASSES>
         <JAVADOC />
         <SOURCES />
@@ -65,7 +65,7 @@
     <orderEntry type="module-library" exported="">
       <library>
         <CLASSES>
-          <root url="jar://$USER_HOME$/Documents/Projet/poi-3.16-beta1/ooxml-lib/curvesapi-1.04.jar!/" />
+          <root url="jar://$MODULE_DIR$/src/lib/curvesapi-1.04.jar!/" />
         </CLASSES>
         <JAVADOC />
         <SOURCES />
@@ -74,7 +74,7 @@
     <orderEntry type="module-library" exported="">
       <library>
         <CLASSES>
-          <root url="jar://$USER_HOME$/Documents/Projet/poi-3.16-beta1/ooxml-lib/xmlbeans-2.6.0.jar!/" />
+          <root url="jar://$MODULE_DIR$/src/lib/junit-4.12.jar!/" />
         </CLASSES>
         <JAVADOC />
         <SOURCES />
@@ -83,7 +83,7 @@
     <orderEntry type="module-library" exported="">
       <library>
         <CLASSES>
-          <root url="jar://$USER_HOME$/Documents/Projet/poi-3.16-beta1/lib/commons-codec-1.10.jar!/" />
+          <root url="jar://$MODULE_DIR$/src/lib/log4j-1.2.17.jar!/" />
         </CLASSES>
         <JAVADOC />
         <SOURCES />
@@ -92,7 +92,7 @@
     <orderEntry type="module-library" exported="">
       <library>
         <CLASSES>
-          <root url="jar://$USER_HOME$/Documents/Projet/poi-3.16-beta1/lib/commons-collections4-4.1.jar!/" />
+          <root url="jar://$MODULE_DIR$/src/lib/poi-3.16-beta1.jar!/" />
         </CLASSES>
         <JAVADOC />
         <SOURCES />
@@ -101,7 +101,7 @@
     <orderEntry type="module-library" exported="">
       <library>
         <CLASSES>
-          <root url="jar://$USER_HOME$/Documents/Projet/poi-3.16-beta1/lib/commons-logging-1.2.jar!/" />
+          <root url="jar://$MODULE_DIR$/src/lib/poi-examples-3.16-beta1.jar!/" />
         </CLASSES>
         <JAVADOC />
         <SOURCES />
@@ -110,7 +110,7 @@
     <orderEntry type="module-library" exported="">
       <library>
         <CLASSES>
-          <root url="jar://$USER_HOME$/Documents/Projet/poi-3.16-beta1/lib/junit-4.12.jar!/" />
+          <root url="jar://$MODULE_DIR$/src/lib/poi-excelant-3.16-beta1.jar!/" />
         </CLASSES>
         <JAVADOC />
         <SOURCES />
@@ -119,7 +119,7 @@
     <orderEntry type="module-library" exported="">
       <library>
         <CLASSES>
-          <root url="jar://$USER_HOME$/Documents/Projet/poi-3.16-beta1/lib/log4j-1.2.17.jar!/" />
+          <root url="jar://$MODULE_DIR$/src/lib/poi-ooxml-3.16-beta1.jar!/" />
         </CLASSES>
         <JAVADOC />
         <SOURCES />
@@ -128,7 +128,7 @@
     <orderEntry type="module-library" exported="">
       <library>
         <CLASSES>
-          <root url="jar://$MODULE_DIR$/src/com/team33/model/aspose-cells-17.02.0.jar!/" />
+          <root url="jar://$MODULE_DIR$/src/lib/poi-ooxml-schemas-3.16-beta1.jar!/" />
         </CLASSES>
         <JAVADOC />
         <SOURCES />
@@ -137,7 +137,7 @@
     <orderEntry type="module-library" exported="">
       <library>
         <CLASSES>
-          <root url="jar://$MODULE_DIR$/src/com/team33/model/aspose-gridweb-17.02.0.jar!/" />
+          <root url="jar://$MODULE_DIR$/src/lib/poi-scratchpad-3.16-beta1.jar!/" />
         </CLASSES>
         <JAVADOC />
         <SOURCES />
@@ -146,7 +146,7 @@
     <orderEntry type="module-library" exported="">
       <library>
         <CLASSES>
-          <root url="jar://$MODULE_DIR$/src/com/team33/model/bcprov-jdk16-146.jar!/" />
+          <root url="jar://$MODULE_DIR$/src/lib/xmlbeans-2.6.0.jar!/" />
         </CLASSES>
         <JAVADOC />
         <SOURCES />
