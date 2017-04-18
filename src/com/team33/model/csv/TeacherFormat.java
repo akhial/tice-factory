@@ -1,5 +1,6 @@
 package com.team33.model.csv;
 
+import com.team33.model.Util;
 import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.ss.usermodel.Sheet;
 
@@ -59,7 +60,7 @@ public class TeacherFormat extends UserFormat implements CSVFormat {
     public ArrayList<String> ListEmails(String lastname){
         Sheet sheet = getEmailsWorkbook().getSheetAt(0);
         Row row ;
-        int emailColumn = rangOfCellContaining(sheet.rowIterator().next(),"@esi.dz");
+        int emailColumn = Util.getInstance().rangOfCellContaining(sheet.rowIterator().next(),"@esi.dz");
         ArrayList<String> arrayList = new ArrayList<>();
         Iterator<Row> rowIterator = sheet.rowIterator();
         if (!unHandledEmails.containsKey(lastname.toLowerCase())){
@@ -132,8 +133,8 @@ public class TeacherFormat extends UserFormat implements CSVFormat {
         while ((!found) && (iterator.hasNext())){
             if (rowContains(row,"NOM")) {
                 found = true ;
-                firstNameColumn = column(row,"PRENOM");
-                lastNameColumn = column(row,"NOM");
+                firstNameColumn = Util.getInstance().column(row,"PRENOM");
+                lastNameColumn = Util.getInstance().column(row,"NOM");
             }
             else row = iterator.next();
         }
@@ -157,3 +158,4 @@ public class TeacherFormat extends UserFormat implements CSVFormat {
         return file.getPath();
     }
 }
+
