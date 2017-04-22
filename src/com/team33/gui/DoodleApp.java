@@ -9,7 +9,7 @@ import javafx.stage.Stage;
 public class DoodleApp extends Application {
     @Override
     public void start(Stage primaryStage) throws Exception {
-        Parent root = FXMLLoader.load(getClass().getResource("/fxml/MainAppView.fxml"));
+        Parent root = FXMLLoader.load(getClass().getResource("/fxml/StudentSelectionView.fxml"));
         primaryStage.setTitle("Doodle 2017");
         primaryStage.setScene(new Scene(root, 800, 600));
         primaryStage.show();
