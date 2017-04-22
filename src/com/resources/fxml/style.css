@@ -1,26 +1,46 @@
 @font-face {
-    src: url("../fonts/OpenSans-Light.ttf");
-    src: url("../fonts/OpenSans-Regular.ttf");
-    src: url("../fonts/OpenSans-Semibold.ttf");
-    src: url("../fonts/OpenSans-Bold.ttf");
-    src: url("../fonts/OpenSans-Extrabold.ttf");
-    src: url("../fonts/OpenSans-LightItalic.ttf");
-    src: url("../fonts/OpenSans-Italic.ttf");
-    src: url("../fonts/OpenSans-SemiboldItalic.ttf");
-    src: url("../fonts/OpenSans-BoldItalic.ttf");
-    src: url("../fonts/OpenSans-ExtraboldItalic.ttf");
+    src url("../fonts/OpenSans-Light.ttf");
+    src url("../fonts/OpenSans-Regular.ttf");
+    src url("../fonts/OpenSans-Semibold.ttf");
+    src url("../fonts/OpenSans-Bold.ttf");
+    src url("../fonts/OpenSans-Extrabold.ttf");
+    src url("../fonts/OpenSans-LightItalic.ttf");
+    src url("../fonts/OpenSans-Italic.ttf");
+    src url("../fonts/OpenSans-SemiboldItalic.ttf");
+    src url("../fonts/OpenSans-BoldItalic.ttf");
+    src url("../fonts/OpenSans-ExtraboldItalic.ttf");
+}
+
+.jfx-hamburger {
+  -fx-spacing: 7;
+  -fx-cursor: hand;
 }
 
 #user-pane {
     -fx-background-color: #26A69A;
+    -fx-font-size: 14;
+}
+
+#user-pane #type-label {
+    -fx-font-family: "Open Sans Regular";
+}
+
+#user-image {
+
 }
 
 .label {
-    -fx-fill: white;
-    -fx-font-family: "Open Sans Light";
+    -fx-text-fill: white;
+    -fx-font-family: "Open Sans Semibold";
+}
+
+.button {
+    -fx-text-fill: #B0BEC5;
+    -fx-font-family: "Open Sans Semibold";
 }
 
 #top-bar {
+    -fx-font-size: 17;
     -fx-background-color: #00897B;
 }
 
@@ -28,10 +48,58 @@
     -fx-background-color: #37474F;
 }
 
-#back {
+#back-pane {
   -fx-background-color: #263238;
 }
 
-.background {
-  -fx-background-color: #102530;
+#dash-container {
+  -fx-background-color: #263238;
+}
+
+#green-heading-text {
+  -fx-padding: 7;
+}
+
+#line {
+  -fx-stroke: #00897B;
+  -fx-stroke-width: 2;
+  -fx-padding: 2;
+}
+
+#recent-files-list {
+  -fx-background-color: #263238;
+}
+
+#unavailable {
+  -fx-text-fill: #90A4AE;
+}
+
+#statistics {
+  -fx-padding: 10;
+}
+
+.jfx-button {
+  -fx-alignment: CENTER_LEFT;
+}
+
+.jfx-radio-button {
+  -fx-text-fill: #B0BEC5;
+  -jfx-selected-color: #00897B;
+  -jfx-unselected-color: #00897B;
+}
+
+#statlabels {
+  -fx-font-family: "Open Sans Extrabold";
+}
+
+.chart-content {
+  -fx-background-color: transparent;
+}
+
+#form-button {
+  -fx-text-fill: #26A696;
+}
+
+.jfx-progress-bar {
+
 }
