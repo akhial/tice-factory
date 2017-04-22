@@ -1,0 +1,25 @@
+<component name="libraryTable">
+  <library name="lib">
+    <CLASSES>
+      <root url="jar://E:/poi-3.15/lib/commons-codec-1.10.jar!/" />
+      <root url="jar://E:/poi-3.15/lib/commons-collections4-4.1.jar!/" />
+      <root url="jar://E:/poi-3.15/lib/commons-logging-1.2.jar!/" />
+      <root url="jar://E:/poi-3.15/lib/junit-4.12.jar!/" />
+      <root url="jar://E:/poi-3.15/lib/log4j-1.2.17.jar!/" />
+      <root url="jar://E:/poi-3.15/ooxml-lib/curvesapi-1.04.jar!/" />
+      <root url="jar://E:/poi-3.15/ooxml-lib/xmlbeans-2.6.0.jar!/" />
+      <root url="jar://E:/poi-3.15/poi-3.15.jar!/" />
+      <root url="jar://E:/poi-3.15/poi-examples-3.15.jar!/" />
+      <root url="jar://E:/poi-3.15/poi-excelant-3.15.jar!/" />
+      <root url="jar://E:/poi-3.15/poi-ooxml-3.15.jar!/" />
+      <root url="jar://E:/poi-3.15/poi-ooxml-schemas-3.15.jar!/" />
+      <root url="jar://E:/poi-3.15/poi-scratchpad-3.15.jar!/" />
+      <root url="file://E:/poi-3.15/lib" />
+      <root url="file://E:/poi-3.15/ooxml-lib" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES />
+    <jarDirectory url="file://E:/poi-3.15/lib" recursive="false" />
+    <jarDirectory url="file://E:/poi-3.15/ooxml-lib" recursive="false" />
+  </library>
+</component>
