@@ -6,21 +6,24 @@ import com.team33.model.csv.UserFormat;
 import org.apache.poi.ss.usermodel.Cell;
 import org.apache.poi.ss.usermodel.CellType;
 import org.apache.poi.ss.usermodel.Row;
+import org.apache.poi.ss.usermodel.Sheet;
 
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.Iterator;
 
 /**
  * Created by Amine on 13/02/2017.
  */
-public abstract class GradesFormat extends UserFormat implements CSVFormat {
+public class GradesFormat extends UserFormat implements CSVFormat {
 
     private String level;
     private String optin;
     private String filePathOut;
     private ArrayList<Student> listOfStudentsWithoutEmail;
+    private HashMap<String, Student> students;
 
     public GradesFormat(String level, String optin,String filePathOut) {
         this.level = level;
@@ -69,13 +72,31 @@ public abstract class GradesFormat extends UserFormat implements CSVFormat {
         }
     }
 
-    protected void generateRow(Row rowIn,int numRow,Student student){
+    private boolean isANumber(String str){
+        boolean isNumber = true;
+        if(str.equals("") || str == null) return false;
+        str = str.replace(".","");
+        str = str.replace(",","");
+        char cell[] = str.toCharArray();
+        int i = 0;
+        for(char c : cell){
+            if(!Character.isDigit(c)) return false;
+        }
+        return isNumber;
+    }
+
+    private void generateRow(Row rowIn,int numRow,Student student,ColumnsInformationBox box){
         Row rw = this.getWorkbookOut().getSheetAt(0).createRow(numRow);
         rw.createCell(0).setCellValue(student.getUsername());
         int i = 1;
         for(Cell cell : rowIn){
+            String cellValue = cell.toString();
             cell.setCellType(CellType.STRING);
-            rw.createCell(i).setCellValue(cell.toString());
+            if(cell.getColumnIndex() != box.getColMatrin() && cell.getColumnIndex() != box.getColNom() && cell.getColumnIndex() != box.getColPrenom() && cell.getColumnIndex() != box.getColOptin() && cell.getColumnIndex() != box.getColAnetin() && cell.getColumnIndex() != box.getColNS())
+            {
+            if (isANumber(cellValue)) rw.createCell(i).setCellValue(cell.toString());
+            else rw.createCell(i).setCellValue("0");
+            } else rw.createCell(i).setCellValue(cell.toString());
             i++;
         }
     }
@@ -84,7 +105,58 @@ public abstract class GradesFormat extends UserFormat implements CSVFormat {
     {
         getWorkbookOut().getSheetAt(0).getRow(numRow).createCell(0).setCellValue(student.getUsername());
     }
-    protected abstract void createStudentsList() throws IOException;
+
+    private String nameOfEmailSheet()
+    {
+        String sheetName = "";
+        if(this.getOptin().equals("CPI"))
+        {
+            sheetName = this.getLevel();
+        }
+        else sheetName = this.getLevel() + this.getOptin();
+
+        for(Sheet sheet : getEmailsWorkbook())
+        {
+            if(sheetName.equalsIgnoreCase(sheet.getSheetName())) return sheet.getSheetName();
+        }
+        return null;
+    }
+    private void createStudentsList() throws IOException {
+
+        int numRow = 1;
+        generateHeader();
+
+        FileInformationExtractor extractor = new FileInformationExtractor(getWorkbookIn(), getOptin());
+        this.students = extractor.findStudents();
+
+        HashMap<Student, Integer> studentHashMap = extractor.createStudentsHashMap();
+        EmailFinder emailFinder = new EmailFinder(nameOfEmailSheet(), getEmailsWorkbook(), studentHashMap);
+
+        for (Sheet sheet : getWorkbookIn()){
+            ColumnsInformationBox box = new ColumnsInformationBox(sheet);
+            box.extractInformationsFromFile();
+            for(Row row : sheet)
+            {
+                if(Util.getInstance().existInRow(row,getOptin()))
+                {
+                    Student student = this.students.get(row.getCell(box.getColMatrin()).toString().replace("/",""));
+                    student.setLevel(getLevel());
+                    emailFinder.setStudent(student);
+                    emailFinder.getEmails();
+                    student.setStudentInformations();
+                    if (!student.hasEmail()) {
+                        student.setPositionInWorkbookOut(numRow);
+                        this.getListOfStudentsWithoutEmail().add(student);
+                    }
+                    generateRow(row,numRow,student,box);
+                    numRow++;
+                }
+            }
+        }
+        File file = new File(getFilePathOut());
+        saveUsersList(file);
+    }
+
     @Override
     public String buildCSV(ArrayList<String> workbooksPaths) throws IOException {
         String type;

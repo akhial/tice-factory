@@ -1,5 +1,6 @@
 package com.team33.model.csv.Students;
 
+import com.team33.model.csv.Students.Courses.CoursesStore;
 import org.apache.poi.ss.usermodel.CellType;
 import org.apache.poi.ss.usermodel.Row;
 
@@ -200,7 +201,7 @@ public class Student implements Serializable{
         createLastNameInMoodle();
     }
 
-    public void allocateCourses(CourseFormat courseFormat, HashMap<String,ArrayList<String>> optionalModules)
+    public void allocateCourses(CoursesStore courseFormat, HashMap<String,ArrayList<String>> optionalModules)
     {
         this.courses =  new ArrayList<>();
         this.courses.addAll(courseFormat.getListOfCourses(this.level,this.optin));

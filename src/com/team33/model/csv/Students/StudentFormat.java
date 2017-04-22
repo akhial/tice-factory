@@ -56,7 +56,7 @@ public class StudentFormat extends UserFormat implements CSVFormat {
      */
 
 
-    private void generateRow(int numRow, Student student)// générer une ligne cde fichier résultat contenant les coordonné d'un étudiant
+    protected void generateRow(int numRow, Student student)// générer une ligne cde fichier résultat contenant les coordonné d'un étudiant
     {
         Row rw = getWorkbookOut().getSheetAt(0).createRow(numRow);
 
@@ -75,7 +75,7 @@ public class StudentFormat extends UserFormat implements CSVFormat {
     }
 
 
-    private String nameOfEmailSheet()
+    protected String nameOfEmailSheet()
     {
         String sheetName = "";
         if(this.optin.equals("CPI") || this.optin.equals("SC"))
@@ -91,7 +91,7 @@ public class StudentFormat extends UserFormat implements CSVFormat {
         return null;
     }
 
-    private void createStudentList()
+    protected void createStudentList()
     {
         Long startTime = System.currentTimeMillis();
         System.out.println("Création de la liste ***");
@@ -108,7 +108,6 @@ public class StudentFormat extends UserFormat implements CSVFormat {
         for (Map.Entry<String,Student> entry : students.entrySet())
         {
             Student student = entry.getValue();
-            System.out.println(entry.getKey());
             student.setLevel(level);
             emailFinder.setStudent(student);
             emailFinder.getEmails();
@@ -154,5 +153,17 @@ public class StudentFormat extends UserFormat implements CSVFormat {
         createStudentList();
 
         return filePathOut;
+    }
+
+    public String getLevel() {
+        return level;
+    }
+
+    public String getOptin() {
+        return optin;
+    }
+
+    public String getFilePathOut() {
+        return this.filePathOut;
     }
 }

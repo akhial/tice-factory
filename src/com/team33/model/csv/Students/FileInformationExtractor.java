@@ -34,6 +34,38 @@ import java.util.Map;
         this.optin = optin;
     }
 
+    String ConvertWordTableToExcel(String wordPath, String optin) throws IOException {
+        FileInputStream fileInputStream = new FileInputStream(wordPath);
+        XWPFDocument xwpfDocument = new XWPFDocument(fileInputStream);
+        XWPFWordExtractor we = new XWPFWordExtractor(xwpfDocument);
+        String excelName = optin + ".xlsx";
+        FileOutputStream fileOutputStream = new FileOutputStream(excelName);
+        XSSFWorkbook xssfWorkbook = new XSSFWorkbook();
+        Sheet sheet = xssfWorkbook.createSheet();
+        int i = 0;
+        int j = 0;
+        int nbColumns = 0;
+        Row excelRow = sheet.createRow(j);
+        for (XWPFTable table : xwpfDocument.getTables()) {
+            for (XWPFTableRow row : table.getRows()) {
+
+                for (XWPFTableCell cell : row.getTableCells()) {
+                    excelRow.createCell(i).setCellValue(cell.getText());
+                    i++;
+                }
+                excelRow.createCell(i).setCellValue(optin);
+                nbColumns = i;
+                i = 0;
+                j++;
+                excelRow = sheet.createRow(j);
+            }
+            sheet.getRow(j - table.getNumberOfRows()).getCell(nbColumns).setCellValue("Optin");
+        }
+        xssfWorkbook.write(fileOutputStream);
+        fileInputStream.close();
+        return excelName;
+    }
+
      void changeInvalidOptin()
     {
         boolean found = false;
@@ -84,6 +116,22 @@ import java.util.Map;
         return students;
     }
 
+    public ArrayList<Student> findIntershipStudents() {
+        ArrayList<Student> students = new ArrayList<Student>();
+        for (Row rw : this.workbook.getSheetAt(0)) {
+            if (Util.getInstance().existInRow(rw, optin)) {
+                Student student = new Student();
+                ColumnsInformationBox box = new ColumnsInformationBox(this.workbook.getSheetAt(0));
+                box.extractInformationsFromFile();
+                student.setBox(box);
+                student.rowToBasicInformations(rw);
+                students.add(student);
+            }
+
+        }
+        return students;
+    }
+
      HashMap<Student, Integer> createStudentsHashMap() {
         HashMap<Student, Integer> hashMap = new HashMap<Student, Integer>();
         for (Sheet sheet : this.workbook) {
@@ -109,37 +157,7 @@ import java.util.Map;
         return hashMap;
     }
 
-     String ConvertWordTableToExcel(String wordPath, String optin) throws IOException {
-            FileInputStream fileInputStream = new FileInputStream(wordPath);
-            XWPFDocument xwpfDocument = new XWPFDocument(fileInputStream);
-            XWPFWordExtractor we = new XWPFWordExtractor(xwpfDocument);
-            String excelName = optin + ".xlsx";
-            FileOutputStream fileOutputStream = new FileOutputStream(excelName);
-            XSSFWorkbook xssfWorkbook = new XSSFWorkbook();
-            Sheet sheet = xssfWorkbook.createSheet();
-            int i = 0;
-            int j = 0;
-            int nbColumns = 0;
-            Row excelRow = sheet.createRow(j);
-            for (XWPFTable table : xwpfDocument.getTables()) {
-                for (XWPFTableRow row : table.getRows()) {
 
-                    for (XWPFTableCell cell : row.getTableCells()) {
-                        excelRow.createCell(i).setCellValue(cell.getText());
-                        i++;
-                    }
-                    excelRow.createCell(i).setCellValue(optin);
-                    nbColumns = i;
-                    i = 0;
-                    j++;
-                    excelRow = sheet.createRow(j);
-                }
-                sheet.getRow(j - table.getNumberOfRows()).getCell(nbColumns).setCellValue("Optin");
-            }
-            xssfWorkbook.write(fileOutputStream);
-            fileInputStream.close();
-            return excelName;
-        }
 
      String getFileType(File file) throws IOException {
 

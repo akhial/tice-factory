@@ -1,6 +1,7 @@
 package com.team33.model.csv.Students;
 
 import com.team33.model.csv.CSVFormat;
+import com.team33.model.csv.Students.Courses.CoursesStore;
 import com.team33.model.csv.UserFormat;
 import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.ss.usermodel.Sheet;
@@ -9,14 +10,15 @@ import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Map;
 import java.util.Set;
 
 /**
  * Created by Amine on 13/02/2017.
  */
-public abstract class GroupFormat extends UserFormat implements CSVFormat {
+public class GroupFormat extends UserFormat implements CSVFormat {
 
-    private CourseFormat courseFormat;
+    private CoursesStore courseFormat;
     private ArrayList<Student> listOfStudentsWithoutEmail;
     private String level;
     private String optin;
@@ -25,8 +27,8 @@ public abstract class GroupFormat extends UserFormat implements CSVFormat {
 
 
     public GroupFormat(String level, String optin, String filePathOut) throws IOException {
-        this.courseFormat = new CourseFormat();
-        this.courseFormat.openWrkbook();
+        this.courseFormat = new CoursesStore();
+        this.courseFormat.load();
         this.listOfStudentsWithoutEmail = new ArrayList<>();
         this.level = level;
         this.optin = optin;
@@ -38,7 +40,7 @@ public abstract class GroupFormat extends UserFormat implements CSVFormat {
         this.filePathOut = filePathOut + ".xlsx";
     }
 
-    public CourseFormat getCourseFormat() {
+    public CoursesStore getCourseFormat() {
         return courseFormat;
     }
 
@@ -143,7 +145,35 @@ public abstract class GroupFormat extends UserFormat implements CSVFormat {
         return null;
     }
 
-    protected abstract void createStudentList() throws IOException;
+    private void createStudentList() {
+        int numRow = 1;
+        FileInformationExtractor extractor = new FileInformationExtractor(getWorkbookIn(), getOptin());
+        HashMap<String,Student> students = extractor.findStudents();
+        HashMap<Student, Integer> studentHashMap = extractor.createStudentsHashMap();
+        EmailFinder emailFinder = new EmailFinder(nameOfEmailSheet(), getEmailsWorkbook(), studentHashMap);
+        HashMap<String, ArrayList<String>> optionalModules = null;
+        if (getLevel().equals("2CS")) optionalModules = extractor.extractOptionalModules();
+        setMaxNbOptionalsModules(maxNumberOfOptionalModules(optionalModules));
+        generateHeader(this.getMaxNbOptionalsModules());
+        for (Map.Entry<String,Student> entry : students.entrySet())
+        {
+            Student student = entry.getValue();
+            student.setLevel(getLevel());
+            emailFinder.setStudent(student);
+            emailFinder.getEmails();
+            student.setStudentInformations();
+            student.allocateCourses(this.getCourseFormat(), optionalModules);
+            if (!student.hasEmail()) {
+                student.setPositionInWorkbookOut(numRow);
+                this.getListOfStudentsWithoutEmail().add(student);
+            }
+            generateRow(numRow, student);
+            numRow++;
+        }
+        File file = new File(getFilePathOut());
+        saveUsersList(file);
+    }
+
 
 
     @Override
