@@ -99,3 +99,23 @@
 #form-button {
   -fx-text-fill: #26A696;
 }
+
+#level-list {
+  -fx-background-color: #263238;
+}
+
+#level-list .list-cell {
+  -fx-background-color: #263238;
+}
+
+.jfx-text-field {
+  -fx-text-fill: white;
+}
+
+#level-list .list-cell:selected {
+  -fx-background-color: #26A696;
+}
+
+#file-button {
+  
+}

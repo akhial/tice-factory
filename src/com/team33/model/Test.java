@@ -12,7 +12,7 @@ import java.util.Scanner;
 
 public class Test {
 
-    static ArrayList<String> listOfUsedEmails = new ArrayList<String>();
+    private static ArrayList<String> listOfUsedEmails = new ArrayList<>();
     public static void main(String[] args) throws IOException {
 
        ArrayList<String> workbooksPaths = new ArrayList<String>();
@@ -20,7 +20,7 @@ public class Test {
         workbooksPaths.add("liste email tous les etudiants.xlsx");
         workbooksPaths.add("Listes-Etudiants_2CPI_S1_2016-2017(1) (2).xlsx");
         GradesFormat studentFormat = new GradesFormat("2CPI","CPI","");
-        CSVBuilder csvBuilder = new CSVBuilder(workbooksPaths,studentFormat,"C:/Users/hamza/IdeaProjects/team-33");
+        CSVBuilder csvBuilder = new CSVBuilder(workbooksPaths,studentFormat,"C:/Users/Adel/IdeaProjects/Team-33");
         csvBuilder.buildCSV();
         String email = null;
         for(Student student : studentFormat.getListOfStudentsWithoutEmail())
@@ -37,7 +37,6 @@ public class Test {
             }else
             {
                 deleteUsedEmails(student);
-                System.out.println(student.getListOfEmails().size());
                 student.tryToSetEmail();
                 if(!student.hasEmail())
                 {
@@ -52,10 +51,10 @@ public class Test {
             studentFormat.updateRow(student.getPositionInWorkbookOut(),student);
             listOfUsedEmails.add(email);
         }
-                studentFormat.saveUsersList(new File(csvBuilder.getTempPath()));
+        studentFormat.saveUsersList(new File(csvBuilder.getTempPath()));
         csvBuilder.convertToCSV();
-        CoursesStore coursesStore = new CoursesStore();
-        /*coursesStore.getCycleSuperieur().getCS2().ajouterOption("SIQ");
+        /*CoursesStore coursesStore = new CoursesStore();
+        coursesStore.getCycleSuperieur().getCS2().ajouterOption("SIQ");
         coursesStore.getCycleSuperieur().getCS2().ajouterOption("SIT");
         coursesStore.getCycleSuperieur().getCS2().ajouterOption("SIL");
         coursesStore.getCyclePreparatoire().getCPI1().ajouterCoursSemsetre1("TEO1","Techniques d'expression orale");

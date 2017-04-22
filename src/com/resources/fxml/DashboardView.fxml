@@ -14,12 +14,14 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.shape.Line?>
 
-
 <AnchorPane xmlns="http://javafx.com/javafx/8.0.111" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.team33.gui.DashboardViewController">
    <children>
       <VBox id="dash-container" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" stylesheets="@style.css" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
          <children>
-            <Label id="green-heading-text" text="FICHIERS RÉCENTS" />
+            <Label id="green-heading-text" text="FICHIERS RÉCENTS">
+               <VBox.margin>
+                  <Insets left="10.0" top="10.0" />
+               </VBox.margin></Label>
             <StackPane prefHeight="150.0" prefWidth="200.0" VBox.vgrow="ALWAYS">
                <children>
                   <JFXListView id="recent-files-list" prefHeight="272.0" prefWidth="600.0" />
@@ -31,7 +33,10 @@
                   <Insets bottom="5.0" top="5.0" />
                </VBox.margin>
             </Line>
-            <Label id="green-heading-text" text="STATISTIQUES" />
+            <Label id="green-heading-text" text="STATISTIQUES">
+               <VBox.margin>
+                  <Insets left="10.0" />
+               </VBox.margin></Label>
             <GridPane id="statistics" maxHeight="-Infinity" minHeight="-Infinity" prefHeight="60.0" prefWidth="600.0" VBox.vgrow="NEVER">
               <columnConstraints>
                 <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" percentWidth="40.0" prefWidth="100.0" />
@@ -48,18 +53,69 @@
                   <Label text="Étudiants" />
                   <Label text="Enseignants" GridPane.rowIndex="1" />
                   <Label text="Cours crées" GridPane.rowIndex="2" />
-                  <Label id="statlabels" text="Label" GridPane.columnIndex="3" />
-                  <Label id="statlabels" text="Label" GridPane.columnIndex="3" GridPane.rowIndex="1" />
-                  <Label id="statlabels" text="Label" GridPane.columnIndex="3" GridPane.rowIndex="2" />
-                  <Label id="statlabels" text="Label" GridPane.columnIndex="1" />
-                  <Label text="Accés totals" GridPane.columnIndex="2" />
-                  <Label id="statlabels" text="Label" GridPane.columnIndex="1" GridPane.rowIndex="1" />
-                  <Label id="statlabels" text="Label" GridPane.columnIndex="1" GridPane.rowIndex="2" />
+                  <AnchorPane GridPane.columnIndex="3">
+                     <GridPane.margin>
+                        <Insets />
+                     </GridPane.margin>
+                     <children>
+                        <Label id="statlabels" text="123" AnchorPane.rightAnchor="0.0" />
+                     </children>
+                  </AnchorPane>
+                  <AnchorPane GridPane.columnIndex="3" GridPane.rowIndex="1">
+                     <GridPane.margin>
+                        <Insets />
+                     </GridPane.margin>
+                     <children>
+                        <Label id="statlabels" text="123" AnchorPane.rightAnchor="0.0" />
+                     </children>
+                  </AnchorPane>
+                  <AnchorPane GridPane.columnIndex="3" GridPane.rowIndex="2">
+                     <GridPane.margin>
+                        <Insets />
+                     </GridPane.margin>
+                     <children>
+                        <Label id="statlabels" text="123" AnchorPane.rightAnchor="0.0" />
+                     </children>
+                  </AnchorPane>
+                  <AnchorPane GridPane.columnIndex="1">
+                     <GridPane.margin>
+                        <Insets />
+                     </GridPane.margin>
+                     <children>
+                        <Label id="statlabels" text="123" AnchorPane.rightAnchor="10.0" />
+                     </children>
+                  </AnchorPane>
+                  <Label text="Accés totals" GridPane.columnIndex="2">
+                     <GridPane.margin>
+                        <Insets />
+                     </GridPane.margin></Label>
+                  <AnchorPane GridPane.columnIndex="1" GridPane.rowIndex="1">
+                     <GridPane.margin>
+                        <Insets />
+                     </GridPane.margin>
+                     <children>
+                        <Label id="statlabels" text="123" AnchorPane.rightAnchor="10.0" />
+                     </children>
+                  </AnchorPane>
+                  <AnchorPane GridPane.columnIndex="1" GridPane.rowIndex="2">
+                     <GridPane.margin>
+                        <Insets />
+                     </GridPane.margin>
+                     <children>
+                        <Label id="statlabels" text="123" AnchorPane.rightAnchor="10.0" />
+                     </children>
+                  </AnchorPane>
                   <Label text="Accés ce mois" GridPane.columnIndex="2" GridPane.rowIndex="1" />
                   <Label text="Groupes" GridPane.columnIndex="2" GridPane.rowIndex="2" />
                </children>
+               <VBox.margin>
+                  <Insets left="20.0" right="20.0" />
+               </VBox.margin>
             </GridPane>
-            <Label id="green-heading-text" text="NOMBRE D'ACCÉS PAR PÉRIODE" />
+            <Label id="green-heading-text" text="NOMBRE D'ACCÉS PAR PÉRIODE">
+               <VBox.margin>
+                  <Insets left="10.0" />
+               </VBox.margin></Label>
             <LineChart maxHeight="-Infinity" minHeight="-Infinity" prefHeight="190.0" prefWidth="600.0" VBox.vgrow="NEVER">
               <xAxis>
                 <CategoryAxis side="BOTTOM" />

@@ -2,6 +2,7 @@ package com.team33.model.csv.Students;
 
 import com.team33.model.Utilities.Util;
 import com.team33.model.csv.CSVFormat;
+import com.team33.model.csv.Students.Courses.Mailable;
 import com.team33.model.csv.UserFormat;
 import org.apache.poi.ss.usermodel.Cell;
 import org.apache.poi.ss.usermodel.CellType;
@@ -17,7 +18,7 @@ import java.util.Iterator;
 /**
  * Created by Amine on 13/02/2017.
  */
-public class GradesFormat extends UserFormat implements CSVFormat {
+public class GradesFormat extends UserFormat implements CSVFormat, Mailable {
 
     private String level;
     private String optin;

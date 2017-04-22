@@ -1,6 +1,7 @@
 package com.team33.model.csv.Students;
 
 import com.team33.model.csv.Students.Courses.CoursesStore;
+import com.team33.model.csv.Students.Courses.Mailable;
 import com.team33.model.csv.UserFormat;
 import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.ss.usermodel.Sheet;
@@ -12,7 +13,7 @@ import java.util.*;
 /**
  * Created by Amine on 13/02/2017.
  */
-public class AffectingStudentToCourseFormat extends UserFormat {
+public class AffectingStudentToCourseFormat extends UserFormat implements Mailable {
 
     private CoursesStore courseFormat;
     private ArrayList<Student> listOfStudentsWithoutEmail;
@@ -21,7 +22,7 @@ public class AffectingStudentToCourseFormat extends UserFormat {
     private String filePathOut;
 
 
-    public AffectingStudentToCourseFormat(String level, String optin,String filePathOut) throws IOException {
+    public AffectingStudentToCourseFormat(String level, String optin,String filePathOut) throws IOException, ClassNotFoundException {
         this.courseFormat = new CoursesStore();
         this.courseFormat.load();
         this.listOfStudentsWithoutEmail = new ArrayList<>();

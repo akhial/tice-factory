@@ -12,7 +12,7 @@
 
 <VBox id="dash-container" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" stylesheets="@style.css" xmlns="http://javafx.com/javafx/8.0.111" xmlns:fx="http://javafx.com/fxml/1">
    <children>
-      <Label maxHeight="-Infinity" minHeight="-Infinity" prefHeight="45.0" prefWidth="70.0" text="ÉTAPE 3/3">
+      <Label maxHeight="-Infinity" minHeight="-Infinity" prefHeight="45.0" prefWidth="70.0" text="ÉTAPE 4/4">
          <VBox.margin>
             <Insets left="10.0" />
          </VBox.margin>
@@ -23,7 +23,7 @@
          </effect></JFXProgressBar>
       <AnchorPane maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="370.0" prefWidth="600.0" VBox.vgrow="ALWAYS">
          <children>
-            <Label layoutX="30.0" layoutY="14.0" prefHeight="30.0" prefWidth="290.0" text="VEUILLEZ CHOISIR LE FICHIER DESTINATION" AnchorPane.leftAnchor="30.0" AnchorPane.topAnchor="45.0" />
+            <Label layoutX="30.0" layoutY="14.0" prefHeight="30.0" prefWidth="290.0" text="VEUILLEZ CHOISIR LE DOSSIER DESTINATION" AnchorPane.leftAnchor="30.0" AnchorPane.topAnchor="45.0" />
             <JFXButton layoutX="518.0" layoutY="300.0" AnchorPane.bottomAnchor="27.0" AnchorPane.rightAnchor="30.0" />
             <JFXButton layoutX="447.0" layoutY="300.0" AnchorPane.bottomAnchor="27.0" AnchorPane.rightAnchor="101.0" />
             <JFXTextField focusColor="#0089b7" layoutX="30.0" layoutY="55.0" prefHeight="25.0" prefWidth="540.0" AnchorPane.leftAnchor="30.0" AnchorPane.rightAnchor="30.0" AnchorPane.topAnchor="95.0" />

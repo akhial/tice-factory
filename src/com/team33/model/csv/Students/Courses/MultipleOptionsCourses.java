@@ -72,6 +72,9 @@ public class MultipleOptionsCourses implements Serializable{
         else return new ArrayList<>();
     }
 
+    public ArrayList<String> getOptions() {
+        return options;
+    }
 
     public void ajouterOption(String option){
         if(this.options == null) this.options = new ArrayList<>();

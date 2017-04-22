@@ -1,5 +1,7 @@
 package com.team33.model.csv;
 
+import com.team33.model.csv.Students.Student;
+
 import java.io.IOException;
 import java.util.ArrayList;
 

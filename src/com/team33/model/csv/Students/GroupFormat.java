@@ -2,6 +2,7 @@ package com.team33.model.csv.Students;
 
 import com.team33.model.csv.CSVFormat;
 import com.team33.model.csv.Students.Courses.CoursesStore;
+import com.team33.model.csv.Students.Courses.Mailable;
 import com.team33.model.csv.UserFormat;
 import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.ss.usermodel.Sheet;
@@ -16,7 +17,7 @@ import java.util.Set;
 /**
  * Created by Amine on 13/02/2017.
  */
-public class GroupFormat extends UserFormat implements CSVFormat {
+public class GroupFormat extends UserFormat implements CSVFormat, Mailable {
 
     private CoursesStore courseFormat;
     private ArrayList<Student> listOfStudentsWithoutEmail;
@@ -26,7 +27,7 @@ public class GroupFormat extends UserFormat implements CSVFormat {
     private int maxNbOptionalsModules;
 
 
-    public GroupFormat(String level, String optin, String filePathOut) throws IOException {
+    public GroupFormat(String level, String optin, String filePathOut) throws IOException, ClassNotFoundException {
         this.courseFormat = new CoursesStore();
         this.courseFormat.load();
         this.listOfStudentsWithoutEmail = new ArrayList<>();

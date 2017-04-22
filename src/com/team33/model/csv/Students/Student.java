@@ -107,7 +107,7 @@ public class Student implements Serializable{
         this.box = box;
     }
 
-    public ArrayList getListOfEmails()
+    public ArrayList<String> getListOfEmails()
     {
         return listOfEmails;
     }
