@@ -3,11 +3,12 @@ package com.team33.gui;
 import com.jfoenix.controls.JFXButton;
 import com.jfoenix.controls.JFXListView;
 import javafx.fxml.FXML;
+import javafx.scene.control.Label;
 
 public class StudentSelectionController implements Controller {
 
     @FXML
-    private JFXListView levelList;
+    private JFXListView<Label> levelList;
 
     @FXML
     private JFXButton cancelButton;
