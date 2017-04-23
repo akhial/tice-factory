@@ -28,6 +28,7 @@ public class FileSelectionController implements Controller {
         test.add(new Label("1CS"));
         test.add(new Label("2CS-SIT"));
         test.add(new Label("3CS-SIL"));
+        // TODO use real data
 
         levelContainer.setSpacing(10);
 
@@ -49,6 +50,7 @@ public class FileSelectionController implements Controller {
 
             levelContainer.getChildren().add(box);
         }
+        // TODO return results
     }
 
     @Override
