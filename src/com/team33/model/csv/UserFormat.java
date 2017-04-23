@@ -74,6 +74,7 @@ public abstract class UserFormat implements CSVFormat {
             FileOutputStream fos = new FileOutputStream(file);
             workbookOut.write(fos);
             fos.close();
+            workbookOut.close();
             workbookIn.close();
             EmailsWorkbook.close();
         }catch (FileNotFoundException e){
