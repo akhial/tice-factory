@@ -72,6 +72,14 @@ public class Student implements Serializable{
         return username;
     }
 
+    public void setLastName(String lastName) {
+        this.lastName = lastName;
+    }
+
+    public void setOptin(String optin) {
+        this.optin = optin;
+    }
+
     public void setUsername(String username) {
         this.username = username;
     }
@@ -156,7 +164,8 @@ public class Student implements Serializable{
         }
         else
         {
-            this.lastNameInMoodle = this.lastName+" "+this.level+this.optin+this.groupe;
+            this.lastNameInMoodle = this.lastName+" "+this.level+this.optin;
+            if(this.level.equals("2CS")) this.lastNameInMoodle += this.groupe;
         }
 
     }

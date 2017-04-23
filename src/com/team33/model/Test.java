@@ -17,9 +17,14 @@ public class Test {
 
        ArrayList<String> workbooksPaths = new ArrayList<String>();
 
+       CoursesStore coursesStore = new CoursesStore();
+       coursesStore.load();
+       coursesStore.getCycleSuperieur().ajouterCours3CS("MST","Master");
+       coursesStore.getCycleSuperieur().ajouterCours3CS("stpfe","STAGE et PFE");
+       coursesStore.saveChanges();
         workbooksPaths.add("liste email tous les etudiants.xlsx");
-        workbooksPaths.add("Listes-Etudiants_2CPI_S1_2016-2017(1) (2).xlsx");
-        GradesFormat studentFormat = new GradesFormat("2CPI","CPI","");
+        workbooksPaths.add("LISTEDESSUJETSPFE20162017SIL.docx");
+        AffectingStudentToCourseFormat studentFormat = new AffectingIntershipSudentToCourseFormat("3CS","SIL","");
         CSVBuilder csvBuilder = new CSVBuilder(workbooksPaths,studentFormat,"C:/Users/hamza/IdeaProjects/team-33");
         csvBuilder.buildCSV();
         String email = null;
@@ -54,7 +59,7 @@ public class Test {
         }
                 studentFormat.saveUsersList(new File(csvBuilder.getTempPath()));
         csvBuilder.convertToCSV();
-        CoursesStore coursesStore = new CoursesStore();
+        //CoursesStore coursesStore = new CoursesStore();
         /*coursesStore.getCycleSuperieur().getCS2().ajouterOption("SIQ");
         coursesStore.getCycleSuperieur().getCS2().ajouterOption("SIT");
         coursesStore.getCycleSuperieur().getCS2().ajouterOption("SIL");

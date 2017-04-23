@@ -13,10 +13,7 @@ import org.apache.poi.xwpf.usermodel.XWPFTableCell;
 import org.apache.poi.xwpf.usermodel.XWPFTableRow;
 
 import java.io.*;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Iterator;
-import java.util.Map;
+import java.util.*;
 
 /**
  * Created by hamza on 20/03/2017.
@@ -116,16 +113,24 @@ import java.util.Map;
         return students;
     }
 
-    public ArrayList<Student> findIntershipStudents() {
-        ArrayList<Student> students = new ArrayList<Student>();
+    public HashMap<String,Student[]> findIntershipStudents() {
+        HashMap<String,Student[]> students = new HashMap<>();
+        IntershipFormatColumnsInformationsBox box = new IntershipFormatColumnsInformationsBox(this.workbook.getSheetAt(0));
+        box.extractInformationsFromFile();
         for (Row rw : this.workbook.getSheetAt(0)) {
             if (Util.getInstance().existInRow(rw, optin)) {
-                Student student = new Student();
-                ColumnsInformationBox box = new ColumnsInformationBox(this.workbook.getSheetAt(0));
-                box.extractInformationsFromFile();
-                student.setBox(box);
-                student.rowToBasicInformations(rw);
-                students.add(student);
+                students.put(rw.getCell(box.getColCodePFE()).toString(),new Student[2]);
+                StringTokenizer firstNameTokenizer = new StringTokenizer(rw.getCell(box.getColNom()).toString(),"/");
+                StringTokenizer lastNameTokenizer = new StringTokenizer(rw.getCell(box.getColPrenom()).toString(),"/");
+                Student[] binome = new Student[2];
+                for(int i = 0; i < 2;i++){
+                    Student student =new Student();
+                    student.setFirstName(firstNameTokenizer.nextToken());
+                    student.setLastName(lastNameTokenizer.nextToken());
+                    student.setOptin(this.optin);
+                    binome[i] = student;
+                }
+                students.put(rw.getCell(box.getColCodePFE()).toString(),binome);
             }
 
         }

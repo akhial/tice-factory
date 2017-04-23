@@ -48,7 +48,6 @@ public class StudentFormat extends UserFormat implements CSVFormat {
     @Override
     public void generateHeader() {
         super.generateHeader();
-        getHeader().createCell(5).setCellValue("idnumber");
     }
 
     /*
@@ -65,7 +64,6 @@ public class StudentFormat extends UserFormat implements CSVFormat {
         rw.createCell(2).setCellValue(student.getFirstName());
         rw.createCell(3).setCellValue(student.getLastNameInMoodle());
         rw.createCell(4).setCellValue(student.getEmail());
-        rw.createCell(5).setCellValue(student.getIdnumber());
     }
 
     public void updateRow(int numRow,Student student)

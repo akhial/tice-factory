@@ -1,11 +1,14 @@
 package com.team33.model.csv.Students;
 
+import com.sun.corba.se.impl.encoding.OSFCodeSetRegistry;
 import org.apache.poi.ss.usermodel.Row;
 
 
+import javax.swing.text.html.parser.Entity;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Map;
 
 /**
  * Created by hamza on 18/04/2017.
@@ -50,23 +53,26 @@ public class IntershipStudentFormat  extends StudentFormat{
         ColumnsInformationBox box = new ColumnsInformationBox(getWorkbookIn().getSheetAt(0));
         box.extractInformationsFromFile();
         FileInformationExtractor extractor = new FileInformationExtractor(getWorkbookIn(),getOptin());
-        ArrayList<Student> students = extractor.findIntershipStudents();
+        HashMap<String,Student[]> students = extractor.findIntershipStudents();
         HashMap<Student, Integer> studentHashMap = extractor.createStudentsHashMap();
         EmailFinder emailFinder = new EmailFinder(nameOfEmailSheet(),getEmailsWorkbook(),studentHashMap);
 
-        for(Student student : students)
-        {
-            student.setLevel(getLevel());
-            emailFinder.setStudent(student);
+        for(Map.Entry<String,Student[]> entry : students.entrySet()) {
+            Student[] binom = entry.getValue();
+            for(int i = 0; i < 2; i++){
+            binom[i].setLevel(getLevel());
+            emailFinder.setStudent(binom[i]);
             emailFinder.getEmails();
-            student.setStudentInformations();
-            if(!student.hasEmail())
+            binom[i].setStudentInformations();
+            if(!binom[i].hasEmail())
             {
-                student.setPositionInWorkbookOut(numRow);
-                this.getListOfStudentsWithoutEmail().add(student);
+                binom[i].setPositionInWorkbookOut(numRow);
+                this.getListOfStudentsWithoutEmail().add(binom[i]);
             }
-            generateRow(numRow,student);
+            generateRow(numRow,binom[i]);
             numRow++;
+        }
+
         }
         File file = new File(getFilePathOut());
         saveUsersList(file);
