@@ -19,17 +19,22 @@ public class MainViewController implements Controller {
 
     @FXML
     protected void initialize() {
-        Parent parent = null;
-        try {
-            parent = FXMLLoader.load(getClass().getResource("/fxml/DashboardView.fxml"));
-        } catch(IOException e) {
-            e.printStackTrace();
-        }
-        gridPane.add(parent, 1, 1);
         Circle c = new Circle(20);
         c.setCenterX(userImage.getFitWidth()/2);
         c.setCenterY(userImage.getFitHeight()/2);
         userImage.setClip(c);
+    }
+
+    public void setScene(String scene) {
+        if(gridPane.getChildren().size() > 3)
+            gridPane.getChildren().remove(3);
+        Parent parent = null;
+        try {
+            parent = FXMLLoader.load(getClass().getResource(scene));
+        } catch(IOException e) {
+            e.printStackTrace();
+        }
+        gridPane.add(parent, 1, 1);
     }
 
     @Override

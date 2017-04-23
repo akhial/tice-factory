@@ -117,5 +117,19 @@
 }
 
 #file-button {
-  
+
+}
+
+.jfx-text-field {
+  -jfx-focus-color: #26A696;
+}
+
+.jfx-combo-box {
+  -fx-text-fill: #26A696;
+  -jfx-focus-color: #26A696;
+}
+
+.jfx-combo-box .cell {
+  -fx-background-color: #263238;
+  -fx-text-fill: #EEEEEE;
 }

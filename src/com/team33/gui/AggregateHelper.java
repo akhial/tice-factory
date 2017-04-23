@@ -3,7 +3,6 @@ package com.team33.gui;
 import com.team33.model.csv.CSVBuilder;
 import com.team33.model.csv.CSVFormat;
 import com.team33.model.csv.Students.*;
-import com.team33.model.csv.Students.Courses.Mailable;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -16,9 +15,10 @@ public class AggregateHelper {
     private String webPath;
     private String outPath;
     private String buttonType;
-    private ArrayList<String> listOfUsedEmails = new ArrayList<>();
+    private CSVFormat format = null;
+    private CSVBuilder builder;
 
-    public AggregateHelper(String buttonType) {
+    AggregateHelper(String buttonType) {
         this.buttonType = buttonType;
     }
 
@@ -26,7 +26,6 @@ public class AggregateHelper {
         ArrayList<String> workbookPaths = new ArrayList<>();
         workbookPaths.add(webPath);
         workbookPaths.add(levelPaths.get(level));
-        CSVFormat format = null;
         StringTokenizer tokenizer = new StringTokenizer(level, "-");
 
         switch(buttonType) {
@@ -54,7 +53,13 @@ public class AggregateHelper {
                 break;
         }
 
-        CSVBuilder csvBuilder = new CSVBuilder(workbookPaths, format, outPath);
+        builder = new CSVBuilder(workbookPaths, format, outPath);
+        try {
+            builder.buildCSV();
+        } catch(IOException e) {
+            e.printStackTrace();
+            // TODO show dialog unreachable
+        }
     }
 
     private String getOption(String level) {
@@ -73,7 +78,23 @@ public class AggregateHelper {
         return ""; // unreachable
     }
 
-    private void deleteUsedEmails(Student student) {
-        student.getListOfEmails().removeAll(listOfUsedEmails);
+    void addLevelPaths(String level, String path) {
+        levelPaths.put(level, path);
+    }
+
+    public void setWebPath(String webPath) {
+        this.webPath = webPath;
+    }
+
+    public void setOutPath(String outPath) {
+        this.outPath = outPath;
+    }
+
+    CSVFormat getFormat() {
+        return format;
+    }
+
+    CSVBuilder getBuilder() {
+        return builder;
     }
 }

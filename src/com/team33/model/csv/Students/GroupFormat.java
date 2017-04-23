@@ -2,7 +2,6 @@ package com.team33.model.csv.Students;
 
 import com.team33.model.csv.CSVFormat;
 import com.team33.model.csv.Students.Courses.CoursesStore;
-import com.team33.model.csv.Students.Courses.Mailable;
 import com.team33.model.csv.UserFormat;
 import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.ss.usermodel.Sheet;
@@ -17,7 +16,7 @@ import java.util.Set;
 /**
  * Created by Amine on 13/02/2017.
  */
-public class GroupFormat extends UserFormat implements CSVFormat, Mailable {
+public class GroupFormat extends UserFormat implements CSVFormat, StudentInterface {
 
     private CoursesStore courseFormat;
     private ArrayList<Student> listOfStudentsWithoutEmail;

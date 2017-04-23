@@ -14,18 +14,23 @@ import java.io.IOException;
 public class MainApp extends Application {
 
     public static final String MAIN_APP = "/fxml/MainAppView.fxml";
+    public static final String DASHBOARD = "/fxml/DashboardView.fxml";
     public static final String STUDENT_SELECT = "/fxml/StudentSelectionView.fxml";
     public static final String WEB_SELECT = "/fxml/WebSelectionView.fxml";
     public static final String FILE_SELECT = "/fxml/FileSelectionView.fxml";
     public static final String SAVE_SELECT = "/fxml/SaveSelectionView.fxml";
+    public static final String EXCEPTION = "/fxml/StudentExceptionView.fxml";
 
     @Override
     public void start(Stage primaryStage) throws Exception {
         FXMLLoader loader = new FXMLLoader();
         loader.setLocation(getClass().getResource(MAIN_APP));
         Parent root = loader.load();
-        Controller controller = loader.getController();
-        controller.setMainApp(this);
+
+        // TODO switching
+        MainViewController mainViewController = loader.getController();
+        mainViewController.setMainApp(this);
+        mainViewController.setScene(DASHBOARD);
 
         JFXDecorator decorator = new JFXDecorator(primaryStage, root);
 
@@ -34,6 +39,10 @@ public class MainApp extends Application {
         primaryStage.setMinWidth(850);
         primaryStage.setMinHeight(650);
         primaryStage.show();
+    }
+
+    AggregateHelper getHelper() {
+        return new AggregateHelper("list");
     }
 
     public static void main(String[] args) {

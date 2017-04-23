@@ -1,7 +1,6 @@
 package com.team33.model.csv.Students;
 
 import com.team33.model.csv.Students.Courses.CoursesStore;
-import com.team33.model.csv.Students.Courses.Mailable;
 import com.team33.model.csv.UserFormat;
 import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.ss.usermodel.Sheet;
@@ -13,7 +12,7 @@ import java.util.*;
 /**
  * Created by Amine on 13/02/2017.
  */
-public class AffectingStudentToCourseFormat extends UserFormat implements Mailable {
+public class AffectingStudentToCourseFormat extends UserFormat implements StudentInterface {
 
     private CoursesStore courseFormat;
     private ArrayList<Student> listOfStudentsWithoutEmail;
