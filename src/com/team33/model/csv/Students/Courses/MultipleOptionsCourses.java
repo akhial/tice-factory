@@ -15,6 +15,7 @@ public class MultipleOptionsCourses implements Serializable{
     private HashMap<String,HashSet<Course>> semestre2 = new HashMap<>();
     private ArrayList<String> options;
     private HashSet<Course> modulesCommuns = new HashSet<>();
+    private HashSet<Course> modulesOptionnels = new HashSet<>();
 
 
     public void ajouterCoursSemestre1(String option,String shortName,String fullName) throws UnExistingOptionException {
@@ -55,8 +56,18 @@ public class MultipleOptionsCourses implements Serializable{
         this.modulesCommuns.add(course);
     }
 
+    public void ajouterModuleOptionnele(String shortName, String fullName){
+        Course course = new Course(shortName,fullName);
+        if(this.modulesOptionnels == null) this.modulesOptionnels = new HashSet<>();
+        this.modulesOptionnels.add(course);
+    }
+
     public void suprimerModulesCommun(String shortName,String fullName){
         this.modulesCommuns.remove(new Course(shortName,fullName));
+    }
+
+    public void supprimerModulesOptionnel(String shortName,String fullName){
+        this.modulesOptionnels.remove(new Course(shortName,fullName));
     }
 
     public HashSet<Course> getModulesCommuns() {
@@ -72,6 +83,11 @@ public class MultipleOptionsCourses implements Serializable{
     public HashSet<Course> getSemestre2(String option){
         if(semestre2.containsKey(option)) return semestre2.get(option);
         else return new HashSet<>();
+    }
+
+    public HashSet<Course> getModulesOptionnels(){
+        if(modulesOptionnels == null )return new HashSet<>();
+        else return modulesOptionnels;
     }
 
 
