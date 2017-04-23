@@ -17,14 +17,9 @@ public class Test {
 
        ArrayList<String> workbooksPaths = new ArrayList<String>();
 
-       CoursesStore coursesStore = new CoursesStore();
-       coursesStore.load();
-       coursesStore.getCycleSuperieur().ajouterCours3CS("MST","Master");
-       coursesStore.getCycleSuperieur().ajouterCours3CS("stpfe","STAGE et PFE");
-       coursesStore.saveChanges();
         workbooksPaths.add("liste email tous les etudiants.xlsx");
-        workbooksPaths.add("LISTEDESSUJETSPFE20162017SIL.docx");
-        AffectingStudentToCourseFormat studentFormat = new AffectingIntershipSudentToCourseFormat("3CS","SIL","");
+        workbooksPaths.add("Liste_Groupe_2CS_SIT_S2_2014_2015.xlsx");
+        AffectingStudentToCourseFormat studentFormat = new AffectingStudentToCourseFormat("2CS","SIT","");
         CSVBuilder csvBuilder = new CSVBuilder(workbooksPaths,studentFormat,"C:/Users/hamza/IdeaProjects/team-33");
         csvBuilder.buildCSV();
         String email = null;
@@ -59,8 +54,8 @@ public class Test {
         }
                 studentFormat.saveUsersList(new File(csvBuilder.getTempPath()));
         csvBuilder.convertToCSV();
-        //CoursesStore coursesStore = new CoursesStore();
-        /*coursesStore.getCycleSuperieur().getCS2().ajouterOption("SIQ");
+       /* CoursesStore coursesStore = new CoursesStore();
+        coursesStore.getCycleSuperieur().getCS2().ajouterOption("SIQ");
         coursesStore.getCycleSuperieur().getCS2().ajouterOption("SIT");
         coursesStore.getCycleSuperieur().getCS2().ajouterOption("SIL");
         coursesStore.getCyclePreparatoire().getCPI1().ajouterCoursSemsetre1("TEO1","Techniques d'expression orale");
@@ -140,8 +135,8 @@ public class Test {
             coursesStore.getCycleSuperieur().getCS2().ajouterCoursSemestre1("SIL", "TECWEB", "Technologies et developement Web");
         }catch (UnExistingOptionException e){
             e.printStackTrace();
-        }
-        coursesStore.saveChanges();*/
+        }*/
+        //coursesStore.saveChanges();
         /*coursesStore.load();
         coursesStore.getCycleSuperieur().getCS2().ajouterModuleCommun("ALOG","Arcihetctures logicielles");
         coursesStore.getCycleSuperieur().getCS2().ajouterModuleCommun("COM","Compilation");

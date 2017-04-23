@@ -2,6 +2,7 @@ package com.team33.model.csv.Students;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -25,24 +26,24 @@ public class AffectingIntershipSudentToCourseFormat extends AffectingStudentToCo
         ColumnsInformationBox box = new ColumnsInformationBox(getWorkbookIn().getSheetAt(0));
         box.extractInformationsFromFile();
         FileInformationExtractor extractor = new FileInformationExtractor(getWorkbookIn(),getOptin());
-        HashMap<String,Student[]> students = extractor.findIntershipStudents();
+        HashMap<String,ArrayList<Student>> students = extractor.findIntershipStudents();
         HashMap<Student, Integer> studentHashMap = extractor.createStudentsHashMap();
         EmailFinder emailFinder = new EmailFinder(nameOfEmailSheet(),getEmailsWorkbook(),studentHashMap);
 
-        for(Map.Entry<String,Student[]> entry : students.entrySet()) {
-            Student[] binom = entry.getValue();
-            for(int i = 0; i < 2; i++){
-                binom[i].setLevel(getLevel());
-                emailFinder.setStudent(binom[i]);
+        for(Map.Entry<String,ArrayList<Student>> entry : students.entrySet()) {
+            ArrayList<Student> binom = entry.getValue();
+            for(Student student : binom){
+                student.setLevel(getLevel());
+                emailFinder.setStudent(student);
                 emailFinder.getEmails();
-                binom[i].setStudentInformations();
-                binom[i].allocateCourses(getCourseFormat(),null);
-                if(!binom[i].hasEmail())
+                student.setStudentInformations();
+                student.allocateCourses(getCourseFormat(),null);
+                if(!student.hasEmail())
                 {
-                    binom[i].setPositionInWorkbookOut(numRow);
-                    this.getListOfStudentsWithoutEmail().add(binom[i]);
+                    student.setPositionInWorkbookOut(numRow);
+                    this.getListOfStudentsWithoutEmail().add(student);
                 }
-                generateRow(numRow,binom[i]);
+                generateRow(numRow,student);
                 numRow++;
             }
 

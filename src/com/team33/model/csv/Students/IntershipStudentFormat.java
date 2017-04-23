@@ -53,25 +53,25 @@ public class IntershipStudentFormat  extends StudentFormat{
         ColumnsInformationBox box = new ColumnsInformationBox(getWorkbookIn().getSheetAt(0));
         box.extractInformationsFromFile();
         FileInformationExtractor extractor = new FileInformationExtractor(getWorkbookIn(),getOptin());
-        HashMap<String,Student[]> students = extractor.findIntershipStudents();
+        HashMap<String,ArrayList<Student>> students = extractor.findIntershipStudents();
         HashMap<Student, Integer> studentHashMap = extractor.createStudentsHashMap();
         EmailFinder emailFinder = new EmailFinder(nameOfEmailSheet(),getEmailsWorkbook(),studentHashMap);
 
-        for(Map.Entry<String,Student[]> entry : students.entrySet()) {
-            Student[] binom = entry.getValue();
-            for(int i = 0; i < 2; i++){
-            binom[i].setLevel(getLevel());
-            emailFinder.setStudent(binom[i]);
-            emailFinder.getEmails();
-            binom[i].setStudentInformations();
-            if(!binom[i].hasEmail())
-            {
-                binom[i].setPositionInWorkbookOut(numRow);
-                this.getListOfStudentsWithoutEmail().add(binom[i]);
+        for(Map.Entry<String,ArrayList<Student>> entry : students.entrySet()) {
+            ArrayList<Student> binom = entry.getValue();
+            for(Student student : binom){
+                student.setLevel(getLevel());
+                emailFinder.setStudent(student);
+                emailFinder.getEmails();
+                student.setStudentInformations();
+                if(!student.hasEmail())
+                {
+                    student.setPositionInWorkbookOut(numRow);
+                    this.getListOfStudentsWithoutEmail().add(student);
+                }
+                generateRow(numRow,student);
+                numRow++;
             }
-            generateRow(numRow,binom[i]);
-            numRow++;
-        }
 
         }
         File file = new File(getFilePathOut());

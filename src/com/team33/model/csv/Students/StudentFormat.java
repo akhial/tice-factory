@@ -122,14 +122,6 @@ public class StudentFormat extends UserFormat implements CSVFormat {
         System.out.println("Temps d'execution : " + (System.currentTimeMillis()-startTime));
     }
 
-    public void saveCreatedUsers() throws IOException
-    {
-        ObjectOutputStream oos = new ObjectOutputStream(new BufferedOutputStream(new FileOutputStream(this.level+this.optin+".data")));
-
-        oos.writeObject(students);
-        oos.close();
-    }
-
 
     @Override
     public String buildCSV(ArrayList<String> workbooksPaths) throws IOException {

@@ -35,12 +35,14 @@ public class Course implements Serializable{
 
         Course course = (Course) o;
 
-        if (shortName != null ? !shortName.equals(course.shortName) : course.shortName != null) return false;
-        return fullName != null ? fullName.equals(course.fullName) : course.fullName == null;
+        if (this.shortName != null ? !this.shortName.equals(course.shortName) : course.shortName != null) return false;
+        return this.fullName != null ? this.fullName.equals(course.fullName) : course.fullName == null;
     }
 
     @Override
     public int hashCode() {
-        return 0;
+        int result = this.shortName != null ? this.shortName.hashCode() : 0;
+        result = 31 * result + (this.fullName != null ? this.fullName.hashCode() : 0);
+        return result;
     }
 }

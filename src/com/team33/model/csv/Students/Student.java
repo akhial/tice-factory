@@ -208,6 +208,7 @@ public class Student implements Serializable{
         tryToSetEmail();
         generateUsename();
         createLastNameInMoodle();
+        this.password = this.firstName;
     }
 
     public void allocateCourses(CoursesStore courseFormat, HashMap<String,ArrayList<String>> optionalModules)

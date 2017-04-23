@@ -113,23 +113,31 @@ import java.util.*;
         return students;
     }
 
-    public HashMap<String,Student[]> findIntershipStudents() {
-        HashMap<String,Student[]> students = new HashMap<>();
+    public HashMap<String,ArrayList<Student>> findIntershipStudents() {
+        HashMap<String,ArrayList<Student>> students = new HashMap<>();
         IntershipFormatColumnsInformationsBox box = new IntershipFormatColumnsInformationsBox(this.workbook.getSheetAt(0));
         box.extractInformationsFromFile();
         for (Row rw : this.workbook.getSheetAt(0)) {
             if (Util.getInstance().existInRow(rw, optin)) {
-                students.put(rw.getCell(box.getColCodePFE()).toString(),new Student[2]);
                 StringTokenizer firstNameTokenizer = new StringTokenizer(rw.getCell(box.getColNom()).toString(),"/");
                 StringTokenizer lastNameTokenizer = new StringTokenizer(rw.getCell(box.getColPrenom()).toString(),"/");
-                Student[] binome = new Student[2];
+                /*Student[] binome = new Student[2];
                 for(int i = 0; i < 2;i++){
                     Student student =new Student();
                     student.setFirstName(firstNameTokenizer.nextToken());
                     student.setLastName(lastNameTokenizer.nextToken());
                     student.setOptin(this.optin);
                     binome[i] = student;
+                }*/
+                ArrayList<Student> binome = new ArrayList<>();
+                while (firstNameTokenizer.hasMoreElements()){
+                    Student student =new Student();
+                    student.setFirstName(firstNameTokenizer.nextToken());
+                    student.setLastName(lastNameTokenizer.nextToken());
+                    student.setOptin(this.optin);
+                    binome.add(student);
                 }
+
                 students.put(rw.getCell(box.getColCodePFE()).toString(),binome);
             }
 

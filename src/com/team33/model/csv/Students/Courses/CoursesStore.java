@@ -2,6 +2,7 @@ package com.team33.model.csv.Students.Courses;
 
 import java.io.*;
 import java.util.ArrayList;
+import java.util.Collection;
 
 /**
  * Created by hamza on 18/04/2017.
@@ -49,7 +50,7 @@ public class CoursesStore implements Serializable {
         }
     }
 
-    public ArrayList<String> getListOfCourses(String level,String optin){
+    public Collection<String> getListOfCourses(String level, String optin){
         ArrayList<String> list = new ArrayList<>();
         switch (level){
             case  "1CPI" :
