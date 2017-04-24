@@ -14,7 +14,6 @@ public class Test {
 
     private static ArrayList<String> listOfUsedEmails = new ArrayList<>();
     public static void main(String[] args) throws IOException {
-
        ArrayList<String> workbooksPaths = new ArrayList<String>();
 
         workbooksPaths.add("liste email tous les etudiants.xlsx");

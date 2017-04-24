@@ -10,6 +10,8 @@ public class TypeSelectionController implements Controller {
     private void onStudentListButton() {
         mainApp.setAggregateHelper(new AggregateHelper("list"));
         mainApp.getMainViewController().setScene(MainApp.STUDENT_SELECT, MainApp.CONVERT_NAME);
+
+        // TODO if type is group don't even show 3CS
     }
 
     @Override

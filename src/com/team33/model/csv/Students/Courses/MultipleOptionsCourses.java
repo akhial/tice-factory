@@ -96,6 +96,7 @@ public class MultipleOptionsCourses implements Serializable{
         this.options.add(option);
     }
 
-
-
+    public ArrayList<String> getOptions() {
+        return options;
+    }
 }

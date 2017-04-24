@@ -9,7 +9,9 @@ import javafx.geometry.Pos;
 import javafx.scene.control.Label;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
+import javafx.stage.FileChooser;
 
+import java.io.File;
 import java.util.HashMap;
 
 public class FileSelectionController implements Controller {
@@ -24,30 +26,55 @@ public class FileSelectionController implements Controller {
     void setup() {
 
         test = mainApp.getHelper().getLevels();
+        String type = mainApp.getHelper().getButtonType();
         // TODO use real data
 
         levelContainer.setSpacing(10);
 
         for(Label label : test) {
-            HBox box = new HBox();
-            box.setAlignment(Pos.CENTER_LEFT);
+            if(label.getText().startsWith("3CS") && (type.equals("grades") || type.equals("group"))) {
+            } else {
+                HBox box = new HBox();
+                box.setAlignment(Pos.CENTER_LEFT);
 
-            JFXTextField textField = new JFXTextField();
-            textField.setPrefWidth(500);
+                JFXTextField textField = new JFXTextField();
+                textField.setPrefWidth(500);
 
-            label.setPrefWidth(100);
+                label.setPrefWidth(100);
 
-            JFXButton button = new JFXButton("");
-            button.setId("file-button");
-            buttons.put(label, button);
+                JFXButton button = new JFXButton("");
+                button.setId("file-button");
 
-            box.getChildren().add(label);
-            box.getChildren().add(textField);
-            box.getChildren().add(button);
+                button.setOnAction(e -> {
+                    String s = chooseFile();
+                    mainApp.getHelper().getLevelPaths().put(label.getText(), s);
+                    label.setText(s);
+                });
 
-            levelContainer.getChildren().add(box);
+                box.getChildren().add(label);
+                box.getChildren().add(textField);
+                box.getChildren().add(button);
+
+                levelContainer.getChildren().add(box);
+            }
         }
         // TODO return results
+    }
+
+    // TODO 3CS choose word file .docx
+    private String chooseFile() {
+        FileChooser chooser = new FileChooser();
+        chooser.setSelectedExtensionFilter(new FileChooser.ExtensionFilter("Fichiers Excel", ".xlsx"));
+        chooser.setTitle("Séléctionner le fichier scolarité...");
+        File result = chooser.showOpenDialog(null);
+        if(result != null)
+            return result.getAbsolutePath();
+        return "";
+    }
+
+    @FXML
+    void onNextButton() {
+        mainApp.getMainViewController().setScene(MainApp.SAVE_SELECT, MainApp.CONVERT_NAME);
     }
 
     @Override

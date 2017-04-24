@@ -23,12 +23,8 @@ public class StudentSelectionController implements Controller {
     @SuppressWarnings("unused")
     private void initialize() {
         CoursesStore store = new CoursesStore();
-        try {
-            store.load();
-        } catch(IOException | ClassNotFoundException e) {
-            e.printStackTrace();
-            //TODO show dialog
-        }
+
+        store.load();
         ArrayList<String> options = store.getCycleSuperieur().getCS2().getOptions();
         String[] levels = {"1CPI", "2CPI", "1CS", "2CS", "3CS"};
 

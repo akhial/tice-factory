@@ -34,14 +34,21 @@ public class AggregateHelper {
         workbookPaths.add(levelPaths.get(level));
         StringTokenizer tokenizer = new StringTokenizer(level, "-");
 
+        String levelName = tokenizer.nextToken();
         switch(buttonType) {
             case "list":
-                format = new StudentFormat(tokenizer.nextToken(), getOption(level), "");
+                if(levelName.equals("3CS"))
+                    format = new IntershipStudentFormat(levelName, getOption(level), "");
+                else
+                    format = new StudentFormat(levelName, getOption(level), "");
                 // TODO 3CS need InternshipStudentFormat
                 break;
             case "courses":
                 try {
-                    format = new AffectingStudentToCourseFormat(tokenizer.nextToken(), getOption(level), "");
+                    if(levelName.equals("3CS"))
+                        format = new AffectingIntershipStudentToCourseFormat(levelName, getOption(level), "");
+                    else
+                        format = new AffectingStudentToCourseFormat(levelName, getOption(level), "");
                 } catch(IOException e) {
                     e.printStackTrace();
                     // TODO show dialog unreachable
@@ -49,14 +56,14 @@ public class AggregateHelper {
                 break;
             case "group":
                 try {
-                    format = new GroupFormat(tokenizer.nextToken(), getOption(level), "");
+                    format = new GroupFormat(levelName, getOption(level), "");
                 } catch(IOException e) {
                     e.printStackTrace();
                     // TODO show dialog unreachable
                 }
                 break;
             case "grades":
-                format = new GradesFormat(tokenizer.nextToken(), getOption(level), "");
+                format = new GradesFormat(levelName, getOption(level), "");
                 break;
         }
 
@@ -67,6 +74,8 @@ public class AggregateHelper {
             e.printStackTrace();
             // TODO show dialog unreachable
         }
+        System.err.println("CSV Builded");
+
     }
 
     private String getOption(String level) {
@@ -103,6 +112,14 @@ public class AggregateHelper {
 
     CSVBuilder getBuilder() {
         return builder;
+    }
+
+    public String getButtonType() {
+        return buttonType;
+    }
+
+    public HashMap<String, String> getLevelPaths() {
+        return levelPaths;
     }
 
     public void setLevels(ObservableList<Label> levels) {

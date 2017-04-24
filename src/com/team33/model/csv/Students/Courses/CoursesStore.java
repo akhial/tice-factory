@@ -50,7 +50,7 @@ public class CoursesStore implements Serializable {
         }
     }
 
-    public void intitilize(){
+    public void initialize(){
         this.getCycleSuperieur().getCS2().ajouterOption("SIQ");
         this.getCycleSuperieur().getCS2().ajouterOption("SIT");
         this.getCycleSuperieur().getCS2().ajouterOption("SIL");
