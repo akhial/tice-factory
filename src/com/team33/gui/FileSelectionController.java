@@ -10,7 +10,6 @@ import javafx.scene.control.Label;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 
-import java.util.ArrayList;
 import java.util.HashMap;
 
 public class FileSelectionController implements Controller {
@@ -22,7 +21,7 @@ public class FileSelectionController implements Controller {
     @FXML
     private VBox levelContainer;
 
-    public void setup() {
+    void setup() {
 
         test = mainApp.getHelper().getLevels();
         // TODO use real data
@@ -39,6 +38,7 @@ public class FileSelectionController implements Controller {
             label.setPrefWidth(100);
 
             JFXButton button = new JFXButton("");
+            button.setId("file-button");
             buttons.put(label, button);
 
             box.getChildren().add(label);

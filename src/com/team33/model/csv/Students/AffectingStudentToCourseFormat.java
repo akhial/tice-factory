@@ -21,7 +21,7 @@ public class AffectingStudentToCourseFormat extends UserFormat implements Studen
     private String filePathOut;
 
 
-    public AffectingStudentToCourseFormat(String level, String optin,String filePathOut) throws IOException, ClassNotFoundException {
+    public AffectingStudentToCourseFormat(String level, String optin,String filePathOut) throws IOException {
         this.courseFormat = new CoursesStore();
         this.courseFormat.load();
         this.listOfStudentsWithoutEmail = new ArrayList<>();
@@ -61,7 +61,7 @@ public class AffectingStudentToCourseFormat extends UserFormat implements Studen
     protected void generateHeader(int numberOfOptionalModules)// gener le header ie ecrire dans la première ligne (username,fistname,lastname,email) -> le format accepté par moodle
     {
 
-        for (int i = 0; i < (6 + courseFormat.getNumberOfCourses(this.level,this.optin) + numberOfOptionalModules);i++)
+        for (int i = 0; i < (5 + courseFormat.getNumberOfCourses(this.level,this.optin) + numberOfOptionalModules);i++)
         {
             this.getHeader().createCell(i);
         }
@@ -71,17 +71,16 @@ public class AffectingStudentToCourseFormat extends UserFormat implements Studen
         this.getHeader().getCell(2).setCellValue("firstname");
         this.getHeader().getCell(3).setCellValue("lastname");
         this.getHeader().getCell(4).setCellValue("email");
-        this.getHeader().createCell(5).setCellValue("idnumber");
         for(int i = 0; i < courseFormat.getNumberOfCourses(this.level,this.optin)+numberOfOptionalModules; i++)
         {
-            this.getHeader().getCell(i+6).setCellValue("course"+(i+1));
+            this.getHeader().getCell(i+5).setCellValue("course"+(i+1));
         }
     }
 
     protected void generateRow(int numRow, Student student)// générer une ligne cde fichier résultat contenant les coordonné d'un étudiant
     {
         Row rw = this.getWorkbookOut().getSheetAt(0).createRow(numRow);
-        for (int i = 0; i < 6;i++) {
+        for (int i = 0; i < 5;i++) {
             rw.createCell(i);
         }
         rw.getCell(0).setCellValue(student.getUsername());
@@ -89,11 +88,10 @@ public class AffectingStudentToCourseFormat extends UserFormat implements Studen
         rw.getCell(2).setCellValue(student.getFirstName());
         rw.getCell(3).setCellValue(student.getLastNameInMoodle());
         rw.getCell(4).setCellValue(student.getEmail());
-        rw.createCell(5).setCellValue(student.getIdnumber());
         for(int i = 0; i < student.numberOfCourses(); i++)
         {
 
-            rw.createCell(i+6).setCellValue(student.getCourses().get(i));
+            rw.createCell(i+5).setCellValue(student.getCourses().get(i));
         }
     }
 
@@ -133,7 +131,7 @@ public class AffectingStudentToCourseFormat extends UserFormat implements Studen
         return null;
     }
 
-    private void createStudentList()  {
+    protected void createStudentList()  {
         int numRow = 1;
         FileInformationExtractor extractor = new FileInformationExtractor(getWorkbookIn(), getOptin());
         HashMap<String,Student> students = extractor.findStudents();

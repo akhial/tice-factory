@@ -42,7 +42,7 @@ public class AggregateHelper {
             case "courses":
                 try {
                     format = new AffectingStudentToCourseFormat(tokenizer.nextToken(), getOption(level), "");
-                } catch(IOException | ClassNotFoundException e) {
+                } catch(IOException e) {
                     e.printStackTrace();
                     // TODO show dialog unreachable
                 }
@@ -50,7 +50,7 @@ public class AggregateHelper {
             case "group":
                 try {
                     format = new GroupFormat(tokenizer.nextToken(), getOption(level), "");
-                } catch(IOException | ClassNotFoundException e) {
+                } catch(IOException e) {
                     e.printStackTrace();
                     // TODO show dialog unreachable
                 }

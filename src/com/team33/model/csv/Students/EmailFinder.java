@@ -12,7 +12,7 @@ import java.util.HashMap;
 /**
  * Created by hamza on 09/03/2017.
  */
-class EmailFinder  {
+    class EmailFinder  {
     private String nameSheet;
     private  XSSFWorkbook workbookEmails;
     private Student student;
@@ -67,7 +67,7 @@ class EmailFinder  {
             if(listOfEmails.size() == 1) this.student.setListOfEmails(listOfEmails);
             else if (!existOtherStudents()) {
                 String email = findEmail(listOfEmails);
-                if (!email.isEmpty()) {
+                if (!email.equals("")) {
                     this.student.getListOfEmails().add(email);
                 }
             } else {

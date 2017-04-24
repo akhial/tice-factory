@@ -2,24 +2,25 @@ package com.team33.model.csv.Students.Courses;
 
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.HashSet;
 
 /**
  * Created by hamza on 19/04/2017.
  */
 public class SingleOptionCourses implements Serializable{
-    private ArrayList<Course> semestre1;
-    private ArrayList<Course> semestre2;
+    private HashSet<Course> semestre1;
+    private HashSet<Course> semestre2;
 
     public SingleOptionCourses(){
-        this.semestre1 = new ArrayList<>();
-        this.semestre2 = new ArrayList<>();
+        this.semestre1 = new HashSet<>();
+        this.semestre2 = new HashSet<>();
     }
 
-    public ArrayList<Course> getSemestre1() {
+    public HashSet<Course> getSemestre1() {
         return semestre1;
     }
 
-    public ArrayList<Course> getSemestre2() {
+    public HashSet<Course> getSemestre2() {
         return semestre2;
     }
 

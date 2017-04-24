@@ -1,10 +1,20 @@
 package com.team33.model.csv.Students;
 
+import com.team33.model.Utilities.Util;
 import com.team33.model.csv.CSVFormat;
 import com.team33.model.csv.UserFormat;
+import org.apache.poi.openxml4j.exceptions.InvalidFormatException;
 import org.apache.poi.ss.usermodel.*;
+import org.apache.poi.xssf.usermodel.XSSFWorkbook;
+import org.apache.poi.xwpf.extractor.XWPFWordExtractor;
+import org.apache.poi.xwpf.usermodel.XWPFDocument;
+import org.apache.poi.xwpf.usermodel.XWPFTable;
+import org.apache.poi.xwpf.usermodel.XWPFTableCell;
+import org.apache.poi.xwpf.usermodel.XWPFTableRow;
 
 import java.io.*;
+import java.net.URI;
+import java.security.Key;
 import java.util.*;
 
 /**
@@ -38,7 +48,6 @@ public class StudentFormat extends UserFormat implements CSVFormat, StudentInter
     @Override
     public void generateHeader() {
         super.generateHeader();
-        getHeader().createCell(5).setCellValue("idnumber");
     }
 
     /*
@@ -55,7 +64,6 @@ public class StudentFormat extends UserFormat implements CSVFormat, StudentInter
         rw.createCell(2).setCellValue(student.getFirstName());
         rw.createCell(3).setCellValue(student.getLastNameInMoodle());
         rw.createCell(4).setCellValue(student.getEmail());
-        rw.createCell(5).setCellValue(student.getIdnumber());
     }
 
     public void updateRow(int numRow,Student student)
@@ -112,14 +120,6 @@ public class StudentFormat extends UserFormat implements CSVFormat, StudentInter
         File file = new File(filePathOut);
         saveUsersList(file);
         System.out.println("Temps d'execution : " + (System.currentTimeMillis()-startTime));
-    }
-
-    public void saveCreatedUsers() throws IOException
-    {
-        ObjectOutputStream oos = new ObjectOutputStream(new BufferedOutputStream(new FileOutputStream(this.level+this.optin+".data")));
-
-        oos.writeObject(students);
-        oos.close();
     }
 
 
