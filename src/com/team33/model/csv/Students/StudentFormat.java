@@ -45,6 +45,11 @@ public class StudentFormat extends UserFormat implements CSVFormat {
         this.filePathOut = filePathOut+".xlsx";
     }
 
+    @Override
+    public void generateHeader() {
+        super.generateHeader();
+        getHeader().createCell(5).setCellValue("idnumber");
+    }
 
     /*
      *Méthodes utilitaires
@@ -60,6 +65,7 @@ public class StudentFormat extends UserFormat implements CSVFormat {
         rw.createCell(2).setCellValue(student.getFirstName());
         rw.createCell(3).setCellValue(student.getLastNameInMoodle());
         rw.createCell(4).setCellValue(student.getEmail());
+        rw.createCell(5).setCellValue(student.getIdnumber());
     }
 
     public void updateRow(int numRow,Student student)
@@ -129,7 +135,7 @@ public class StudentFormat extends UserFormat implements CSVFormat {
 
 
     @Override
-    public String buildCSV(ArrayList<String> workbooksPaths)  {
+    public String buildCSV(ArrayList<String> workbooksPaths) throws IOException {
         // WorkbooksPaths should contain only list of first semester and list of e-mails
 
         String type;

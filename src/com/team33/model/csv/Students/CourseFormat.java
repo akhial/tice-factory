@@ -18,23 +18,13 @@ import java.util.Iterator;
     private XSSFWorkbook workbook;
     private File file;
 
-    public void openWrkbook()
-    {
-        try {
+    public void openWrkbook() throws IOException {
             this.workbook = new XSSFWorkbook(new FileInputStream(file));
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
     }
 
-    public void saveChanges()
-    {
-        try {
+    public void saveChanges() throws IOException {
             FileOutputStream fos = new FileOutputStream(file);
             this.workbook.write(fos);
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
     }
 
     public CourseFormat()

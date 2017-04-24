@@ -86,7 +86,7 @@ public abstract class GradesFormat extends UserFormat implements CSVFormat {
     }
     protected abstract void createStudentsList() throws IOException;
     @Override
-    public String buildCSV(ArrayList<String> workbooksPaths) {
+    public String buildCSV(ArrayList<String> workbooksPaths) throws IOException {
         String type;
         FileInformationExtractor extractor = new FileInformationExtractor();
         for (String workbooksPath : workbooksPaths) {
@@ -99,11 +99,7 @@ public abstract class GradesFormat extends UserFormat implements CSVFormat {
             if (type.equals("Solarite")) openWorkbookIn(workbooksPath);
             else openEmailWorkbook(workbooksPath);
         }
-        try {
             createStudentsList();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
 
         return filePathOut;
     }
