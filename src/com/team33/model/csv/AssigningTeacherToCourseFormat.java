@@ -1,10 +1,12 @@
 package com.team33.model.csv;
 
 import com.team33.model.Utilities.Util;
+import org.apache.poi.openxml4j.exceptions.InvalidFormatException;
 import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 
 import java.io.File;
+import java.io.FileInputStream;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Iterator;
@@ -66,16 +68,15 @@ public class AssigningTeacherToCourseFormat extends UserFormat implements CSVFor
         }
     }
     @Override
-    public String buildCSV(ArrayList<String> workbooksPaths) throws IOException {
+    public String buildCSV(ArrayList<String> workbooksPaths) throws IOException, InvalidFormatException {
         String workbookPath = workbooksPaths.get(0);
         String emailWorkbookPath = workbooksPaths.get(1);
         openWorkbookIn(workbookPath);
         openEmailWorkbook(emailWorkbookPath);
         TeacherFormat teacherFormat = new TeacherFormat();
         String tempFile = teacherFormat.buildCSV(workbooksPaths);
-        File file = new File("Affectations" +
-                "DesEnseignants.xlsx");
-        XSSFWorkbook workbook = new XSSFWorkbook(tempFile);
+        FileInputStream fileInputStream = new FileInputStream(tempFile);
+        XSSFWorkbook workbook = new XSSFWorkbook(fileInputStream);
         setWorkbookOut(workbook);
         Iterator<Row> rowIterator = getWorkbookIn().getSheetAt(0).rowIterator();
         Row row = rowIterator.next();
@@ -97,7 +98,9 @@ public class AssigningTeacherToCourseFormat extends UserFormat implements CSVFor
             numRow++;
         }
         generateHeaderInTempFile(workbook,maxColumn);
+        File file = new File("CreatingTeachersWithCourses.xlsx");
         saveUsersList(file);
+        new File(tempFile).delete();
         return file.getPath() ;
     }
 }

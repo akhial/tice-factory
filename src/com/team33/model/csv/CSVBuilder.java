@@ -1,6 +1,5 @@
 package com.team33.model.csv;
 
-
 import com.team33.model.Utilities.ToCSV;
 import org.apache.poi.openxml4j.exceptions.InvalidFormatException;
 
@@ -36,8 +35,8 @@ public class CSVBuilder  {
         return tempPath;
     }
 
-    public void buildCSV() throws IOException {
-        tempPath = format.buildCSV( workbooksPaths);
+    public void buildCSV() throws IOException, InvalidFormatException {
+        tempPath = format.buildCSV(workbooksPaths);
     }
 
     public void convertToCSV(){

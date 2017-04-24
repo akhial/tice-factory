@@ -1,20 +1,13 @@
 package com.team33.model.assertions;
-import com.sun.xml.internal.org.jvnet.fastinfoset.FastInfosetException;
-
-import java.io.IOException;
+import java.io.File;
 
 
 /**
  * Created by Mitchell on 28/02/2017.
  */
 
-/*  if (Util.getInstance().existInRow(row,"NOM") && Util.getInstance().existInRow(row,"PRENOMmm") &&
-                        Util.getInstance().existInRow(row,"MAITRE") && Util.getInstance().existInRow(row,"COURS SEMESTRE1") &&
-                        Util.getInstance().existInRow(row,"TD SEMESTRE1") && Util.getInstance().existInRow(row,"COURS SEMESTRE1") &&
-                        Util.getInstance().existInRow(row,"TD SEMESTRE2") && Util.getInstance().existInRow(row,"PROJET SEMESTRE2")
-                        )*/
 public interface ExcelFormat {
-    public boolean checkFormat(String f1) throws IOException, MissingFieldsException, NoLineFoundException, FileAcceptedException;
-    public boolean checkDoublants(String f1, int tab[]) throws FastInfosetException,IOException,Exception;
+    boolean checkFormat(File f1);
+    boolean checkDoublants(File f1);
 
 }

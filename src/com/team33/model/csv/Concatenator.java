@@ -13,21 +13,20 @@ import java.util.Iterator;
 /**
  * Created by Amine on 17/04/2017.
  */
-public class Concatenator {
+public class Concatenater {
 
-    public void concatenate(String... workbooks) throws IOException, InvalidFormatException {
+    public void Concatenate(String destination,String...workbooks) throws IOException, InvalidFormatException {
         ArrayList<XSSFWorkbook> xssfWorkbooks = new ArrayList<>();
         Workbook workbookOut = new XSSFWorkbook();
         for (String s:workbooks){
             xssfWorkbooks.add((XSSFWorkbook) WorkbookFactory.create(new File(s)));
+
         }
-
-        Row row, row1;
+        Row row,row1;
         int i = 1 ;
-
         ArrayList<String> strings = new ArrayList<>();
         Sheet sheet = workbookOut.createSheet();
-        for (Workbook w : xssfWorkbooks) {
+        for (Workbook w:xssfWorkbooks) {
             Iterator<Row> iterator = w.getSheetAt(0).rowIterator();
             row = iterator.next();
             while (iterator.hasNext()){
@@ -48,7 +47,10 @@ public class Concatenator {
                     }
                 }
                 i++;
+
             }
+
+
         }
         int j = 0;
         row1 = sheet.createRow(0);
@@ -57,7 +59,7 @@ public class Concatenator {
             j++;
         }
 
-        FileOutputStream fos = new FileOutputStream(new File("Result.xlsx"));
+        FileOutputStream fos = new FileOutputStream(new File(destination));
         workbookOut.write(fos);
         fos.close();
         for (XSSFWorkbook xs:xssfWorkbooks) {

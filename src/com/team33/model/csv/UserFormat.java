@@ -72,8 +72,11 @@ public abstract class UserFormat implements CSVFormat {
     {
         try {
             FileOutputStream fos = new FileOutputStream(file);
-            this.workbookOut.write(fos);
+            workbookOut.write(fos);
             fos.close();
+            workbookOut.close();
+            workbookIn.close();
+            EmailsWorkbook.close();
         }catch (FileNotFoundException e){
             e.printStackTrace();
         } catch (IOException e) {
@@ -148,7 +151,7 @@ public abstract class UserFormat implements CSVFormat {
 
 
     @Override
-    public String buildCSV(ArrayList<String> workbooks) throws IOException {
+    public String buildCSV(ArrayList<String> workbooks) throws IOException, InvalidFormatException {
         return null;
     }
 }
