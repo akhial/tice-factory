@@ -151,7 +151,7 @@ public abstract class UserFormat implements CSVFormat {
 
 
     @Override
-    public String buildCSV(ArrayList<String> workbooks) throws IOException, InvalidFormatException {
+    public String buildCSV(ArrayList<String> workbooks) throws IOException {
         return null;
     }
 }

@@ -10,6 +10,7 @@ public class WebSelectionController implements Controller {
 
     private MainApp mainApp;
     private String filePath;
+    private boolean fileChosen = false;
 
     @FXML
     private JFXTextField webTextField;
@@ -20,18 +21,22 @@ public class WebSelectionController implements Controller {
         chooser.setSelectedExtensionFilter(new FileChooser.ExtensionFilter("Fichiers Excel", ".xlsx"));
         chooser.setTitle("Séléctionner le fichier web...");
         File result = chooser.showOpenDialog(null);
-        if(result != null)
+        if(result != null) {
             webTextField.setText(result.getAbsolutePath());
-        //else
-            //TODO show dialog
+            fileChosen = true;
+        }
     }
 
     @FXML
     private void onNextButtonClick() {
-        filePath = webTextField.getText();
-        mainApp.getHelper().setWebPath(filePath);
-        mainApp.getMainViewController().setScene(MainApp.FILE_SELECT, MainApp.CONVERT_NAME);
-        mainApp.setup();
+        if(fileChosen) {
+            filePath = webTextField.getText();
+            mainApp.getHelper().setWebPath(filePath);
+            mainApp.getMainViewController().setScene(MainApp.FILE_SELECT, MainApp.CONVERT_NAME);
+            mainApp.setup();
+        } else {
+            mainApp.getMainViewController().showConfirmationDialog("Erreur", "Veuillez choisir un fichier!");
+        }
     }
 
     @Override

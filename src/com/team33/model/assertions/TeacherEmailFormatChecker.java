@@ -89,7 +89,7 @@ public class TeacherEmailFormatChecker implements  ExcelFormat {
             }
 
 
-    public boolean checkFormat(String f1) throws IOException, NoSuchElementException, FileAcceptedException, MissingFieldsException {
+    public boolean checkFormat(String f1) throws IOException, NoSuchElementException, MissingFieldsException {
         XSSFWorkbook wB = null;
         int x=0;
         wB = new XSSFWorkbook(new FileInputStream(f1));
@@ -111,12 +111,12 @@ public class TeacherEmailFormatChecker implements  ExcelFormat {
             x++;
 
         }
-        throw new FileAcceptedException("Fichier Accepté !");
+        return true;
     }
 
 
 
-    public static void copyRow(Row r1,Row r2) throws Exception {// copies the row1 in the row2
+    public static void copyRow(Row r1,Row r2) throws IOException {// copies the row1 in the row2
 
         for (int i = r1.getFirstCellNum(); i <= r1.getLastCellNum(); i++) {
             Cell c = r2.createCell(i);
@@ -142,7 +142,7 @@ public class TeacherEmailFormatChecker implements  ExcelFormat {
         }
     }
 
-    public void DeleteDuplicate(String f1, int nbSheet, int nbRow) throws Exception {
+    public void DeleteDuplicate(String f1, int nbSheet, int nbRow) throws IOException {
         XSSFWorkbook wB = new XSSFWorkbook(new FileInputStream(f1));
         XSSFSheet sheet = wB.getSheetAt(nbSheet);
         Row r = sheet.getRow(nbRow);

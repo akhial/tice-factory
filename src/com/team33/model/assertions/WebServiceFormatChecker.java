@@ -55,7 +55,7 @@ public class WebServiceFormatChecker implements ExcelFormat{
 
 
     @Override
-    public boolean checkFormat(String f1) throws IOException, FileAcceptedException, MissingFieldsException, NoSuchElementException {
+    public boolean checkFormat(String f1) throws IOException, MissingFieldsException, NoSuchElementException {
             int cpt=0;
             XSSFWorkbook wB = new XSSFWorkbook(new FileInputStream(f1));
            if (wB.getSheetAt(0).getRow(wB.getSheetAt(0).getLastRowNum())==null)
@@ -65,7 +65,7 @@ public class WebServiceFormatChecker implements ExcelFormat{
             for (int i = 0; i < wB.getNumberOfSheets(); i++) {
                 if (cpt==100)
                 {
-                    throw new FileAcceptedException("Fichier Accepté");
+                    return true;
                 }
                 XSSFSheet sheet = wB.getSheetAt(i);
                 Row row;
@@ -110,7 +110,6 @@ public class WebServiceFormatChecker implements ExcelFormat{
                                             if (row2.getCell(2) != null && row2.getCell(1) != null) {
                                                 if (row2.getCell(2).getStringCellValue().equals(str2) && (isheet < i || (isheet == i && ligne2 < ligne1)) &&
                                                         !str2.equals("Adresse e-mail")) {
-                                                    System.out.println("---------------------------------------------------------------------------------------------------------------");
 
                                                     String s3="Un doublon trouvé : " + str2;
                                                     s3=s3+"\nPremière : ligne  " + (ligne2 + 1) + " sheet : " + wB.getSheetName(isheet) + " Nom d'utilisateur : "

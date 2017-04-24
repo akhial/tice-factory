@@ -154,8 +154,6 @@
 
 #file-button {
   -fx-graphic: url("../img/arrow_s.png");
-  -fx-text: "";
-  /* fix */
 }
 #form-button {
   -fx-text-fill: #26A696;

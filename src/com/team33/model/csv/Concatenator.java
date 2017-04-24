@@ -13,7 +13,7 @@ import java.util.Iterator;
 /**
  * Created by Amine on 17/04/2017.
  */
-public class Concatenater {
+public class Concatenator {
 
     public void Concatenate(String destination,String...workbooks) throws IOException, InvalidFormatException {
         ArrayList<XSSFWorkbook> xssfWorkbooks = new ArrayList<>();
@@ -29,11 +29,11 @@ public class Concatenater {
         for (Workbook w:xssfWorkbooks) {
             Iterator<Row> iterator = w.getSheetAt(0).rowIterator();
             row = iterator.next();
+            int maxCol = 0 ;
             while (iterator.hasNext()){
                 row = iterator.next();
                 row1 = sheet.createRow(i);
                 int j = 0;
-                int maxCol = 0 ;
                 for (Cell c:row) {
                     row1.createCell(j).setCellValue(c.toString());
                     j++;

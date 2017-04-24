@@ -9,13 +9,24 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.Iterator;
+import java.util.StringTokenizer;
 
 /**
  * Created by Amine on 13/02/2017.
  */
 public class AssigningTeacherToCourseFormat extends UserFormat implements CSVFormat {
+    private HashMap<String,ArrayList<String>> unHandledEmails;
+    private final String tempName = "TeachersListWithCourses.xlsx";
+    public HashMap<String, ArrayList<String>> getUnHandledEmails() {
+        return unHandledEmails;
+    }
 
+
+    public AssigningTeacherToCourseFormat() {
+        unHandledEmails = new HashMap<>();
+    }
     public void generateHeaderInTempFile(XSSFWorkbook workbook,int maxColumn) {
         Row row = workbook.getSheetAt(0).getRow(0);
         int j = 1;
@@ -68,13 +79,14 @@ public class AssigningTeacherToCourseFormat extends UserFormat implements CSVFor
         }
     }
     @Override
-    public String buildCSV(ArrayList<String> workbooksPaths) throws IOException, InvalidFormatException {
+    public String buildCSV(ArrayList<String> workbooksPaths) throws IOException {
         String workbookPath = workbooksPaths.get(0);
         String emailWorkbookPath = workbooksPaths.get(1);
         openWorkbookIn(workbookPath);
         openEmailWorkbook(emailWorkbookPath);
         TeacherFormat teacherFormat = new TeacherFormat();
         String tempFile = teacherFormat.buildCSV(workbooksPaths);
+        unHandledEmails = teacherFormat.getUnHandledEmails();
         FileInputStream fileInputStream = new FileInputStream(tempFile);
         XSSFWorkbook workbook = new XSSFWorkbook(fileInputStream);
         setWorkbookOut(workbook);
@@ -102,5 +114,32 @@ public class AssigningTeacherToCourseFormat extends UserFormat implements CSVFor
         saveUsersList(file);
         new File(tempFile).delete();
         return file.getPath() ;
+    }
+    public void AddingMissingEmails(HashMap<String,String> finalEmails) throws IOException {
+        this.setWorkbookOut(new XSSFWorkbook(tempName));
+        for (HashMap.Entry e:finalEmails.entrySet()) {
+            StringTokenizer stringTokenizer = new StringTokenizer((String) e.getKey(),"*");
+            String lastName = stringTokenizer.nextToken();
+            String firstName = stringTokenizer.nextToken();
+            String email = (String) e.getValue();
+            Row row = getWorkbookOut().getSheetAt(0).getRow(1);
+            boolean found = false;
+            int i = 1 ;
+            while (!found && i < getWorkbookOut().getSheetAt(0).getLastRowNum()+1){
+                row = getWorkbookOut().getSheetAt(0).getRow(i);
+                if (rowContains(row,firstName.toUpperCase()+" ENS:") && rowContains(row,lastName.toUpperCase())){
+                    row.getCell(0).setCellValue(email.substring(0,email.indexOf("@")));
+                    row.getCell(4).setCellValue(email);
+                    found = true;
+
+
+                }
+                i++;
+            }
+        }
+        saveUsersList(new File("TeacherList.xlsx"));
+        new File(tempName).delete();
+        new File("TeacherList.xlsx").renameTo(new File(tempName));
+
     }
 }

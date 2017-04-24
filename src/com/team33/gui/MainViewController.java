@@ -2,16 +2,17 @@ package com.team33.gui;
 
 import com.jfoenix.controls.JFXButton;
 import com.jfoenix.controls.JFXDialog;
-import com.jfoenix.controls.JFXSnackbar;
 import javafx.event.Event;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.geometry.Insets;
 import javafx.scene.Parent;
+import javafx.scene.Scene;
 import javafx.scene.control.Label;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.*;
 import javafx.scene.shape.Circle;
+import javafx.stage.Stage;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -138,7 +139,8 @@ public class MainViewController implements Controller {
         } else if(e.getSource() == statButton) {
             showDialog();
         } else if(e.getSource() == duplicatesButton) {
-            showDialog();
+            mainApp.cancel();
+            setScene(MainApp.DUPLICATES, MainApp.DUPLICATE_NAME);
         } else if(e.getSource() == lessonsButton) {
             showDialog();
         }
@@ -154,6 +156,43 @@ public class MainViewController implements Controller {
         content.setPadding(new Insets(40, 40,40, 40));
         dialog.setContent(content);
         dialog.show(rootStackPane);
+    }
+
+    void showConfirmationDialog(final String title, final   String message) {
+        JFXDialog dialog = new JFXDialog();
+        FXMLLoader loader = new FXMLLoader();
+        loader.setLocation(getClass().getResource("/fxml/ConfirmationDialogBox.fxml"));
+        Region region = null;
+        try {
+            region = loader.load();
+        } catch(IOException e) {
+            e.printStackTrace();
+        }
+        ((ConfirmationDialogBoxController) loader.getController()).setDialog(title, message);
+        ((ConfirmationDialogBoxController) loader.getController()).setDialog(dialog);
+        dialog.setContent(region);
+        dialog.show(rootStackPane);
+    }
+
+    void showLongConfirmationDialog(final String title, final String message, DuplicateCheckController controller) {
+        JFXDialog dialog = new JFXDialog();
+        FXMLLoader loader = new FXMLLoader();
+        loader.setLocation(getClass().getResource("/fxml/LongDialogBox.fxml"));
+        Region region = null;
+        try {
+            region = loader.load();
+        } catch(IOException e) {
+            e.printStackTrace();
+        }
+        Stage stage = new Stage();
+        stage.setScene(new Scene(region));
+        stage.setTitle("Doublon trouvé");
+        ((LongDialogController) loader.getController()).setDialog(title, message);
+        ((LongDialogController) loader.getController()).setStage(stage);
+        ((LongDialogController) loader.getController()).setDuplicateCheckController(controller);
+        //dialog.setContent(region);
+        //dialog.show(rootStackPane);
+        stage.showAndWait();
     }
 
     @Override

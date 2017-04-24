@@ -6,7 +6,7 @@ import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.ss.usermodel.Sheet;
 import org.apache.poi.xssf.usermodel.XSSFSheet;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
-import com.team33.model.Utilities.Util;
+
 import java.io.*;
 import java.util.Iterator;
 import java.util.NoSuchElementException;
@@ -21,6 +21,7 @@ import org.apache.poi.xwpf.usermodel.XWPFTableRow;
  * Created by Amine on 14/02/2017.
  */
 public class InternshipFormatChecker implements ExcelFormat {
+
     public String ConvertWordTableToExcel(String wordPath) throws IOException{
         String type="Interniship";
 
@@ -62,7 +63,7 @@ public class InternshipFormatChecker implements ExcelFormat {
 
 
 
-     public boolean checkFormat(String f1) throws IOException, MissingFieldsException, FileAcceptedException, NoLineFoundException {
+     public boolean checkFormat(String f1) throws IOException, MissingFieldsException, NoLineFoundException {
         String s=f1;
         InternshipFormatChecker wrd=new InternshipFormatChecker();
         String s2=wrd.ConvertWordTableToExcel(s);
@@ -99,7 +100,7 @@ public class InternshipFormatChecker implements ExcelFormat {
                         throw new MissingFieldsException(str1);
 
                     } else {                        f2.delete();
-                        throw new FileAcceptedException("Fichier Accepté");
+                        return true;
                     }
 
 
@@ -115,8 +116,12 @@ public class InternshipFormatChecker implements ExcelFormat {
         return false;
     }
 
+    @Override
+    public void DeleteDuplicate(String fileName, int loc1, int loc2) throws IOException {
 
-    public static void main(String[] args) throws IOException, MissingFieldsException, NoLineFoundException, FileAcceptedException {
+    }
+
+    public static void main(String[] args) throws IOException, MissingFieldsException, NoLineFoundException {
                 InternshipFormatChecker ssf = new InternshipFormatChecker();
        String y=ssf.ConvertWordTableToExcel("LISTEDESSUJETSPFE20162017SIL.docx");
        System.out.println(y);

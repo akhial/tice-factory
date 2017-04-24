@@ -27,7 +27,7 @@ import java.util.Scanner;
 public class TeacherFormatChecker implements ExcelFormat  {
 
 
-    public boolean checkFormat(String f1) throws IOException, NoLineFoundException, MissingFieldsException, FileAcceptedException{
+    public boolean checkFormat(String f1) throws IOException, NoLineFoundException, MissingFieldsException {
 
         XSSFWorkbook wB = null;
         wB = new XSSFWorkbook(new FileInputStream(f1));
@@ -66,14 +66,11 @@ public class TeacherFormatChecker implements ExcelFormat  {
 
                     throw new MissingFieldsException(str1);
 
-                } else {
-                    throw new FileAcceptedException("Fichier Accepté !");
-
                 }
 
 
             } else row = rowIterator.next();
-
+            return true;
 
         }
         throw new NoLineFoundException("Header de la table non-trouvé ! !");
@@ -207,7 +204,7 @@ public class TeacherFormatChecker implements ExcelFormat  {
     }
 
 
-    public static void main(String[] args) throws NoLineFoundException, MissingFieldsException, FileAcceptedException, IOException, DuplicatedException {
+    public static void main(String[] args) throws NoLineFoundException, MissingFieldsException, IOException, DuplicatedException {
         boolean x,y;
         TeacherFormatChecker ssf=new TeacherFormatChecker();
 

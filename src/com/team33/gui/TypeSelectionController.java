@@ -14,6 +14,20 @@ public class TypeSelectionController implements Controller {
         // TODO if type is group don't even show 3CS
     }
 
+    // TODO add other types
+
+    @FXML
+    private void onTeacherListButton() {
+        mainApp.getMainViewController().setScene(MainApp.TEACHER_SELECT, MainApp.CONVERT_NAME);
+        ((TeacherSelectionController) mainApp.getCurrentController()).setWithAssignment(false);
+    }
+
+    @FXML
+    private void onTeacherListAssignButton() {
+        mainApp.getMainViewController().setScene(MainApp.TEACHER_SELECT, MainApp.CONVERT_NAME);
+        ((TeacherSelectionController) mainApp.getCurrentController()).setWithAssignment(true);
+    }
+
     @Override
     public void cancel() {
 

@@ -19,7 +19,7 @@ import java.util.Scanner;
 public class schoolServiceFormatChecker implements ExcelFormat {
 
 
-    public boolean checkFormat(String f1) throws IOException, MissingFieldsException, NoLineFoundException, FileAcceptedException {
+    public boolean checkFormat(String f1) throws IOException, MissingFieldsException, NoLineFoundException {
         XSSFWorkbook wB = new XSSFWorkbook(new FileInputStream(f1));
         XSSFSheet sheet = wB.getSheetAt(0);
         if (wB.getSheetAt(0).getRow(wB.getSheetAt(0).getLastRowNum())==null)
@@ -57,7 +57,7 @@ public class schoolServiceFormatChecker implements ExcelFormat {
         }
 
         if (bb==false) throw new NoLineFoundException("Header de la table non-trouvé !");
-        else throw new FileAcceptedException("Fichier accepté !");
+        else return true;
     }
 
     @Override
@@ -100,13 +100,13 @@ public class schoolServiceFormatChecker implements ExcelFormat {
                                 sheet.getRow(ligne2 - 1).getCell(3).getStringCellValue();
                         s3=s3+"\n2- Nom : " + sheet.getRow(ligne1 - 1).getCell(2).getStringCellValue() + " || Prénom : " +
                                 sheet.getRow(ligne1 - 1).getCell(3).getStringCellValue();
-                        //throw new DuplicatedException(s3);
-                        System.out.println(s3);
+                        throw new DuplicatedException(s3);
+                        //System.out.println(s3);
 
-                        int a = input.nextInt();
-                        if (a==1) DeleteDuplicate(f1,tab[0],tab[2]);
-                        else DeleteDuplicate(f1,tab[1],tab[3]);
-                        return false;
+                        //int a = input.nextInt();
+                        //if (a==1) DeleteDuplicate(f1,tab[0],tab[2]);
+                        //else DeleteDuplicate(f1,tab[1],tab[3]);
+                        //return false;
                         /*Row r = null;
                         Row r2 = null;
 
