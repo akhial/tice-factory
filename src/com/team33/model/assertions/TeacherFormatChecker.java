@@ -1,14 +1,12 @@
 package com.team33.model.assertions;
 
+import com.sun.xml.internal.org.jvnet.fastinfoset.FastInfosetException;
 import org.apache.poi.ss.usermodel.Cell;
 import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.xssf.usermodel.XSSFSheet;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
-import java.io.IOException;
+import java.io.*;
 import java.util.Iterator;
 import java.util.NoSuchElementException;
 import java.util.Scanner;
@@ -26,80 +24,68 @@ import java.util.Scanner;
  *
  * Created by Mitchell on 13/02/2017.
  */
-public class TeacherFormatChecker implements ExcelFormat {
+public class TeacherFormatChecker implements ExcelFormat  {
 
 
-    public boolean checkFormat(File f1) {
+    public boolean checkFormat(String f1) throws IOException, NoLineFoundException, MissingFieldsException, FileAcceptedException{
 
         XSSFWorkbook wB = null;
-        try {
-            wB = new XSSFWorkbook(new FileInputStream(f1));
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+        wB = new XSSFWorkbook(new FileInputStream(f1));
+        if (wB.getSheetAt(0).getRow(wB.getSheetAt(0).getLastRowNum())==null)
+            throw new NoSuchElementException("Fichier Vide !");
         XSSFSheet sheet = wB.getSheetAt(0);
         Row row;
         Cell cell;
         Iterator<Row> rowIterator = sheet.iterator();
-        try {
+        row = rowIterator.next();
+        while (rowIterator.hasNext()) {
+            if (Util.getInstance().existInRow(row, "NOM") || Util.getInstance().existInRow(row, "PRENOM") ||
+                    Util.getInstance().existInRow(row, "MATIERE") || Util.getInstance().existInRow(row, "COURS\nSEMESTRE1") ||
+                    Util.getInstance().existInRow(row, "TD\nSEMESTRE1") || Util.getInstance().existInRow(row, "COURS\nSEMESTRE2") ||
+                    Util.getInstance().existInRow(row, "TD\nSEMESTRE2") || Util.getInstance().existInRow(row, "Projet\nSEMESTRE2")
+                    ) {
 
-
-            row = rowIterator.next();
-
-            while (rowIterator.hasNext()) {
-                if (Util.getInstance().existInRow(row, "NOM") || Util.getInstance().existInRow(row, "PRENOM") ||
-                        Util.getInstance().existInRow(row, "MATIERE") || Util.getInstance().existInRow(row, "COURS\nSEMESTRE1") ||
-                        Util.getInstance().existInRow(row, "TD\nSEMESTRE1") || Util.getInstance().existInRow(row, "COURS\nSEMESTRE2") ||
-                        Util.getInstance().existInRow(row, "TD\nSEMESTRE2") || Util.getInstance().existInRow(row, "Projet\nSEMESTRE2")
+                if (!Util.getInstance().existInRow(row, "NOM") || !Util.getInstance().existInRow(row, "PRENOM") ||
+                        !Util.getInstance().existInRow(row, "MATIERE") || !Util.getInstance().existInRow(row, "COURS\nSEMESTRE1") ||
+                        !Util.getInstance().existInRow(row, "TD\nSEMESTRE1") || !Util.getInstance().existInRow(row, "COURS\nSEMESTRE2") ||
+                        !Util.getInstance().existInRow(row, "TD\nSEMESTRE2") || !Util.getInstance().existInRow(row, "Projet\nSEMESTRE2")
                         ) {
+                    String str1 = "Champ(s) Introuvable(s) : ";
+                    if (!Util.getInstance().existInRow(row, "NOM"))
+                        str1 = str1 + "\n- Nom";
+                    if (!Util.getInstance().existInRow(row, "PRENOM")) str1 = str1 + "\n- Prenom";
+                    if (!Util.getInstance().existInRow(row, "MATIERE")) str1 = str1 + "\n- Matière";
+                    if (!Util.getInstance().existInRow(row, "COURS\nSEMESTRE1"))
+                        str1 = str1 + "\n- Cours Semestre1";
+                    if (!Util.getInstance().existInRow(row, "COURS\nSEMESTRE2"))
+                        str1 = str1 + "\n- Cours Semestre2";
+                    if (!Util.getInstance().existInRow(row, "TD\nSEMESTRE1")) str1 = str1 + "\n- TD Semestre1";
+                    if (!Util.getInstance().existInRow(row, "TD\nSEMESTRE2")) str1 = str1 + "\n- TD Semestre1";
+                    if (!Util.getInstance().existInRow(row, "Projet\nSEMESTRE2"))
+                        str1 = str1 + "\n- Projet Semestre2";
 
-                    if (!Util.getInstance().existInRow(row, "NOM") || !Util.getInstance().existInRow(row, "PRENOM") ||
-                            !Util.getInstance().existInRow(row, "MATIERE") || !Util.getInstance().existInRow(row, "COURS\nSEMESTRE1") ||
-                            !Util.getInstance().existInRow(row, "TD\nSEMESTRE1") || !Util.getInstance().existInRow(row, "COURS\nSEMESTRE2") ||
-                            !Util.getInstance().existInRow(row, "TD\nSEMESTRE2") || !Util.getInstance().existInRow(row, "Projet\nSEMESTRE2")
-                            ) {
-                        System.out.println("Missing one or more fields in the File, failed !");
-                        if (!Util.getInstance().existInRow(row, "NOM"))
-                            System.out.println("- Nom");
-                        if (!Util.getInstance().existInRow(row, "PRENOM")) System.out.println("- PRENOM");
-                        if (!Util.getInstance().existInRow(row, "MATIERE")) System.out.println("- MATIERE");
-                        if (!Util.getInstance().existInRow(row, "COURS\nSEMESTRE1"))
-                            System.out.println("- COURS SEMESTRE1");
-                        if (!Util.getInstance().existInRow(row, "COURS\nSEMESTRE2"))
-                            System.out.println("- COURS SEMESTRE2");
-                        if (!Util.getInstance().existInRow(row, "TD\nSEMESTRE1")) System.out.println("- TD SEMESTRE1");
-                        if (!Util.getInstance().existInRow(row, "TD\nSEMESTRE2")) System.out.println("- TD SEMESTRE2");
-                        if (!Util.getInstance().existInRow(row, "Projet\nSEMESTRE2"))
-                            System.out.println("- Projet SEMESTRE2");
+                    throw new MissingFieldsException(str1);
 
-                        return (false);
+                } else {
+                    throw new FileAcceptedException("Fichier Accepté !");
 
-                    } else { System.out.println("File match !");
-                        return (true);
-                       }
+                }
 
 
-                } else row = rowIterator.next();
+            } else row = rowIterator.next();
 
 
-            }
-
-
-        } catch (Exception ioe) {
-            ioe.printStackTrace();
         }
-    return(false);
+        throw new NoLineFoundException("Header de la table non-trouvé ! !");
     }
 
     @Override
-    public boolean checkDoublants(File f1) {
+    public boolean checkDoublants(String f1, int tab[]) throws IOException, DuplicatedException {
             Scanner input=new Scanner(System.in);
-            try {
                 XSSFWorkbook wB = new XSSFWorkbook(new FileInputStream(f1));
                 XSSFSheet sheet = wB.getSheetAt(0);
                 Row row;
                 Iterator<Row> rowIterator = sheet.iterator();
-                try {
                     int ligne1=1;
 
                     while (rowIterator.hasNext()) {
@@ -111,45 +97,122 @@ public class TeacherFormatChecker implements ExcelFormat {
                         Row row2 = rowIterator2.next();
                         while (rowIterator2.hasNext()) {
                             if (row2.getCell(0).getStringCellValue().equals(str2) && ligne2<ligne1 && row2.getCell(1).getStringCellValue().equals(str3)) {
-                                System.out.println("---------------------------------------------------------------------------------------------------------------");
 
-                                System.out.println("Duplicate : " + str2 +" " +str3);
-                                System.out.println("first : line  "+ ligne2 );
-                                System.out.println("Second : line  "+ ligne1 );
-                                //System.out.println("Choisissez une operation : ");
-                                //System.out.println("1- Supprimer un doublant" );
-                                //System.out.println("2- Re-introduire le e-mail : ");
+                                String s3="Un doublon trouvé : " + str2 +" " +str3;
+                                tab[0]=0;
+                                tab[1]=0;
+                                tab[2]=ligne2-1;
+                                tab[3]=ligne1-1;
+                                s3=s3+"\nPremière : ligne  "+ ligne2;
+                                s3=s3+"\nDeuxième : ligne  "+ ligne1;
+                                s3=s3+"\nChoisissez l'élement que vous voulez supprimer : ";
+                                s3=s3+"\n1- "+sheet.getRow(ligne2-1).getCell(0).getStringCellValue()+ " || Nom "+
+                                        sheet.getRow(ligne2-1).getCell(1).getStringCellValue();
+                                s3=s3+"\n2- "+ sheet.getRow(ligne1-1).getCell(0).getStringCellValue()+" || Prenom : "+
+                                        sheet.getRow(ligne1-1).getCell(1).getStringCellValue();
+                                throw new DuplicatedException(s3);
+                                /*int a=input.nextInt();
+                                if (a==1) DeleteDuplicate(f1,0,tab[2]);
+                                else DeleteDuplicate(f1,0,tab[3]);
+                                return false;
+                                /*Row r=null;
+                                Row r2=null;
+
+                                if (a==1)  {r=sheet.getRow(ligne2-1);
+                                    r2=sheet.getRow(ligne2);
+                                    int ii=ligne2;
+                                    boolean b=false;
+                                    while (r2!=null || b==false  ) {
+                                        if (r2==null){ b=true; sheet.removeRow(r);}
+                                        else {
+                                            copyRow(r2, r);
+                                            r = sheet.getRow(ii);
+                                            ii++;
+                                            r2 = sheet.getRow(ii);
+                                        }
+                                    }
+                                }
+                                else  {r=sheet.getRow(ligne1-1);
+                                    r2=sheet.getRow(ligne1);
+                                    int ii=ligne1;
+                                    boolean b=false;
+                                    while (r2!=null || b==false  ) {
+                                        if (r2==null){ b=true; sheet.removeRow(r);}
+                                        else {
+                                            copyRow(r2, r);
+                                            r = sheet.getRow(ii);
+                                            ii++;
+                                            r2 = sheet.getRow(ii);
+                                        }
+                                    }}*/
+
                             }
                             row2 = rowIterator2.next();
                             ligne2++;
                         }
                         ligne1++;
                     }
+                    return true;
                 }
-                catch (NoSuchElementException exe) {
-                    System.out.println("No such emelement " );
-                }
-                catch (Exception e) {
-                    e.printStackTrace();
-                }
-            } catch (FileNotFoundException e) {
-                e.printStackTrace();
-            } catch (IOException e) {
-                e.printStackTrace();
+
+
+
+
+    public static void copyRow(Row r1,Row r2)  {// copies the row1 in the row2
+
+        for (int i = r1.getFirstCellNum(); i <= r1.getLastCellNum(); i++) {
+            Cell c = r2.createCell(i);
+            //System.out.println(r1.getCell(i).getStringCellValue()); // just for test
+            if (r1 != null) if (r1.getCell(i) != null) {
+
+                c.setCellValue(r1.getCell(i).getStringCellValue());
+                c.setCellStyle(r1.getCell(i).getCellStyle());
+
             }
-            return(true);
+        }
+    }
+
+    public void DeleteDuplicate(String f1, int nbSheet, int nbRow) throws IOException {
+        XSSFWorkbook wB = new XSSFWorkbook(new FileInputStream(f1));
+        XSSFSheet sheet = wB.getSheetAt(nbSheet);
+        Row r = sheet.getRow(nbRow);
+        Row r2 = sheet.getRow(nbRow+1);
+        int ii = nbRow+1;
+        boolean b = false;
+        while (r2 != null || b == false) {
+            if (r2 == null) {
+                b = true;
+                sheet.removeRow(r);
+            } else {
+                copyRow(r2, r);
+                r = sheet.getRow(ii);
+                ii++;
+                r2 = sheet.getRow(ii);
+            }
         }
 
+        FileOutputStream outFile = new FileOutputStream(f1);
+        wB.write(outFile);
+    }
+
+    public void checkDouble(String f1) throws IOException, DuplicatedException {
+        boolean b=false;
+        int[] tab=new int[4];
+        for(int i=0;i<4;i++)
+            tab[i]=0;
+
+        while (b==false) {
+            b=checkDoublants(f1,tab);
+        }
+    }
 
 
-    public static void main(String[] args) {
+    public static void main(String[] args) throws NoLineFoundException, MissingFieldsException, FileAcceptedException, IOException, DuplicatedException {
         boolean x,y;
-
-        File f1 = new File("charges_enseignants_f__vrier2017_2016-2017__1_.xlsx");
         TeacherFormatChecker ssf=new TeacherFormatChecker();
 
-        x=ssf.checkFormat(f1);
-        y=ssf.checkDoublants(f1);
+       // x=ssf.checkFormat("charges_enseignants_f__vrier2017_2016-2017__1_.xlsx");
+        ssf.checkDouble("charges_enseignants_f__vrier2017_2016-2017__1_.xlsx");
         System.out.println("that's it !");
     }
 }

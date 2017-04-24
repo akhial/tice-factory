@@ -1,5 +1,7 @@
 package com.team33.model.assertions;
-import java.io.File;
+import com.sun.xml.internal.org.jvnet.fastinfoset.FastInfosetException;
+
+import java.io.IOException;
 
 
 /**
@@ -12,7 +14,7 @@ import java.io.File;
                         Util.getInstance().existInRow(row,"TD SEMESTRE2") && Util.getInstance().existInRow(row,"PROJET SEMESTRE2")
                         )*/
 public interface ExcelFormat {
-    public boolean checkFormat(File f1);
-    public boolean checkDoublants(File f1);
+    public boolean checkFormat(String f1) throws IOException, MissingFieldsException, NoLineFoundException, FileAcceptedException;
+    public boolean checkDoublants(String f1, int tab[]) throws FastInfosetException,IOException,Exception;
 
 }
