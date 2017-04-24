@@ -18,7 +18,6 @@ public class StudentFormat implements CSVFormat {
     private XSSFWorkbook workbookIn;
     private XSSFWorkbook workbookOut;
     private XSSFWorkbook workbookEmails;
-    private ArrayList<String> filePathIn;
     private Row header = null;
 
     public StudentFormat() {
@@ -28,7 +27,6 @@ public class StudentFormat implements CSVFormat {
         this.workbookOut.getSheetAt(0).createRow(0);
         this.header = workbookOut.getSheetAt(0).getRow(0);
         this.workbookEmails = new XSSFWorkbook();
-        this.filePathIn = new ArrayList<>();
     }
 
     private   void openWorkbookIn(String fiilePathIn)//charger un fichier excel dans le wbin
@@ -148,7 +146,7 @@ public class StudentFormat implements CSVFormat {
         boolean contains = false;
         Iterator<Cell> cellIterator = rw.iterator();
         Cell cell = cellIterator.next();
-        while ((cell != null) && (contains == false))
+        while ((cell != null) && (!contains))
         {
             if(cell.toString().contains(str)) {
                 contains = true;
@@ -190,7 +188,7 @@ public class StudentFormat implements CSVFormat {
 
     }
 
-    private String scondNameForEmail(Row rw, int colNom,int colPrenom, String repalceSapaceWit)// générer une chaine de carractère pour utiliser en comparaison pour trouver l'email
+    private String scondNameForEmail(Row rw, int colNom, String repalceSapaceWit)// générer une chaine de carractère pour utiliser en comparaison pour trouver l'email
     {
         String str = new String();
 
@@ -204,7 +202,7 @@ public class StudentFormat implements CSVFormat {
 
     private ArrayList<String> findListEmails(String namForEmail1,String namForEmail2,int indexOfEmailsSheet)// retourne un ArrayList contenant les emails douteux
     {
-        ArrayList<String> listeEmails = new ArrayList<String>();
+        ArrayList<String> listeEmails = new ArrayList<>();
         Sheet sheet = this.workbookEmails.getSheetAt(indexOfEmailsSheet);
         for(Row rw:sheet)
         {
@@ -278,7 +276,7 @@ public class StudentFormat implements CSVFormat {
         {
             ArrayList<String> listOfEmails = new ArrayList();
             System.out.println("Plusieurs emails peuvent correspendre à l'étudiant : "+getStudentInoformations(rw,colNom,colPrenom));
-            listOfEmails = findListEmails(scondNameForEmail(rw,colNom,colPrenom,"_"),scondNameForEmail(rw,colNom,colPrenom,""),indexOfEmailsSheet);
+            listOfEmails = findListEmails(scondNameForEmail(rw,colNom, "_"),scondNameForEmail(rw,colNom, ""),indexOfEmailsSheet);
             showListOfEmails(listOfEmails);
             System.out.print("Veuillez coisir le bon mail svp : ");
             int i = sc.nextInt();
@@ -297,7 +295,7 @@ public class StudentFormat implements CSVFormat {
     {
         boolean exist = false;
         Sheet sheet = this.workbookIn.getSheetAt(0);
-        String student = new String();
+        String student;
 
         Row row = sheet.getRow(begin+1);
         int i = begin+1;
@@ -327,17 +325,103 @@ public class StudentFormat implements CSVFormat {
         return username;
     }
 
+<<<<<<< HEAD
     public void createStudentListe(String filePathIn,String emailFilePath,int indexOfEmailsSheet,String filePathOut, String optin,String level) throws IOException {
+=======
+
+    private String getLevel( ){
+        int i=0;
+        String niveau ;
+        for (Sheet sh:this.workbookIn) {
+            for (Row rw:sh) {
+                for (Cell cell:rw) {
+                    niveau = cell.toString();
+                    if(niveau.toUpperCase().contains("1CPI")){
+                        return "1CPI";
+                    }
+                    if(niveau.toUpperCase().contains("2CPI")){
+                        return  "2CPI";
+                    }
+                    if(niveau.toUpperCase().contains("SC")||niveau.toLowerCase().contains("1ère")){
+                        i=1;
+                    }
+                    if(niveau.toLowerCase().contains("2ème")){
+                        i=2;
+                    }
+                    if(niveau.toUpperCase().contains("CPI")&& i==1){
+                        i=3;
+                    }
+                    if(niveau.toUpperCase().contains("CPI")&& i==2){
+                        i=4;
+                    }
+                    if(niveau.toUpperCase().contains("SIL")){
+                        return  "2CS-SIL";
+                    }
+                    if(niveau.toUpperCase().contains("SIQ")){
+                        return  "2CS-SIQ";
+                    }
+                    if(niveau.toUpperCase().contains("SIT")){
+                        return  "2CS-SIT";
+                    }
+                }
+            }
+        }
+        if (i==1){
+            return "1CS";
+        }
+        if (i==2){
+            return "2CS";
+        }
+        if(i==3){
+            return "1CPI";
+        }
+        if(i==4){
+            return "2CPI";
+        }
+        return "";
+    }
+
+    private String getFileType(File file)
+    {
+
+        try  {
+            XSSFWorkbook workbook = new XSSFWorkbook(new FileInputStream(file));
+            Sheet sheet = workbook.getSheetAt(0);
+            Iterator<Row> rowIterator = sheet.rowIterator();
+            Row rw = rowIterator.next();
+            while (rowIterator.hasNext())
+            {
+                if(existInRow(rw,"Prenom"))
+                {
+                    return  "Solarite";
+                }
+                else
+                {
+                    rw = rowIterator.next();
+                }
+            }
+        return "wab";
+
+        }catch (IOException e){
+            e.printStackTrace();
+        }
+        return "";
+    }
+
+
+    private void createStudentList(int indexOfEmailsSheet, String filePathOut, String optin, String level)  {
+>>>>>>> Removed excess constructors
         int colNom = -1;
         int colPrenom = -1;
         int colGroupe = -1;
         int numRow = 1;
+<<<<<<< HEAD
         ArrayList<String> listEmails = new ArrayList<String>();
         openWorkbookIn(filePathIn);
         openEmailWorkbook(emailFilePath);
+=======
+>>>>>>> Removed excess constructors
         Sheet sheet = workbookIn.getSheetAt(0);
-        Sheet sheetOut = workbookOut.createSheet();
-        Row rwOut = sheetOut.createRow(0);
 
 
         generateHeader();
@@ -381,7 +465,39 @@ public class StudentFormat implements CSVFormat {
     }
 
     @Override
+<<<<<<< HEAD
     public String buildCSV(ArrayList<String> workbooksPaths) {
+=======
+    public String buildCSV(ArrayList<String> workbooksPaths)  {
+        for (String workbooksPath : workbooksPaths) {
+            File file = new File(workbooksPath);
+            String type = getFileType(file);
+            if (type.equals("Solarite")) openWorkbookIn(file);
+            else openEmailWorkbook(file);
+        }
+        String level = getLevel();
+        switch (level)
+        {
+            case "1CPI" :
+                createStudentList(0,"temp1CPI.xlsx","CPI","1CPI");
+                return "temp1CPI.xlsx";
+            case "2CPI" :
+                createStudentList(1,"temp2CPI.xlsx","CPI","2CPI");
+                return "temp2CPI.xlsx";
+            case "1CS" :
+                createStudentList(2,"tempCS.xlsx","SC","1CS");
+                return "tempCS.xlsx";
+            case "2CS-SIL" :
+                createStudentList(2,"temp2CS-SIL.xlsx","SIL","2CS-SIL");
+                return "temp2CS-SIL.xlsx";
+            case "2CS-SIT" :
+                createStudentList(2,"temp2CS-SIL.xlsx","SIT","2CS-SIT");
+                return "temp2CS-SIL.xlsx";
+            case "2CS-SIQ" :
+                createStudentList(2,"temp2CS-SIL.xlsx","SIQ","2CS-SIQ");
+        }
+
+>>>>>>> Removed excess constructors
         return null;
     }
 }
