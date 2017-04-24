@@ -8,6 +8,7 @@ import java.io.File;
 
 public class WebSelectionController implements Controller {
 
+    private MainApp mainApp;
     private String filePath;
 
     @FXML
@@ -28,11 +29,14 @@ public class WebSelectionController implements Controller {
     @FXML
     private void onNextButtonClick() {
         filePath = webTextField.getText();
+        mainApp.getHelper().setWebPath(filePath);
+        mainApp.getMainViewController().setScene(MainApp.FILE_SELECT, MainApp.CONVERT_NAME);
+        mainApp.setup();
     }
 
     @Override
     public void setMainApp(MainApp mainApp) {
-
+        this.mainApp = mainApp;
     }
 
     @Override

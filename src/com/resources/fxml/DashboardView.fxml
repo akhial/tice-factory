@@ -2,8 +2,8 @@
 
 <?import com.jfoenix.controls.JFXListView?>
 <?import javafx.geometry.Insets?>
+<?import javafx.scene.chart.AreaChart?>
 <?import javafx.scene.chart.CategoryAxis?>
-<?import javafx.scene.chart.LineChart?>
 <?import javafx.scene.chart.NumberAxis?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.layout.AnchorPane?>
@@ -116,14 +116,14 @@
                <VBox.margin>
                   <Insets left="10.0" />
                </VBox.margin></Label>
-            <LineChart maxHeight="-Infinity" minHeight="-Infinity" prefHeight="190.0" prefWidth="600.0" VBox.vgrow="NEVER">
+            <AreaChart maxHeight="-Infinity" prefHeight="150.0" VBox.vgrow="NEVER">
               <xAxis>
                 <CategoryAxis side="BOTTOM" />
               </xAxis>
               <yAxis>
                 <NumberAxis side="LEFT" />
               </yAxis>
-            </LineChart>
+            </AreaChart>
          </children>
       </VBox>
    </children>

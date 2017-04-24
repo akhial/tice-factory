@@ -4,6 +4,8 @@ import javafx.fxml.FXML;
 
 public class TeacherSelectionController implements Controller {
 
+    private MainApp mainApp;
+
     @FXML
     private void onOpenChargesButtonClick() {
         // TODO choose excel
@@ -21,6 +23,6 @@ public class TeacherSelectionController implements Controller {
 
     @Override
     public void setMainApp(MainApp mainApp) {
-
+        this.mainApp = mainApp;
     }
 }

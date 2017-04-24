@@ -2,24 +2,28 @@ package com.team33.gui;
 
 import com.jfoenix.controls.JFXDecorator;
 import javafx.application.Application;
-import javafx.collections.ObservableList;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
-import javafx.scene.control.Label;
 import javafx.stage.Stage;
-
-import java.io.IOException;
 
 public class MainApp extends Application {
 
-    public static final String MAIN_APP = "/fxml/MainAppView.fxml";
-    public static final String DASHBOARD = "/fxml/DashboardView.fxml";
-    public static final String STUDENT_SELECT = "/fxml/StudentSelectionView.fxml";
-    public static final String WEB_SELECT = "/fxml/WebSelectionView.fxml";
-    public static final String FILE_SELECT = "/fxml/FileSelectionView.fxml";
-    public static final String SAVE_SELECT = "/fxml/SaveSelectionView.fxml";
-    public static final String EXCEPTION = "/fxml/StudentExceptionView.fxml";
+    private static final String MAIN_APP = "/fxml/MainAppView.fxml";
+    static final String DASHBOARD = "/fxml/DashboardView.fxml";
+    static final String DASHBOARD_NAME = "ACCEUIL";
+
+    static final String STUDENT_SELECT = "/fxml/StudentSelectionView.fxml";
+    static final String WEB_SELECT = "/fxml/WebSelectionView.fxml";
+    static final String FILE_SELECT = "/fxml/FileSelectionView.fxml";
+    static final String SAVE_SELECT = "/fxml/SaveSelectionView.fxml";
+    static final String EXCEPTION = "/fxml/StudentExceptionView.fxml";
+    static final String TYPE_SELECT = "/fxml/TypeSelectionView.fxml";
+    static final String CONVERT_NAME = "CONVERTIR";
+
+    private Controller currentController;
+    private MainViewController mainViewController;
+    private AggregateHelper aggregateHelper;
 
     @Override
     public void start(Stage primaryStage) throws Exception {
@@ -28,9 +32,11 @@ public class MainApp extends Application {
         Parent root = loader.load();
 
         // TODO switching
-        MainViewController mainViewController = loader.getController();
+        mainViewController = loader.getController();
         mainViewController.setMainApp(this);
-        mainViewController.setScene(DASHBOARD);
+        mainViewController.setScene(DASHBOARD, DASHBOARD_NAME);
+
+        currentController = mainViewController;
 
         JFXDecorator decorator = new JFXDecorator(primaryStage, root);
 
@@ -42,7 +48,27 @@ public class MainApp extends Application {
     }
 
     AggregateHelper getHelper() {
-        return new AggregateHelper("list");
+        return aggregateHelper;
+    }
+
+    void setAggregateHelper(AggregateHelper aggregateHelper) {
+        this.aggregateHelper = aggregateHelper;
+    }
+
+    void setCurrentController(Controller controller) {
+        currentController = controller;
+    }
+
+    MainViewController getMainViewController() {
+        return mainViewController;
+    }
+
+    void setup() {
+        ((FileSelectionController) currentController).setup();
+    }
+
+    void cancel() {
+        currentController.cancel();
     }
 
     public static void main(String[] args) {

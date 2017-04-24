@@ -23,10 +23,11 @@ public class StudentExceptionController implements Controller {
     private GridPane exceptionPane;
 
     @FXML
-    protected void initialize() {
+    @SuppressWarnings("unused")
+    private void initialize() {
         ArrayList<Student> listOfStudentsWithoutEmail = null;
-        //listOfStudentsWithoutEmail =
-        //((StudentInterface) mainApp.getHelper().getFormat()).getListOfStudentsWithoutEmail();
+        listOfStudentsWithoutEmail =
+        ((StudentInterface) mainApp.getHelper().getFormat()).getListOfStudentsWithoutEmail();
 
         HashMap<String, List<String>> students = new HashMap<>();
         students.put("Adel Khial", Arrays.asList("adel", "bilal", "djamel"));
@@ -46,9 +47,11 @@ public class StudentExceptionController implements Controller {
             final int width = 1200;
             if(students.get(next).isEmpty()) {
                 node = new JFXTextField();
+                ((JFXTextField) node).setPromptText("Veuillez saisir une addresse email");
                 ((JFXTextField) node).setPrefWidth(width);
             } else {
                 JFXComboBox<String> box = new JFXComboBox<>();
+                ((JFXComboBox) box).setPromptText("Veuillez choisir une addresse email");
                 for(String s : students.get(next)) {
                     box.getItems().add(s);
                 }
@@ -57,7 +60,7 @@ public class StudentExceptionController implements Controller {
             }
             final JFXButton button = new JFXButton("B");
             comboBoxes.put(button, node);
-            //this.students.put(button, listOfStudentsWithoutEmail.get(i));
+            this.students.put(button, listOfStudentsWithoutEmail.get(i));
             button.setOnMouseClicked(e -> {
                 Node input = comboBoxes.get(button);
                 String result;
@@ -96,6 +99,6 @@ public class StudentExceptionController implements Controller {
 
     @Override
     public void setMainApp(MainApp mainApp) {
-
+        this.mainApp = mainApp;
     }
 }

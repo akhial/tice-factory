@@ -3,13 +3,19 @@ package com.team33.gui;
 import com.team33.model.csv.CSVBuilder;
 import com.team33.model.csv.CSVFormat;
 import com.team33.model.csv.Students.*;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
+import javafx.scene.control.Label;
 
 import java.io.IOException;
+import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.StringTokenizer;
 
 public class AggregateHelper {
+
+    private ObservableList<Label> selectedItems = FXCollections.observableArrayList();
 
     private HashMap<String, String> levelPaths = new HashMap<>();
     private String webPath;
@@ -31,6 +37,7 @@ public class AggregateHelper {
         switch(buttonType) {
             case "list":
                 format = new StudentFormat(tokenizer.nextToken(), getOption(level), "");
+                // TODO 3CS need InternshipStudentFormat
                 break;
             case "courses":
                 try {
@@ -96,5 +103,16 @@ public class AggregateHelper {
 
     CSVBuilder getBuilder() {
         return builder;
+    }
+
+    public void setLevels(ObservableList<Label> levels) {
+        for(Label l : levels) {
+            System.out.println(l.getText());
+            selectedItems.add(l);
+        }
+    }
+
+    public ObservableList<Label> getLevels() {
+        return selectedItems;
     }
 }

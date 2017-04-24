@@ -20,7 +20,8 @@ public class StudentSelectionController implements Controller {
     private JFXListView<Label> levelList;
 
     @FXML
-    protected void initialize() {
+    @SuppressWarnings("unused")
+    private void initialize() {
         CoursesStore store = new CoursesStore();
         try {
             store.load();
@@ -32,7 +33,7 @@ public class StudentSelectionController implements Controller {
         String[] levels = {"1CPI", "2CPI", "1CS", "2CS", "3CS"};
 
         // TODO 3CS has no groups
-
+        // TODO when user doesn't select anything show dialog box
         for(int i = 0; i < 3; i++) {
             levelList.getItems().add(new Label(levels[i]));
         }
@@ -48,6 +49,8 @@ public class StudentSelectionController implements Controller {
     @FXML
     private void onNextButtonClick() {
        selectedItems =  levelList.getSelectionModel().getSelectedItems();
+       mainApp.getHelper().setLevels(selectedItems);
+       mainApp.getMainViewController().setScene(MainApp.WEB_SELECT, MainApp.CONVERT_NAME);
     }
 
     public void setMainApp(MainApp mainApp) {

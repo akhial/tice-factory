@@ -16,106 +16,110 @@
 <?import javafx.scene.layout.VBox?>
 
 
-<AnchorPane xmlns="http://javafx.com/javafx/8.0.111" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.team33.gui.MainViewController">
+<StackPane fx:id="rootStackPane" xmlns="http://javafx.com/javafx/8.0.111" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.team33.gui.MainViewController">
    <children>
-      <GridPane id="back-pane" fx:id="gridPane" layoutX="1.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" stylesheets="@style.css" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
-        <columnConstraints>
-          <ColumnConstraints hgrow="NEVER" maxWidth="295.0" minWidth="10.0" prefWidth="205.0" />
-          <ColumnConstraints hgrow="ALWAYS" maxWidth="1.7976931348623157E308" minWidth="10.0" prefWidth="395.0" />
-        </columnConstraints>
-        <rowConstraints>
-          <RowConstraints maxHeight="-Infinity" minHeight="-Infinity" prefHeight="62.0" vgrow="NEVER" />
-          <RowConstraints maxHeight="1.7976931348623157E308" minHeight="10.0" prefHeight="338.0" vgrow="ALWAYS" />
-        </rowConstraints>
+      <AnchorPane>
          <children>
-            <VBox id="left-drawer" prefHeight="200.0" prefWidth="100.0" GridPane.rowIndex="1">
+            <GridPane id="back-pane" fx:id="gridPane" layoutX="1.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" stylesheets="@style.css" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+              <columnConstraints>
+                <ColumnConstraints hgrow="NEVER" maxWidth="295.0" minWidth="10.0" prefWidth="205.0" />
+                <ColumnConstraints hgrow="ALWAYS" maxWidth="1.7976931348623157E308" minWidth="10.0" prefWidth="395.0" />
+              </columnConstraints>
+              <rowConstraints>
+                <RowConstraints maxHeight="-Infinity" minHeight="-Infinity" prefHeight="62.0" vgrow="NEVER" />
+                <RowConstraints maxHeight="1.7976931348623157E308" minHeight="10.0" prefHeight="338.0" vgrow="ALWAYS" />
+              </rowConstraints>
                <children>
-                  <JFXButton prefHeight="35.0" prefWidth="205.0" text="ACCEUIL">
-                     <VBox.margin>
-                        <Insets bottom="5.0" top="10.0" />
-                     </VBox.margin>
-                  </JFXButton>
-                  <JFXButton prefHeight="35.0" prefWidth="205.0" text="CONVERTIR">
-                     <VBox.margin>
-                        <Insets bottom="5.0" />
-                     </VBox.margin>
-                  </JFXButton>
-                  <JFXButton prefHeight="35.0" prefWidth="205.0" text="ENVOYER EMAILS">
-                     <VBox.margin>
-                        <Insets bottom="5.0" />
-                     </VBox.margin>
-                  </JFXButton>
-                  <JFXButton prefHeight="35.0" prefWidth="205.0" text="PLUS DE STATISTIQUES">
-                     <VBox.margin>
-                        <Insets bottom="5.0" />
-                     </VBox.margin>
-                  </JFXButton>
-                  <JFXButton prefHeight="35.0" prefWidth="205.0" text="SUPPRIMER DOUBLONS">
-                     <VBox.margin>
-                        <Insets bottom="5.0" />
-                     </VBox.margin>
-                  </JFXButton>
-                  <JFXButton prefHeight="35.0" prefWidth="205.0" text="MODIFIER COURS">
-                     <VBox.margin>
-                        <Insets bottom="5.0" />
-                     </VBox.margin>
-                  </JFXButton>
-               </children>
-            </VBox>
-            <HBox prefHeight="100.0" prefWidth="200.0">
-               <children>
-                  <HBox id="user-pane" alignment="CENTER_LEFT" prefHeight="77.0" prefWidth="341.0">
+                  <VBox id="left-drawer" prefHeight="200.0" prefWidth="100.0" GridPane.rowIndex="1">
                      <children>
-                        <StackPane prefHeight="62.0" prefWidth="26.0">
-                           <children>
-                              <ImageView id="user-image" fx:id="userImage" fitHeight="47.0" fitWidth="52.0" pickOnBounds="true" preserveRatio="true">
-                                 <image>
-                                    <Image url="@../img/T33.png" />
-                                 </image>
-                              </ImageView>
-                           </children>
-                        </StackPane>
-                        <VBox alignment="CENTER_LEFT" prefHeight="200.0" prefWidth="100.0">
-                           <children>
-                              <Label text="Utilisateur">
-                                 <VBox.margin>
-                                    <Insets bottom="-2.0" />
-                                 </VBox.margin>
-                              </Label>
-                              <Label id="type-label" text="Administrateur" />
-                           </children>
-                           <HBox.margin>
-                              <Insets left="11.0" />
-                           </HBox.margin>
-                        </VBox>
+                        <JFXButton id="home-button" fx:id="homeButton" onAction="#onMainButtonClick" prefHeight="35.0" prefWidth="205.0" text="ACCEUIL">
+                           <VBox.margin>
+                              <Insets bottom="5.0" top="10.0" />
+                           </VBox.margin>
+                        </JFXButton>
+                        <JFXButton id="convert-button" fx:id="convertButton" onAction="#onMainButtonClick" prefHeight="35.0" prefWidth="205.0" text="CONVERTIR">
+                           <VBox.margin>
+                              <Insets bottom="5.0" />
+                           </VBox.margin>
+                        </JFXButton>
+                        <JFXButton id="mail-button" fx:id="mailButton" onAction="#onMainButtonClick" prefHeight="35.0" prefWidth="205.0" text="ENVOYER EMAILS">
+                           <VBox.margin>
+                              <Insets bottom="5.0" />
+                           </VBox.margin>
+                        </JFXButton>
+                        <JFXButton id="stat-button" fx:id="statButton" onAction="#onMainButtonClick" prefHeight="35.0" prefWidth="205.0" text="PLUS DE STATISTIQUES">
+                           <VBox.margin>
+                              <Insets bottom="5.0" />
+                           </VBox.margin>
+                        </JFXButton>
+                        <JFXButton id="duplicates-button" fx:id="duplicatesButton" onAction="#onMainButtonClick" prefHeight="35.0" prefWidth="205.0" text="SUPPRIMER DOUBLONS">
+                           <VBox.margin>
+                              <Insets bottom="5.0" />
+                           </VBox.margin>
+                        </JFXButton>
+                        <JFXButton id="lessons-button" fx:id="lessonsButton" onAction="#onMainButtonClick" prefHeight="35.0" prefWidth="205.0" text="MODIFIER COURS">
+                           <VBox.margin>
+                              <Insets bottom="5.0" />
+                           </VBox.margin>
+                        </JFXButton>
                      </children>
-                     <opaqueInsets>
-                        <Insets />
-                     </opaqueInsets>
-                     <padding>
-                        <Insets left="10.0" />
-                     </padding>
+                  </VBox>
+                  <HBox prefHeight="100.0" prefWidth="200.0">
+                     <children>
+                        <HBox id="user-pane" alignment="CENTER_LEFT" prefHeight="77.0" prefWidth="341.0">
+                           <children>
+                              <StackPane prefHeight="62.0" prefWidth="26.0">
+                                 <children>
+                                    <ImageView id="user-image" fx:id="userImage" fitHeight="30.0" fitWidth="30.0" pickOnBounds="true" preserveRatio="true">
+                                       <image>
+                                          <Image url="@../img/T33.png" />
+                                       </image>
+                                    </ImageView>
+                                 </children>
+                              </StackPane>
+                              <VBox alignment="CENTER_LEFT" prefHeight="200.0" prefWidth="100.0">
+                                 <children>
+                                    <Label text="Utilisateur">
+                                       <VBox.margin>
+                                          <Insets bottom="-2.0" />
+                                       </VBox.margin>
+                                    </Label>
+                                    <Label id="type-label" text="Administrateur" />
+                                 </children>
+                                 <HBox.margin>
+                                    <Insets left="11.0" />
+                                 </HBox.margin>
+                              </VBox>
+                           </children>
+                           <opaqueInsets>
+                              <Insets />
+                           </opaqueInsets>
+                           <padding>
+                              <Insets left="7.0" />
+                           </padding>
+                        </HBox>
+                     </children>
+                  </HBox>
+                  <HBox id="top-bar" alignment="CENTER_LEFT" GridPane.columnIndex="1">
+                     <children>
+                        <JFXHamburger prefHeight="62.0" prefWidth="18.0" scaleY="0.5">
+                           <HBox.margin>
+                              <Insets left="10.0" />
+                           </HBox.margin>
+                           <effect>
+                              <ColorAdjust brightness="1.0" />
+                           </effect>
+                        </JFXHamburger>
+                        <Label fx:id="contentLabel" text="ACCEUIL">
+                           <HBox.margin>
+                              <Insets left="10.0" />
+                           </HBox.margin>
+                        </Label>
+                     </children>
                   </HBox>
                </children>
-            </HBox>
-            <HBox id="top-bar" alignment="CENTER_LEFT" GridPane.columnIndex="1">
-               <children>
-                  <JFXHamburger prefHeight="62.0" prefWidth="18.0" scaleY="0.5">
-                     <HBox.margin>
-                        <Insets left="10.0" />
-                     </HBox.margin>
-                     <effect>
-                        <ColorAdjust brightness="1.0" />
-                     </effect>
-                  </JFXHamburger>
-                  <Label text="ACCEUIL">
-                     <HBox.margin>
-                        <Insets left="10.0" />
-                     </HBox.margin>
-                  </Label>
-               </children>
-            </HBox>
+            </GridPane>
          </children>
-      </GridPane>
+      </AnchorPane>
    </children>
-</AnchorPane>
+</StackPane>

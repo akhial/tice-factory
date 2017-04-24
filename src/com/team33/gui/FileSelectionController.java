@@ -11,23 +11,20 @@ import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 
 public class FileSelectionController implements Controller {
 
+    private MainApp mainApp;
     private ObservableList<Label> test = FXCollections.observableArrayList();
-
-    private ArrayList<JFXButton> buttons = new ArrayList<>();
+    private HashMap<Label, JFXButton> buttons = new HashMap<>();
 
     @FXML
     private VBox levelContainer;
 
-    @FXML
-    protected void initialize() {
-        test.add(new Label("1CPI"));
-        test.add(new Label("2CPI"));
-        test.add(new Label("1CS"));
-        test.add(new Label("2CS-SIT"));
-        test.add(new Label("3CS-SIL"));
+    public void setup() {
+
+        test = mainApp.getHelper().getLevels();
         // TODO use real data
 
         levelContainer.setSpacing(10);
@@ -37,12 +34,12 @@ public class FileSelectionController implements Controller {
             box.setAlignment(Pos.CENTER_LEFT);
 
             JFXTextField textField = new JFXTextField();
-            textField.setPrefWidth(700);
+            textField.setPrefWidth(500);
 
             label.setPrefWidth(100);
 
-            JFXButton button = new JFXButton("B");
-            buttons.add(button);
+            JFXButton button = new JFXButton("");
+            buttons.put(label, button);
 
             box.getChildren().add(label);
             box.getChildren().add(textField);
@@ -55,7 +52,7 @@ public class FileSelectionController implements Controller {
 
     @Override
     public void setMainApp(MainApp mainApp) {
-
+        this.mainApp = mainApp;
     }
 
     @Override
