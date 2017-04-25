@@ -76,8 +76,11 @@ public class TeacherExceptionController implements Controller {
                                     n.setDisable(true);
                                     String name = "";
                                     for(Map.Entry<JFXButton, Node> entry : comboBoxes.entrySet()) {
-                                        if(entry.getValue().equals(n))
-                                            name = verified.get(entry.getKey());
+                                        if(entry.getValue().equals(n)) {
+                                            JFXButton key = entry.getKey();
+                                            key.setDisable(true);
+                                            name = verified.get(key);
+                                        }
                                     }
                                     finalMails.put(name, ((JFXComboBox) n).getSelectionModel().getSelectedItem().toString());
                                 }
@@ -88,6 +91,7 @@ public class TeacherExceptionController implements Controller {
                     input.setDisable(true);
                 }
                 finalMails.put(verified.get(button), result);
+                button.setDisable(true);
             });
             String parsed = next.replace('*', ' ');
             exceptionPane.addRow(i+1, new Label(parsed), node, button);

@@ -41,7 +41,6 @@ public class AggregateHelper {
                     format = new IntershipStudentFormat(levelName, getOption(level), "");
                 else
                     format = new StudentFormat(levelName, getOption(level), "");
-                // TODO 3CS need InternshipStudentFormat
                 break;
             case "courses":
                 try {
@@ -51,7 +50,6 @@ public class AggregateHelper {
                         format = new AffectingStudentToCourseFormat(levelName, getOption(level), "");
                 } catch(IOException e) {
                     e.printStackTrace();
-                    // TODO show dialog unreachable
                 }
                 break;
             case "group":
@@ -59,7 +57,6 @@ public class AggregateHelper {
                     format = new GroupFormat(levelName, getOption(level), "");
                 } catch(IOException e) {
                     e.printStackTrace();
-                    // TODO show dialog unreachable
                 }
                 break;
             case "grades":
@@ -72,10 +69,7 @@ public class AggregateHelper {
             builder.buildCSV();
         } catch(IOException e) {
             e.printStackTrace();
-            // TODO show dialog unreachable
         }
-        System.err.println("CSV Builded");
-
     }
 
     private String getOption(String level) {

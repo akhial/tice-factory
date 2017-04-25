@@ -10,11 +10,29 @@ public class TypeSelectionController implements Controller {
     private void onStudentListButton() {
         mainApp.setAggregateHelper(new AggregateHelper("list"));
         mainApp.getMainViewController().setScene(MainApp.STUDENT_SELECT, MainApp.CONVERT_NAME);
-
-        // TODO if type is group don't even show 3CS
+        ((StudentSelectionController) mainApp.getCurrentController()).setup();
     }
 
-    // TODO add other types
+    @FXML
+    private void onStudentGroupButton() {
+        mainApp.setAggregateHelper(new AggregateHelper("group"));
+        mainApp.getMainViewController().setScene(MainApp.STUDENT_SELECT, MainApp.CONVERT_NAME);
+        ((StudentSelectionController) mainApp.getCurrentController()).setup();
+    }
+
+    @FXML
+    private void onStudentGradesButton() {
+        mainApp.setAggregateHelper(new AggregateHelper("grades"));
+        mainApp.getMainViewController().setScene(MainApp.STUDENT_SELECT, MainApp.CONVERT_NAME);
+        ((StudentSelectionController) mainApp.getCurrentController()).setup();
+    }
+
+    @FXML
+    private void onStudentLessonsButton() {
+        mainApp.setAggregateHelper(new AggregateHelper("lessons"));
+        mainApp.getMainViewController().setScene(MainApp.STUDENT_SELECT, MainApp.CONVERT_NAME);
+        ((StudentSelectionController) mainApp.getCurrentController()).setup();
+    }
 
     @FXML
     private void onTeacherListButton() {

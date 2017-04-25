@@ -48,7 +48,7 @@ public class FileSelectionController implements Controller {
                 button.setOnAction(e -> {
                     String s = chooseFile();
                     mainApp.getHelper().getLevelPaths().put(label.getText(), s);
-                    label.setText(s);
+                    textField.setText(s);
                 });
 
                 box.getChildren().add(label);

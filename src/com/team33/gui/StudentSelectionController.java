@@ -9,6 +9,7 @@ import javafx.scene.control.SelectionMode;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Arrays;
 
 public class StudentSelectionController implements Controller {
 
@@ -19,21 +20,19 @@ public class StudentSelectionController implements Controller {
     @FXML
     private JFXListView<Label> levelList;
 
-    @FXML
-    @SuppressWarnings("unused")
-    private void initialize() {
+    public void setup() {
         CoursesStore store = new CoursesStore();
 
         store.load();
         ArrayList<String> options = store.getCycleSuperieur().getCS2().getOptions();
         String[] levels = {"1CPI", "2CPI", "1CS", "2CS", "3CS"};
-
-        // TODO 3CS has no groups
-        // TODO when user doesn't select anything show dialog box
+        if(mainApp.getHelper().getButtonType().equals("grades") || mainApp.getHelper().getButtonType().equals("group")) {
+            levels = Arrays.copyOfRange(levels, 0, 4);
+        }
         for(int i = 0; i < 3; i++) {
             levelList.getItems().add(new Label(levels[i]));
         }
-        for(int i = 3; i < 5; i++) {
+        for(int i = 3; i < levels.length; i++) {
             for(String option : options) {
                 levelList.getItems().add(new Label(levels[i] + "-" +     option));
             }
@@ -44,9 +43,13 @@ public class StudentSelectionController implements Controller {
 
     @FXML
     private void onNextButtonClick() {
-       selectedItems =  levelList.getSelectionModel().getSelectedItems();
-       mainApp.getHelper().setLevels(selectedItems);
-       mainApp.getMainViewController().setScene(MainApp.WEB_SELECT, MainApp.CONVERT_NAME);
+        selectedItems =  levelList.getSelectionModel().getSelectedItems();
+        if(!selectedItems.isEmpty()) {
+            mainApp.getHelper().setLevels(selectedItems);
+            mainApp.getMainViewController().setScene(MainApp.WEB_SELECT, MainApp.CONVERT_NAME);
+        } else
+            mainApp.getMainViewController().showConfirmationDialog("Alerte",
+                    "Veuillez sélectionner au moins un fichier!");
     }
 
     public void setMainApp(MainApp mainApp) {

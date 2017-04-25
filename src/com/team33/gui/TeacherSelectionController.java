@@ -7,17 +7,13 @@ import com.team33.model.csv.CSVBuilder;
 import com.team33.model.csv.CSVFormat;
 import com.team33.model.csv.TeacherFormat;
 import javafx.fxml.FXML;
-import javafx.scene.Scene;
-import javafx.scene.layout.StackPane;
 import javafx.stage.DirectoryChooser;
 import javafx.stage.FileChooser;
-import javafx.stage.Stage;
 
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.concurrent.ExecutionException;
 
 public class TeacherSelectionController implements Controller {
 
@@ -148,9 +144,13 @@ public class TeacherSelectionController implements Controller {
                 ((TeacherFormat) format).AddingMissingEmails(finalMails);
             }
         } catch(IOException e) {
-            // TODO show dialog
+            mainApp.getMainViewController().showConfirmationDialog("Erreur",
+                    "Erreur pendant l'écriture du fichier CSV");
         }
         csvBuilder.convertToCSV();
+        mainApp.getMainViewController().showConfirmationDialog("Succés",
+                "Fichier CSV créé aves succés!");
+        mainApp.getMainViewController().setScene(MainApp.DASHBOARD, MainApp.DASHBOARD_NAME);
     }
 
     @Override

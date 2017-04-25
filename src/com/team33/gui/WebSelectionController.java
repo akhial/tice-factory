@@ -1,10 +1,13 @@
 package com.team33.gui;
 
 import com.jfoenix.controls.JFXTextField;
+import com.team33.model.assertions.MissingFieldsException;
+import com.team33.model.assertions.WebServiceFormatChecker;
 import javafx.fxml.FXML;
 import javafx.stage.FileChooser;
 
 import java.io.File;
+import java.io.IOException;
 
 public class WebSelectionController implements Controller {
 
@@ -22,8 +25,18 @@ public class WebSelectionController implements Controller {
         chooser.setTitle("Séléctionner le fichier web...");
         File result = chooser.showOpenDialog(null);
         if(result != null) {
-            webTextField.setText(result.getAbsolutePath());
-            fileChosen = true;
+            WebServiceFormatChecker webServiceFormatChecker = new WebServiceFormatChecker();
+            try {
+                webTextField.setText(result.getAbsolutePath());
+                webServiceFormatChecker.checkFormat(result.getAbsolutePath());
+                fileChosen = true;
+            } catch(IOException e) {
+                mainApp.getMainViewController().showConfirmationDialog("Erreur",
+                        "Erreur pendant la lecture du fichier!");
+            } catch(MissingFieldsException e) {
+                mainApp.getMainViewController().showConfirmationDialog("Erreur",
+                        e.getMessage());
+            }
         }
     }
 
