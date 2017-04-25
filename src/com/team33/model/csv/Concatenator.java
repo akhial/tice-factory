@@ -20,7 +20,6 @@ public class Concatenator {
         Workbook workbookOut = new XSSFWorkbook();
         for (String s:workbooks){
             xssfWorkbooks.add((XSSFWorkbook) WorkbookFactory.create(new File(s)));
-
         }
         Row row,row1;
         int i = 1 ;
@@ -49,7 +48,6 @@ public class Concatenator {
                 i++;
 
             }
-
 
         }
         int j = 0;
