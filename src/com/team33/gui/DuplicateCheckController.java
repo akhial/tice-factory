@@ -65,13 +65,9 @@ public class DuplicateCheckController implements Controller {
                     mainApp.getMainViewController().showConfirmationDialog("Erreur",
                             "Fichier introuvable!");
                     return;
-                } catch(MissingFieldsException e) {
-                    mainApp.getMainViewController().showConfirmationDialog("Erreur",
-                            e.getMessage());
-                    return;
                 } catch(Exception e) {
                     mainApp.getMainViewController().showConfirmationDialog("Erreur",
-                            "Erreur pendant la lecture du fichier");
+                            e.getMessage());
                     return;
                 }
                 int[] locations = new int[4];

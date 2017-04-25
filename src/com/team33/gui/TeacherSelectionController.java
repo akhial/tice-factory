@@ -14,12 +14,12 @@ import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.concurrent.ExecutionException;
 
 public class TeacherSelectionController implements Controller {
 
     private MainApp mainApp;
     private boolean withAssignment = false;
-    // TODO get boolean from TypeSelectionController
     private boolean chargesSelected = false;
     private boolean emailSelected = false;
     private boolean cancel = false;
@@ -113,8 +113,14 @@ public class TeacherSelectionController implements Controller {
                     ((TeacherExceptionController) mainApp.getCurrentController()).setUnhandledEmails(mails);
                     ((TeacherExceptionController) mainApp.getCurrentController()).setTeacherSelectionController(this);
                     HashMap<String, String> finalEmails = null;
-                    // TODO find a way to communicate
-                    //finalEmails = ((TeacherExceptionController) mainApp.getCurrentController()).getMails();
+
+                    try {
+                        FXUtilities.runAndWait(() -> {
+
+                        });
+                    } catch(InterruptedException | ExecutionException e) {
+                        e.printStackTrace();
+                    }
                     try {
                         if(withAssignment) {
                             ((AssigningTeacherToCourseFormat) format).AddingMissingEmails(finalEmails);
