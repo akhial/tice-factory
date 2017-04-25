@@ -19,22 +19,24 @@ public class StudentExceptionController implements Controller {
     private HashMap<JFXButton, Node> comboBoxes = new HashMap<>();
     private HashMap<JFXButton, Student> students = new HashMap<>();
 
+    private AggregateHelper aggregateHelper;
+
     @FXML
     private GridPane exceptionPane;
 
-    @FXML
-    @SuppressWarnings("unused")
-    private void initialize() {
+    public void setup() {
         ArrayList<Student> listOfStudentsWithoutEmail;
         listOfStudentsWithoutEmail = ((StudentInterface) mainApp.getHelper().getFormat()).getListOfStudentsWithoutEmail();
 
         exceptionPane.setHgap(10);
         exceptionPane.setVgap(10);
 
+        exceptionPane.getChildren().remove(2, exceptionPane.getChildren().size());
+
         Node node;
         int i = 0;
         for(Student s : listOfStudentsWithoutEmail) {
-            final int width = 700;
+            final int width = 1200;
             if(s.getListOfEmails().isEmpty()) {
                 node = new JFXTextField();
                 ((JFXTextField) node).setPromptText("Veuillez saisir une addresse email");
@@ -59,28 +61,60 @@ public class StudentExceptionController implements Controller {
                     result = ((JFXTextField) input).getText();
                 } else {
                     result = ((JFXComboBox) input).getSelectionModel().getSelectedItem().toString();
-                    listOfUsedEmails.add(result);
                 }
                 if(!result.isEmpty()) {
-                    comboBoxes.forEach((b, n) -> {
-                        if(n instanceof JFXComboBox) {
-                            if(n != input) {
-                                ((JFXComboBox) n).getItems().removeAll(listOfUsedEmails);
-                            }
-                        }
-                    });
-                    listOfUsedEmails.clear();
-                    Student current = students.get(button);
-                    current.setEmail(result);
-                    current.generateUsename();
-                    ((StudentInterface) mainApp.getHelper().getFormat()).updateRow(current.getPositionInWorkbookOut(), current);
-                    input.setDisable(true);
+                    result = "";
                 }
+                listOfUsedEmails.add(result);
+                button.setDisable(true);
+                comboBoxes.forEach((b, n) -> {
+                    if(n instanceof JFXComboBox) {
+                        if(n != input) {
+                            ((JFXComboBox) n).getItems().removeAll(listOfUsedEmails);
+                        }
+                    }
+                });
+                listOfUsedEmails.clear();
+                Student current = students.get(button);
+                current.setEmail(result);
+                current.generateUsename();
+                ((StudentInterface) mainApp.getHelper().getFormat()).updateRow(current.getPositionInWorkbookOut(), current);
+                input.setDisable(true);
+
             });
             i++;
-            exceptionPane.addRow(i+1, new Label(s.getFirstName() + " " + s.getLastName()), node, button);
+            Label label = new Label(s.getFirstName()+" "+s.getLastName());
+            label.setMinWidth(100);
+            exceptionPane.addRow(i+1, label, node, button);
         }
+    }
 
+    @FXML
+    private void onFinishButton() {
+        if(containsEmptyNode()) {
+            mainApp.getMainViewController().showConfirmationDialog("Erreur",
+                    "Veuillez vérifier tout les emails!");
+        } else {
+            aggregateHelper.finishCSV();
+        }
+    }
+
+    private boolean containsEmptyNode() {
+        for(Node n : comboBoxes.values()) {
+            if(n instanceof JFXComboBox) {
+                if(((JFXComboBox) n).getSelectionModel().getSelectedItem() == null) {
+                    return true;
+                }
+            } else {
+                if(((JFXTextField) n).getText().isEmpty())
+                    return true;
+            }
+        }
+        return false;
+    }
+
+    public void setAggregateHelper(AggregateHelper aggregateHelper) {
+        this.aggregateHelper = aggregateHelper;
     }
 
     @Override

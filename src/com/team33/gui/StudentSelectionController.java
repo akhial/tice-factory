@@ -22,7 +22,6 @@ public class StudentSelectionController implements Controller {
 
     public void setup() {
         CoursesStore store = new CoursesStore();
-
         store.load();
         ArrayList<String> options = store.getCycleSuperieur().getCS2().getOptions();
         String[] levels = {"1CPI", "2CPI", "1CS", "2CS", "3CS"};

@@ -1,6 +1,5 @@
 package com.team33.model.assertions;
 
-import com.sun.xml.internal.org.jvnet.fastinfoset.FastInfosetException;
 import org.apache.poi.ss.usermodel.Cell;
 import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.xssf.usermodel.XSSFCell;
@@ -16,7 +15,7 @@ import java.util.Scanner;
 /**
  * Created by Mitchell on 13/02/2017.
  */
-public class schoolServiceFormatChecker implements ExcelFormat {
+public class SchoolServiceFormatChecker implements ExcelFormat {
 
 
     public boolean checkFormat(String f1) throws IOException, MissingFieldsException, NoLineFoundException {
@@ -225,7 +224,7 @@ public class schoolServiceFormatChecker implements ExcelFormat {
 
     public static void main(String[] args) throws Exception {
         boolean x,y;
-        schoolServiceFormatChecker ssf=new schoolServiceFormatChecker();
+        SchoolServiceFormatChecker ssf=new SchoolServiceFormatChecker();
        /* try {
             try {
                 x=ssf.checkFormat("t.xlsx");

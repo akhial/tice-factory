@@ -21,10 +21,12 @@ public class WebSelectionController implements Controller {
     @FXML
     private void onOpenChooserButtonClick() {
         FileChooser chooser = new FileChooser();
-        chooser.setSelectedExtensionFilter(new FileChooser.ExtensionFilter("Fichiers Excel", ".xlsx"));
+        chooser.getExtensionFilters().add(new FileChooser.ExtensionFilter("Fichiers Excel", "*.xlsx"));
         chooser.setTitle("Séléctionner le fichier web...");
         File result = chooser.showOpenDialog(null);
         if(result != null) {
+            RecentFileHandler.writeFile(result.getAbsolutePath());
+            System.out.println("Writing file " + result.getAbsolutePath());
             WebServiceFormatChecker webServiceFormatChecker = new WebServiceFormatChecker();
             try {
                 webTextField.setText(result.getAbsolutePath());
