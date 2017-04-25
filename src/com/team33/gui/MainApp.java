@@ -38,7 +38,6 @@ public class MainApp extends Application {
         loader.setLocation(getClass().getResource(MAIN_APP));
         Parent root = loader.load();
 
-        // TODO switching
         mainViewController = loader.getController();
         mainViewController.setMainApp(this);
         mainViewController.setScene(DASHBOARD, DASHBOARD_NAME);

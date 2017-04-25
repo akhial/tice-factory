@@ -35,8 +35,6 @@ public class DuplicateCheckController implements Controller {
         typeBox.getItems().add("Service scolarité");
         typeBox.getItems().add("Email des étudiants");
 
-        // TODO use real data
-
         fileButton.setText("");
     }
 
