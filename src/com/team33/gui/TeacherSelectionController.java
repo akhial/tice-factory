@@ -127,6 +127,7 @@ public class TeacherSelectionController implements Controller {
                 }
             }
         }
+        cancel = false;
     }
 
     @FXML

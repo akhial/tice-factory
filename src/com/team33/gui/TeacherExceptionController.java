@@ -48,9 +48,9 @@ public class TeacherExceptionController implements Controller {
                 box.setPrefWidth(width);
                 node = box;
             }
-            final JFXButton button = new JFXButton("B");
+            final JFXButton button = new JFXButton("");
             verified.put(button, next);
-            // TODO add confirm icon
+            button.setId("green-confirm-button");
             comboBoxes.put(button, node);
             button.setOnMouseClicked(e -> {
                 Node input = comboBoxes.get(button);
@@ -61,7 +61,6 @@ public class TeacherExceptionController implements Controller {
                     if(((JFXComboBox) input).getSelectionModel().getSelectedItem() != null) {
                         result = ((JFXComboBox) input).getSelectionModel().getSelectedItem().toString();
                         listOfUsedEmails.add(result);
-                        System.out.println(result);
                     } else {
                         mainApp.getMainViewController().showConfirmationDialog("Erreur",
                                 "Aucun email séléctionné");

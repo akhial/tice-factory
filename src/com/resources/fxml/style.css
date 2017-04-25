@@ -165,6 +165,9 @@
   -fx-text-fill: white;
   -fx-background-color: #263238;
 }
+#green-confirm-button {
+  -fx-graphic: url("../img/check.png");
+}
 
 /* Textfield and cbox styles */
 

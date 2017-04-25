@@ -88,6 +88,7 @@ public class MainViewController implements Controller {
             }
         } else {
             parent = views.get(scene);
+            // TODO cache controllers
         }
         gridPane.add(parent, 1, 1);
     }
