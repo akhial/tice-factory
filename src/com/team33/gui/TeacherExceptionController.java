@@ -3,8 +3,6 @@ package com.team33.gui;
 import com.jfoenix.controls.JFXButton;
 import com.jfoenix.controls.JFXComboBox;
 import com.jfoenix.controls.JFXTextField;
-import com.team33.model.csv.Students.Student;
-import com.team33.model.csv.Students.StudentInterface;
 import javafx.fxml.FXML;
 import javafx.scene.Node;
 import javafx.scene.control.Label;
@@ -18,18 +16,19 @@ public class TeacherExceptionController implements Controller {
     private HashMap<String, ArrayList<String>> unhandledEmails = new HashMap<>();
     private ArrayList<String> listOfUsedEmails = new ArrayList<>();
     private HashMap<JFXButton, Node> comboBoxes = new HashMap<>();
-    private HashMap<JFXButton, Boolean> verified = new HashMap<>();
+    private HashMap<JFXButton, String> verified = new HashMap<>();
+    private HashMap<String, String> finalMails = new HashMap<>();
 
     private TeacherSelectionController teacherSelectionController;
 
     @FXML
     private GridPane exceptionPane;
 
-    @FXML
-    @SuppressWarnings("unused")
-    private void initialize() {
+    public void setup() {
         exceptionPane.setHgap(10);
         exceptionPane.setVgap(10);
+
+        exceptionPane.getChildren().remove(2, exceptionPane.getChildren().size());
 
         Node node;
         Object[] keys = unhandledEmails.keySet().toArray();
@@ -50,45 +49,75 @@ public class TeacherExceptionController implements Controller {
                 node = box;
             }
             final JFXButton button = new JFXButton("B");
+            verified.put(button, next);
             // TODO add confirm icon
             comboBoxes.put(button, node);
-            verified.put(button, Boolean.FALSE);
             button.setOnMouseClicked(e -> {
-                verified.replace(button, Boolean.TRUE);
                 Node input = comboBoxes.get(button);
-                String result;
+                String result = "";
                 if(input instanceof JFXTextField) {
                     result = ((JFXTextField) input).getText();
                 } else {
-                    result = ((JFXComboBox) input).getSelectionModel().getSelectedItem().toString();
-                    listOfUsedEmails.add(result);
+                    if(((JFXComboBox) input).getSelectionModel().getSelectedItem() != null) {
+                        result = ((JFXComboBox) input).getSelectionModel().getSelectedItem().toString();
+                        listOfUsedEmails.add(result);
+                        System.out.println(result);
+                    } else {
+                        mainApp.getMainViewController().showConfirmationDialog("Erreur",
+                                "Aucun email séléctionné");
+                    }
                 }
                 if(!result.isEmpty()) {
                     comboBoxes.forEach((b, n) -> {
                         if(n instanceof JFXComboBox) {
                             if(n != input) {
                                 ((JFXComboBox) n).getItems().removeAll(listOfUsedEmails);
-                                listOfUsedEmails.clear();
+                                if(((JFXComboBox) n).getItems().size() == 1) {
+                                    ((JFXComboBox) n).getSelectionModel().selectFirst();
+                                    n.setDisable(true);
+                                    String name = "";
+                                    for(Map.Entry<JFXButton, Node> entry : comboBoxes.entrySet()) {
+                                        if(entry.getValue().equals(n))
+                                            name = verified.get(entry.getKey());
+                                    }
+                                    finalMails.put(name, ((JFXComboBox) n).getSelectionModel().getSelectedItem().toString());
+                                }
                             }
                         }
                     });
+                    listOfUsedEmails.clear();
                     input.setDisable(true);
-                    // TODO delete used mails, refresh view
                 }
+                finalMails.put(verified.get(button), result);
             });
-            exceptionPane.addRow(i+1, new Label(next), node, button);
+            String parsed = next.replace('*', ' ');
+            exceptionPane.addRow(i+1, new Label(parsed), node, button);
         }
     }
 
     @FXML
     private void onFinishButton() {
-        if(verified.containsValue(Boolean.FALSE)) {
+        if(containsEmptyNode()) {
             mainApp.getMainViewController().showConfirmationDialog("Erreur",
                     "Veuillez vérifier tout les emails!");
         } else {
-            HashMap<String, String> finalMails = new HashMap<>();
-            // TODO generate the mails
+            teacherSelectionController.setFinalMails(finalMails);
+            teacherSelectionController.finishCSV();
         }
+    }
+
+    private boolean containsEmptyNode() {
+        for(Node n : comboBoxes.values()) {
+            if(n instanceof JFXComboBox) {
+                if(((JFXComboBox) n).getSelectionModel().getSelectedItem() == null) {
+                    return true;
+                }
+            } else {
+                if(((JFXTextField) n).getText().isEmpty())
+                    return true;
+            }
+        }
+        return false;
     }
 
     void setTeacherSelectionController(TeacherSelectionController teacherSelectionController) {
@@ -96,7 +125,7 @@ public class TeacherExceptionController implements Controller {
     }
 
     public void setUnhandledEmails(HashMap<String, ArrayList<String>> unhandledEmails) {
-        this.unhandledEmails = unhandledEmails;
+        this.unhandledEmails = (HashMap<String, ArrayList<String>>) unhandledEmails.clone();
     }
 
     @Override

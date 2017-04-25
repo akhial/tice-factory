@@ -7,8 +7,11 @@ import com.team33.model.csv.CSVBuilder;
 import com.team33.model.csv.CSVFormat;
 import com.team33.model.csv.TeacherFormat;
 import javafx.fxml.FXML;
+import javafx.scene.Scene;
+import javafx.scene.layout.StackPane;
 import javafx.stage.DirectoryChooser;
 import javafx.stage.FileChooser;
+import javafx.stage.Stage;
 
 import java.io.File;
 import java.io.IOException;
@@ -23,6 +26,11 @@ public class TeacherSelectionController implements Controller {
     private boolean chargesSelected = false;
     private boolean emailSelected = false;
     private boolean cancel = false;
+
+    private CSVFormat format;
+    private CSVBuilder csvBuilder;
+
+    private HashMap<String, String> finalMails = new HashMap<>();
 
     @FXML
     private JFXTextField webTextField;
@@ -94,8 +102,8 @@ public class TeacherSelectionController implements Controller {
                     DirectoryChooser directoryChooser = new DirectoryChooser();
                     File save = directoryChooser.showDialog(null);
 
-                    CSVFormat format = withAssignment ? new AssigningTeacherToCourseFormat() : new TeacherFormat();
-                    CSVBuilder csvBuilder = new CSVBuilder(workbookPaths, format, save.getAbsolutePath());
+                    format = withAssignment ? new AssigningTeacherToCourseFormat() : new TeacherFormat();
+                    csvBuilder = new CSVBuilder(workbookPaths, format, save.getAbsolutePath());
                     try {
                         csvBuilder.buildCSV();
                     } catch(IOException e) {
@@ -109,28 +117,13 @@ public class TeacherSelectionController implements Controller {
                     } else {
                         mails = ((TeacherFormat) format).getUnHandledEmails();
                     }
-                    mainApp.getMainViewController().setScene(MainApp.TEACHER_EXCEPTION, MainApp.CONVERT_NAME);
-                    ((TeacherExceptionController) mainApp.getCurrentController()).setUnhandledEmails(mails);
-                    ((TeacherExceptionController) mainApp.getCurrentController()).setTeacherSelectionController(this);
-                    HashMap<String, String> finalEmails = null;
-
-                    try {
-                        FXUtilities.runAndWait(() -> {
-
-                        });
-                    } catch(InterruptedException | ExecutionException e) {
-                        e.printStackTrace();
+                    if(!mails.isEmpty()) {
+                        System.out.println(mails);
+                        mainApp.getMainViewController().setScene(MainApp.TEACHER_EXCEPTION, MainApp.CONVERT_NAME);
+                        ((TeacherExceptionController) mainApp.getCurrentController()).setUnhandledEmails(mails);
+                        ((TeacherExceptionController) mainApp.getCurrentController()).setTeacherSelectionController(this);
+                        ((TeacherExceptionController) mainApp.getCurrentController()).setup();
                     }
-                    try {
-                        if(withAssignment) {
-                            ((AssigningTeacherToCourseFormat) format).AddingMissingEmails(finalEmails);
-                        } else {
-                            ((TeacherFormat) format).AddingMissingEmails(finalEmails);
-                        }
-                    } catch(IOException e) {
-                        // TODO show dialog
-                    }
-                    csvBuilder.convertToCSV();
                 }
             }
         }
@@ -139,6 +132,24 @@ public class TeacherSelectionController implements Controller {
     @FXML
     private void onCancelButton() {
 
+    }
+
+    void setFinalMails(HashMap<String, String> finalMails) {
+        this.finalMails = finalMails;
+    }
+
+    void finishCSV() {
+        System.out.println("here");
+        try {
+            if(withAssignment) {
+                ((AssigningTeacherToCourseFormat) format).AddingMissingEmails(finalMails);
+            } else {
+                ((TeacherFormat) format).AddingMissingEmails(finalMails);
+            }
+        } catch(IOException e) {
+            // TODO show dialog
+        }
+        csvBuilder.convertToCSV();
     }
 
     @Override
