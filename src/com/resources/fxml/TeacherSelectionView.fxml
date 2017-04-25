@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import com.jfoenix.controls.JFXButton?>
+<?import com.jfoenix.controls.JFXProgressBar?>
+<?import com.jfoenix.controls.JFXTextField?>
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.effect.ColorAdjust?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.VBox?>
+
+
+<AnchorPane xmlns="http://javafx.com/javafx/8.0.111" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.team33.gui.TeacherSelectionController">
+   <children>
+      <VBox id="dash-container" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" stylesheets="@style.css" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+         <children>
+            <Label maxHeight="-Infinity" minHeight="-Infinity" prefHeight="45.0" prefWidth="70.0" text="ÉTAPE 1/1">
+               <VBox.margin>
+                  <Insets left="10.0" />
+               </VBox.margin>
+            </Label>
+            <JFXProgressBar maxWidth="1.7976931348623157E308" prefHeight="3.0" prefWidth="600.0" progress="1.0" VBox.vgrow="ALWAYS">
+               <effect>
+                  <ColorAdjust hue="0.1" />
+               </effect>
+            </JFXProgressBar>
+            <AnchorPane maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="370.0" prefWidth="600.0" VBox.vgrow="ALWAYS">
+               <children>
+                  <JFXButton id="form-button" fx:id="nextButton" layoutX="518.0" layoutY="300.0" onAction="#onNextButton" text="SUIVANT" AnchorPane.bottomAnchor="27.0" AnchorPane.rightAnchor="30.0" />
+                  <JFXButton id="form-button" fx:id="cancelButton" layoutX="447.0" layoutY="300.0" onAction="#onCancelButton" text="ANNULER" AnchorPane.bottomAnchor="27.0" AnchorPane.rightAnchor="101.0" />
+                  <Label layoutX="30.0" layoutY="40.0" prefHeight="30.0" prefWidth="305.0" text="VEUILLEZ SÉLÉCTIONNER LE FICHIER DES CHARGES" AnchorPane.leftAnchor="30.0" AnchorPane.topAnchor="40.0" />
+                  <JFXTextField id="file-field" fx:id="webTextField" focusColor="#26a696" layoutX="30.0" layoutY="100.0" prefHeight="25.0" prefWidth="540.0" AnchorPane.leftAnchor="30.0" AnchorPane.rightAnchor="30.0" AnchorPane.topAnchor="100.0" />
+                  <JFXButton id="file-button" layoutX="528.0" layoutY="92.0" onAction="#onOpenChargesButton" text=" " AnchorPane.rightAnchor="20.0" />
+                  <Label layoutX="30.0" layoutY="170.0" prefHeight="30.0" prefWidth="305.0" text="VEUILLEZ SÉLÉCTIONNER LE FICHIER DES EMAILS" AnchorPane.topAnchor="170.0" />
+                  <JFXTextField id="file-field" fx:id="mailTextField" focusColor="#26a696" layoutX="30.0" layoutY="230.0" prefHeight="25.0" prefWidth="540.0" AnchorPane.leftAnchor="30.0" AnchorPane.rightAnchor="30.0" AnchorPane.topAnchor="230.0" />
+                  <JFXButton id="file-button" layoutX="528.0" layoutY="222.0" onAction="#onOpenEmailButton" text=" " AnchorPane.rightAnchor="20.0" AnchorPane.topAnchor="222.0" />
+               </children>
+            </AnchorPane>
+         </children>
+      </VBox>
+   </children>
+</AnchorPane>

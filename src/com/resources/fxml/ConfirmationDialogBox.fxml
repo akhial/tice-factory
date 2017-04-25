@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import com.jfoenix.controls.JFXButton?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.text.Text?>
+
+
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="135.0" prefWidth="300.0" stylesheets="@style.css" xmlns="http://javafx.com/javafx/8.0.111" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.team33.gui.ConfirmationDialogBoxController">
+   <children>
+      <Label id="bold-label" fx:id="title" layoutX="25.0" layoutY="24.0" text="Label" AnchorPane.leftAnchor="20.0" AnchorPane.topAnchor="20.0" />
+      <Text fx:id="content" layoutX="25.0" layoutY="62.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Text" wrappingWidth="244.13671875" AnchorPane.leftAnchor="25.0" AnchorPane.rightAnchor="25.0" />
+      <JFXButton id="green-button" fx:id="confirmButton" layoutX="236.0" layoutY="152.0" text="CONFIRMER" AnchorPane.bottomAnchor="20.0" AnchorPane.rightAnchor="20.0" />
+   </children>
+</AnchorPane>
