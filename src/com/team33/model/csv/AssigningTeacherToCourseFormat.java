@@ -1,7 +1,6 @@
 package com.team33.model.csv;
 
 import com.team33.model.Utilities.Util;
-import org.apache.poi.openxml4j.exceptions.InvalidFormatException;
 import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 
@@ -18,7 +17,7 @@ import java.util.StringTokenizer;
  */
 public class AssigningTeacherToCourseFormat extends UserFormat implements CSVFormat {
     private HashMap<String,ArrayList<String>> unHandledEmails;
-    private final String tempName = "TeachersListWithCourses.xlsx";
+    private final String tempName = "CreatingTeachersWithCourses.xlsx";
     public HashMap<String, ArrayList<String>> getUnHandledEmails() {
         return unHandledEmails;
     }
@@ -110,7 +109,7 @@ public class AssigningTeacherToCourseFormat extends UserFormat implements CSVFor
             numRow++;
         }
         generateHeaderInTempFile(workbook,maxColumn);
-        File file = new File("CreatingTeachersWithCourses.xlsx");
+        File file = new File(tempName);
         saveUsersList(file);
         new File(tempFile).delete();
         return file.getPath() ;
