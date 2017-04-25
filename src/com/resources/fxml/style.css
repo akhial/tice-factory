@@ -38,8 +38,9 @@
 #user-pane #type-label {
     -fx-font-family: "Open Sans Regular";
 }
-#user-image {
-  /* unused */
+.jfx-text-area {
+  -jfx-focus-color: #26A69A;
+  -fx-text-fill: white;
 }
 
 /* Label styles */
@@ -63,6 +64,16 @@
 #bold-label {
   -fx-font-family: "Open Sans Extrabold";
   -fx-text-fill: black;
+}
+#black-thin-label {
+  -fx-font-family: "Open Sans Semibold";
+  -fx-text-fill: black;
+}
+#recent-files-list .list-cell {
+  -fx-background-color: #263238;
+  -fx-border-color: #00897B;
+  -fx-border-weight: 2;
+  -fx-border-style: DASHED;
 }
 
 /* Button styles and graphics */
@@ -146,6 +157,10 @@
 .jfx-text-field {
   -fx-text-fill: white;
 }
+.jfx-password-field {
+  -fx-text-fill: white;
+  -jfx-focus-color: #26A696
+}
 #level-list .list-cell:selected {
   -fx-background-color: #26A696;
 }
@@ -164,6 +179,9 @@
 .selected-button {
   -fx-text-fill: white;
   -fx-background-color: #263238;
+}
+#green-confirm-button {
+  -fx-graphic: url("../img/check.png");
 }
 
 /* Textfield and cbox styles */

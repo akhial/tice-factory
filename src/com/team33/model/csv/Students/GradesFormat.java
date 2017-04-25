@@ -90,8 +90,8 @@ public class GradesFormat extends UserFormat implements CSVFormat, StudentInterf
         rw.createCell(0).setCellValue(student.getUsername());
         int i = 1;
         for(Cell cell : rowIn){
-            String cellValue = cell.toString();
             cell.setCellType(CellType.STRING);
+            String cellValue = cell.toString();
             if(cell.getColumnIndex() != box.getColMatrin() && cell.getColumnIndex() != box.getColNom() && cell.getColumnIndex() != box.getColPrenom() && cell.getColumnIndex() != box.getColOptin() && cell.getColumnIndex() != box.getColAnetin() && cell.getColumnIndex() != box.getColNS())
             {
             if (isANumber(cellValue)) rw.createCell(i).setCellValue(cell.toString());
@@ -106,14 +106,14 @@ public class GradesFormat extends UserFormat implements CSVFormat, StudentInterf
         getWorkbookOut().getSheetAt(0).getRow(numRow).createCell(0).setCellValue(student.getUsername());
     }
 
-    private String nameOfEmailSheet()
+    protected String nameOfEmailSheet()
     {
         String sheetName = "";
-        if(this.getOptin().equals("CPI"))
+        if(this.optin.equals("CPI") || this.optin.equals("SC"))
         {
-            sheetName = this.getLevel();
+            sheetName = this.level;
         }
-        else sheetName = this.getLevel() + this.getOptin();
+        else sheetName = this.level + this.optin;
 
         for(Sheet sheet : getEmailsWorkbook())
         {

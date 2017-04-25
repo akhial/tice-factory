@@ -118,7 +118,7 @@ public class AffectingStudentToCourseFormat extends UserFormat implements Studen
     protected String nameOfEmailSheet()
     {
         String sheetName = "";
-        if(this.optin.equals("CPI"))
+        if(this.optin.equals("CPI") || this.optin.equals("SC"))
         {
             sheetName = this.level;
         }

@@ -22,6 +22,7 @@ public class MainViewController implements Controller {
 
     private MainApp mainApp;
     private HashMap<String, Parent> views = new HashMap<>();
+    private JFXDialog loadingDialog;
 
     @FXML
     private StackPane rootStackPane;
@@ -72,7 +73,7 @@ public class MainViewController implements Controller {
         if(gridPane.getChildren().size() > 3)
             gridPane.getChildren().remove(3);
         Parent parent = null;
-        if(!views.containsKey(scene)) {
+        //if(!views.containsKey(scene)) {
             FXMLLoader loader = new FXMLLoader(getClass().getResource(scene));
             try {
                 parent = loader.load();
@@ -86,9 +87,10 @@ public class MainViewController implements Controller {
             } catch(NullPointerException e) {
                 System.err.println("No controller set in "+loader.getLocation());
             }
-        } else {
-            parent = views.get(scene);
-        }
+        //} else {
+        //    parent = views.get(scene);
+            // TODO cache controllers
+        //}
         gridPane.add(parent, 1, 1);
     }
 
@@ -131,11 +133,13 @@ public class MainViewController implements Controller {
         if(e.getSource() == homeButton) {
             mainApp.cancel();
             setScene(MainApp.DASHBOARD, MainApp.DASHBOARD_NAME);
+            ((DashboardViewController) mainApp.getCurrentController()).initialize();
         } else if(e.getSource() == convertButton) {
             mainApp.cancel();
             setScene(MainApp.TYPE_SELECT, MainApp.CONVERT_NAME);
         } else if(e.getSource() == mailButton) {
-            showDialog();
+            mainApp.cancel();
+            setScene(MainApp.EMAIL_LOGIN, MainApp.MAIL_NAME);
         } else if(e.getSource() == statButton) {
             showDialog();
         } else if(e.getSource() == duplicatesButton) {
@@ -160,6 +164,7 @@ public class MainViewController implements Controller {
 
     void showConfirmationDialog(final String title, final   String message) {
         JFXDialog dialog = new JFXDialog();
+        loadingDialog = dialog;
         FXMLLoader loader = new FXMLLoader();
         loader.setLocation(getClass().getResource("/fxml/ConfirmationDialogBox.fxml"));
         Region region = null;
@@ -172,6 +177,26 @@ public class MainViewController implements Controller {
         ((ConfirmationDialogBoxController) loader.getController()).setDialog(dialog);
         dialog.setContent(region);
         dialog.show(rootStackPane);
+    }
+
+    void showLoadingDialog() {
+        JFXDialog dialog = new JFXDialog();
+        FXMLLoader loader = new FXMLLoader();
+        loadingDialog = dialog;
+        loader.setLocation(getClass().getResource("/fxml/LoadingView.fxml"));
+        Region region = null;
+        try {
+            region = loader.load();
+        } catch(IOException e) {
+            e.printStackTrace();
+        }
+        dialog.setContent(region);
+        dialog.setDisable(true);
+        dialog.show(rootStackPane);
+    }
+
+    void hideLoadingDialog() {
+        loadingDialog.close();
     }
 
     void showLongConfirmationDialog(final String title, final String message, DuplicateCheckController controller) {

@@ -1,4 +1,6 @@
-package com.team33.model.statistics;
+/**
+ * Created by dell on 24/04/2017.
+ */
 import com.aspose.cells.CellArea;
 import com.aspose.cells.Cells;
 import com.aspose.cells.DataSorter;
@@ -54,8 +56,5 @@ public class AsposeDataSort {
 
         // Saving the excel file
         workbook.save(outputPath);
-        System.out.println("Done.");
     }
 }
-
-

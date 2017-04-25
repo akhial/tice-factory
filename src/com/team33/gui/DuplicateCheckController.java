@@ -4,7 +4,6 @@ import com.jfoenix.controls.JFXButton;
 import com.jfoenix.controls.JFXComboBox;
 import com.jfoenix.controls.JFXTextField;
 import com.team33.model.assertions.*;
-import com.team33.model.csv.TeacherFormat;
 import javafx.fxml.FXML;
 import javafx.stage.FileChooser;
 
@@ -41,7 +40,7 @@ public class DuplicateCheckController implements Controller {
     @FXML
     private void onCheckButton() {
         if(fileChosen) {
-            if(!typeBox.getSelectionModel().getSelectedItem().isEmpty()) {
+            if(!(typeBox.getSelectionModel().getSelectedIndex() == -1)) {
                 String fileName = fileField.getText();
                 ExcelFormat formatChecker = new TeacherEmailFormatChecker();
                 switch(typeBox.getSelectionModel().getSelectedIndex()) {
@@ -51,7 +50,7 @@ public class DuplicateCheckController implements Controller {
                         formatChecker = new TeacherFormatChecker();
                         break;
                     case 2:
-                        formatChecker = new schoolServiceFormatChecker();
+                        formatChecker = new SchoolServiceFormatChecker();
                         break;
                     case 3:
                         formatChecker = new WebServiceFormatChecker();
@@ -65,13 +64,9 @@ public class DuplicateCheckController implements Controller {
                     mainApp.getMainViewController().showConfirmationDialog("Erreur",
                             "Fichier introuvable!");
                     return;
-                } catch(MissingFieldsException e) {
-                    mainApp.getMainViewController().showConfirmationDialog("Erreur",
-                            e.getMessage());
-                    return;
                 } catch(Exception e) {
                     mainApp.getMainViewController().showConfirmationDialog("Erreur",
-                            "Erreur pendant la lecture du fichier");
+                            e.getMessage());
                     return;
                 }
                 int[] locations = new int[4];
@@ -104,14 +99,14 @@ public class DuplicateCheckController implements Controller {
                 }
                 if(found)
                     mainApp.getMainViewController().showConfirmationDialog("Succés",
-                            "Doublons supprimés!");
+                            "Operation terminée!");
                 found = false;
                 finished = false;
+            } else {
+                mainApp.getMainViewController().showConfirmationDialog("Erreur", "Veuillez choisir le type du fichier!");
             }
         } else if(!fileChosen) {
             mainApp.getMainViewController().showConfirmationDialog("Erreur", "Veuillez choisir un fichier!");
-        } else {
-            mainApp.getMainViewController().showConfirmationDialog("Erreur", "Veuillez choisir le type du fichier!");
         }
     }
 

@@ -19,10 +19,14 @@ public class TeacherSelectionController implements Controller {
 
     private MainApp mainApp;
     private boolean withAssignment = false;
-    // TODO get boolean from TypeSelectionController
     private boolean chargesSelected = false;
     private boolean emailSelected = false;
     private boolean cancel = false;
+
+    private CSVFormat format;
+    private CSVBuilder csvBuilder;
+
+    private HashMap<String, String> finalMails = new HashMap<>();
 
     @FXML
     private JFXTextField webTextField;
@@ -45,7 +49,7 @@ public class TeacherSelectionController implements Controller {
     @FXML
     private void onOpenEmailButton() {
         FileChooser chooser = new FileChooser();
-        chooser.setSelectedExtensionFilter(new FileChooser.ExtensionFilter("Fichiers Excel", ".xlsx"));
+        chooser.getExtensionFilters().add(new FileChooser.ExtensionFilter("Fichiers Excel", ".xlsx"));
         chooser.setTitle("Séléctionner le fichier des emails...");
         File result = chooser.showOpenDialog(null);
         if(result != null) {
@@ -94,8 +98,8 @@ public class TeacherSelectionController implements Controller {
                     DirectoryChooser directoryChooser = new DirectoryChooser();
                     File save = directoryChooser.showDialog(null);
 
-                    CSVFormat format = withAssignment ? new AssigningTeacherToCourseFormat() : new TeacherFormat();
-                    CSVBuilder csvBuilder = new CSVBuilder(workbookPaths, format, save.getAbsolutePath());
+                    format = withAssignment ? new AssigningTeacherToCourseFormat() : new TeacherFormat();
+                    csvBuilder = new CSVBuilder(workbookPaths, format, save.getAbsolutePath());
                     try {
                         csvBuilder.buildCSV();
                     } catch(IOException e) {
@@ -109,30 +113,44 @@ public class TeacherSelectionController implements Controller {
                     } else {
                         mails = ((TeacherFormat) format).getUnHandledEmails();
                     }
-                    mainApp.getMainViewController().setScene(MainApp.TEACHER_EXCEPTION, MainApp.CONVERT_NAME);
-                    ((TeacherExceptionController) mainApp.getCurrentController()).setUnhandledEmails(mails);
-                    ((TeacherExceptionController) mainApp.getCurrentController()).setTeacherSelectionController(this);
-                    HashMap<String, String> finalEmails = null;
-                    // TODO find a way to communicate
-                    //finalEmails = ((TeacherExceptionController) mainApp.getCurrentController()).getMails();
-                    try {
-                        if(withAssignment) {
-                            ((AssigningTeacherToCourseFormat) format).AddingMissingEmails(finalEmails);
-                        } else {
-                            ((TeacherFormat) format).AddingMissingEmails(finalEmails);
-                        }
-                    } catch(IOException e) {
-                        // TODO show dialog
+                    if(!mails.isEmpty()) {
+                        System.out.println(mails);
+                        mainApp.getMainViewController().setScene(MainApp.TEACHER_EXCEPTION, MainApp.CONVERT_NAME);
+                        ((TeacherExceptionController) mainApp.getCurrentController()).setUnhandledEmails(mails);
+                        ((TeacherExceptionController) mainApp.getCurrentController()).setTeacherSelectionController(this);
+                        ((TeacherExceptionController) mainApp.getCurrentController()).setup();
                     }
-                    csvBuilder.convertToCSV();
                 }
             }
         }
+        cancel = false;
     }
 
     @FXML
     private void onCancelButton() {
 
+    }
+
+    void setFinalMails(HashMap<String, String> finalMails) {
+        this.finalMails = finalMails;
+    }
+
+    void finishCSV() {
+        System.out.println("here");
+        try {
+            if(withAssignment) {
+                ((AssigningTeacherToCourseFormat) format).AddingMissingEmails(finalMails);
+            } else {
+                ((TeacherFormat) format).AddingMissingEmails(finalMails);
+            }
+        } catch(IOException e) {
+            mainApp.getMainViewController().showConfirmationDialog("Erreur",
+                    "Erreur pendant l'écriture du fichier CSV");
+        }
+        csvBuilder.convertToCSV();
+        mainApp.getMainViewController().showConfirmationDialog("Succés",
+                "Fichier CSV créé aves succés!");
+        mainApp.getMainViewController().setScene(MainApp.DASHBOARD, MainApp.DASHBOARD_NAME);
     }
 
     @Override

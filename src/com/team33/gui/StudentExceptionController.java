@@ -19,49 +19,41 @@ public class StudentExceptionController implements Controller {
     private HashMap<JFXButton, Node> comboBoxes = new HashMap<>();
     private HashMap<JFXButton, Student> students = new HashMap<>();
 
+    private AggregateHelper aggregateHelper;
+
     @FXML
     private GridPane exceptionPane;
 
-    @FXML
-    @SuppressWarnings("unused")
-    private void initialize() {
-        ArrayList<Student> listOfStudentsWithoutEmail = null;
-        //listOfStudentsWithoutEmail =
-        //((StudentInterface) mainApp.getHelper().getFormat()).getListOfStudentsWithoutEmail();
-
-        HashMap<String, List<String>> students = new HashMap<>();
-        students.put("Adel Khial", Arrays.asList("adel", "bilal", "djamel"));
-        students.put("Rafik Drissi", Arrays.asList("adel", "bilal", "djamel"));
-        students.put("Hamza Zaidi", Collections.EMPTY_LIST);
-        students.put("Amine Guerras", Arrays.asList("adel", "bilal", "djamel"));
-
-        // TODO replace with real data
+    public void setup() {
+        ArrayList<Student> listOfStudentsWithoutEmail;
+        listOfStudentsWithoutEmail = ((StudentInterface) mainApp.getHelper().getFormat()).getListOfStudentsWithoutEmail();
 
         exceptionPane.setHgap(10);
         exceptionPane.setVgap(10);
 
-        Node node = null;
-        Object[] keys = students.keySet().toArray();
-        for(int i = 0; i < keys.length; i++) {
-            String next = (String) keys[i];
+        exceptionPane.getChildren().remove(2, exceptionPane.getChildren().size());
+
+        Node node;
+        int i = 0;
+        for(Student s : listOfStudentsWithoutEmail) {
             final int width = 1200;
-            if(students.get(next).isEmpty()) {
+            if(s.getListOfEmails().isEmpty()) {
                 node = new JFXTextField();
                 ((JFXTextField) node).setPromptText("Veuillez saisir une addresse email");
                 ((JFXTextField) node).setPrefWidth(width);
             } else {
                 JFXComboBox<String> box = new JFXComboBox<>();
                 box.setPromptText("Veuillez choisir une addresse email");
-                for(String s : students.get(next)) {
-                    box.getItems().add(s);
+                for(String mail : s.getListOfEmails()) {
+                    box.getItems().add(mail);
                 }
                 box.setPrefWidth(width);
                 node = box;
             }
             final JFXButton button = new JFXButton("");
-            // TODO add confirm icon
+            button.setId("green-confirm-button");
             comboBoxes.put(button, node);
-            //this.students.put(button, listOfStudentsWithoutEmail.get(i));
+            students.put(button, s);
             button.setOnMouseClicked(e -> {
                 Node input = comboBoxes.get(button);
                 String result;
@@ -69,28 +61,60 @@ public class StudentExceptionController implements Controller {
                     result = ((JFXTextField) input).getText();
                 } else {
                     result = ((JFXComboBox) input).getSelectionModel().getSelectedItem().toString();
-                    listOfUsedEmails.add(result);
                 }
                 if(!result.isEmpty()) {
-                    comboBoxes.forEach((b, n) -> {
-                        if(n instanceof JFXComboBox) {
-                            if(n != input) {
-                                ((JFXComboBox) n).getItems().removeAll(listOfUsedEmails);
-                                listOfUsedEmails.clear();
-                            }
-                        }
-                    });
-                    Student current = this.students.get(button);
-                    current.setEmail(result);
-                    current.generateUsename();
-                    ((StudentInterface) mainApp.getHelper().getFormat()).updateRow(current.getPositionInWorkbookOut(), current);
-                    input.setDisable(true);
-                    // TODO delete used mails, refresh view
+                    result = "";
                 }
-            });
-            exceptionPane.addRow(i+1, new Label(next), node, button);
-        }
+                listOfUsedEmails.add(result);
+                button.setDisable(true);
+                comboBoxes.forEach((b, n) -> {
+                    if(n instanceof JFXComboBox) {
+                        if(n != input) {
+                            ((JFXComboBox) n).getItems().removeAll(listOfUsedEmails);
+                        }
+                    }
+                });
+                listOfUsedEmails.clear();
+                Student current = students.get(button);
+                current.setEmail(result);
+                current.generateUsename();
+                ((StudentInterface) mainApp.getHelper().getFormat()).updateRow(current.getPositionInWorkbookOut(), current);
+                input.setDisable(true);
 
+            });
+            i++;
+            Label label = new Label(s.getFirstName()+" "+s.getLastName());
+            label.setMinWidth(100);
+            exceptionPane.addRow(i+1, label, node, button);
+        }
+    }
+
+    @FXML
+    private void onFinishButton() {
+        if(containsEmptyNode()) {
+            mainApp.getMainViewController().showConfirmationDialog("Erreur",
+                    "Veuillez vérifier tout les emails!");
+        } else {
+            aggregateHelper.finishCSV();
+        }
+    }
+
+    private boolean containsEmptyNode() {
+        for(Node n : comboBoxes.values()) {
+            if(n instanceof JFXComboBox) {
+                if(((JFXComboBox) n).getSelectionModel().getSelectedItem() == null) {
+                    return true;
+                }
+            } else {
+                if(((JFXTextField) n).getText().isEmpty())
+                    return true;
+            }
+        }
+        return false;
+    }
+
+    public void setAggregateHelper(AggregateHelper aggregateHelper) {
+        this.aggregateHelper = aggregateHelper;
     }
 
     @Override

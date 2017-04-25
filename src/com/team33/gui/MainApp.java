@@ -2,6 +2,7 @@ package com.team33.gui;
 
 import com.jfoenix.controls.JFXDecorator;
 import com.jfoenix.controls.JFXDialog;
+import com.team33.model.csv.Students.Courses.CoursesStore;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.geometry.Insets;
@@ -27,6 +28,11 @@ public class MainApp extends Application {
     static final String CONVERT_NAME = "CONVERTIR";
     static final String DUPLICATES = "/fxml/DuplicateCheckView.fxml";
     static final String DUPLICATE_NAME = "DOUBLANTS";
+    static final String EMAIL_LOGIN = "/fxml/EmailLoginView.fxml";
+    static final String MAIL_TYPE_SELECT = "/fxml/EmailTypeView.fxml";
+    static final String MAIL_SEND = "/fxml/MailSelectView.fxml";
+    static final String MAIL_NAME = "EMAILS";
+
 
     private Controller currentController;
     private MainViewController mainViewController;
@@ -47,8 +53,8 @@ public class MainApp extends Application {
         JFXDecorator decorator = new JFXDecorator(primaryStage, root);
 
         primaryStage.setTitle("TICE Factory");
-        primaryStage.setScene(new Scene(decorator, 850, 650));
-        primaryStage.setMinWidth(850);
+        primaryStage.setScene(new Scene(decorator, 950, 650));
+        primaryStage.setMinWidth(950);
         primaryStage.setMinHeight(650);
         primaryStage.show();
     }
@@ -59,6 +65,7 @@ public class MainApp extends Application {
 
     void setAggregateHelper(AggregateHelper aggregateHelper) {
         this.aggregateHelper = aggregateHelper;
+        aggregateHelper.setMainApp(this);
     }
 
     void setCurrentController(Controller controller) {

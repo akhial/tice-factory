@@ -7,6 +7,7 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.scene.control.Label;
 
+import java.io.File;
 import java.io.IOException;
 import java.lang.reflect.Array;
 import java.util.ArrayList;
@@ -15,7 +16,9 @@ import java.util.StringTokenizer;
 
 public class AggregateHelper {
 
+    private MainApp mainApp;
     private ObservableList<Label> selectedItems = FXCollections.observableArrayList();
+    private int i = 0;
 
     private HashMap<String, String> levelPaths = new HashMap<>();
     private String webPath;
@@ -28,54 +31,69 @@ public class AggregateHelper {
         this.buttonType = buttonType;
     }
 
-    public void makeLevelCSV(String level) {
-        ArrayList<String> workbookPaths = new ArrayList<>();
-        workbookPaths.add(webPath);
-        workbookPaths.add(levelPaths.get(level));
-        StringTokenizer tokenizer = new StringTokenizer(level, "-");
+    public void setMainApp(MainApp mainApp) {
+        this.mainApp = mainApp;
+    }
 
-        String levelName = tokenizer.nextToken();
-        switch(buttonType) {
-            case "list":
-                if(levelName.equals("3CS"))
-                    format = new IntershipStudentFormat(levelName, getOption(level), "");
-                else
-                    format = new StudentFormat(levelName, getOption(level), "");
-                // TODO 3CS need InternshipStudentFormat
-                break;
-            case "courses":
-                try {
+    public void makeLevelCSV() {
+        if(i < levelPaths.size()) {
+            String level = selectedItems.get(i).getText();
+            ArrayList<String> workbookPaths = new ArrayList<>();
+            workbookPaths.add(webPath);
+            workbookPaths.add(levelPaths.get(level));
+            StringTokenizer tokenizer = new StringTokenizer(level, "-");
+
+            String levelName = tokenizer.nextToken();
+            switch(buttonType) {
+                case "list":
                     if(levelName.equals("3CS"))
-                        format = new AffectingIntershipStudentToCourseFormat(levelName, getOption(level), "");
+                        format = new IntershipStudentFormat(levelName, getOption(level), "");
                     else
-                        format = new AffectingStudentToCourseFormat(levelName, getOption(level), "");
-                } catch(IOException e) {
-                    e.printStackTrace();
-                    // TODO show dialog unreachable
-                }
-                break;
-            case "group":
-                try {
-                    format = new GroupFormat(levelName, getOption(level), "");
-                } catch(IOException e) {
-                    e.printStackTrace();
-                    // TODO show dialog unreachable
-                }
-                break;
-            case "grades":
-                format = new GradesFormat(levelName, getOption(level), "");
-                break;
-        }
+                        format = new StudentFormat(levelName, getOption(level), "");
+                    break;
+                case "courses":
+                    try {
+                        if(levelName.equals("3CS"))
+                            format = new AffectingIntershipStudentToCourseFormat(levelName, getOption(level), "");
+                        else
+                            format = new AffectingStudentToCourseFormat(levelName, getOption(level), "");
+                    } catch(IOException e) {
+                        e.printStackTrace();
+                    }
+                    break;
+                case "group":
+                    try {
+                        format = new GroupFormat(levelName, getOption(level), "");
+                    } catch(IOException e) {
+                        e.printStackTrace();
+                    }
+                    break;
+                case "grades":
+                    format = new GradesFormat(levelName, getOption(level), "");
+                    break;
+            }
 
-        builder = new CSVBuilder(workbookPaths, format, outPath);
-        try {
-            builder.buildCSV();
-        } catch(IOException e) {
-            e.printStackTrace();
-            // TODO show dialog unreachable
+            builder = new CSVBuilder(workbookPaths, format, outPath);
+            System.out.println(workbookPaths);
+            try {
+                builder.buildCSV();
+            } catch(IOException e) {
+                e.printStackTrace();
+            }
+            mainApp.getMainViewController().setScene(MainApp.STUDENT_EXCEPTION, MainApp.CONVERT_NAME);
+            ((StudentExceptionController) mainApp.getCurrentController()).setup();
+            ((StudentExceptionController) mainApp.getCurrentController()).setAggregateHelper(this);
+            i++;
+        } else {
+            mainApp.getMainViewController().showConfirmationDialog("Succés", "Tout les fichiers ont étés créés");
+            mainApp.getMainViewController().setScene(MainApp.DASHBOARD, MainApp.CONVERT_NAME);
         }
-        System.err.println("CSV Builded");
+    }
 
+    public void finishCSV() {
+        ((StudentInterface) format).saveUsersList(new File(builder.getTempPath()));
+        builder.convertToCSV();
+        makeLevelCSV();
     }
 
     private String getOption(String level) {
