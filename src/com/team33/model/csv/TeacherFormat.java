@@ -52,6 +52,16 @@ public class TeacherFormat extends UserFormat {
         return str;
 
     }
+    public String generatePassWord(int length)
+    {
+        String chars = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890";
+        StringBuilder pass = new StringBuilder();
+        for(int x = 0; x < length; x++)   {
+            int i = (int)Math.floor(Math.random() * (chars.length() -1));
+            pass.append(chars.charAt(i));
+        }
+        return pass.toString();
+    }
     /**
      * Permet d'écrire la liste de chaines dans la ligne N =° numRow du workbookOut
      * */
@@ -145,7 +155,7 @@ public class TeacherFormat extends UserFormat {
             email = EmailAdress(row,row.getCell(lastNameColumn).toString(),lastNameColumn,firstNameColumn);
             if (email != null) arrayList.add( email.substring(0,email.indexOf("@"))) ;
             else  arrayList.add(null) ;
-            arrayList.add(row.getCell(lastNameColumn).toString().toLowerCase());
+            arrayList.add(generatePassWord(8));
             arrayList.add(row.getCell(firstNameColumn).toString().toUpperCase()+" ENS:");
             arrayList.add(row.getCell(lastNameColumn).toString().toUpperCase());
             arrayList.add(email);
