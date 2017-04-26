@@ -1,3 +1,5 @@
+package com.team33.model.statistics;
+
 /**
  * Created by dell on 24/04/2017.
  */

@@ -32,6 +32,8 @@ public class MainApp extends Application {
     static final String MAIL_TYPE_SELECT = "/fxml/EmailTypeView.fxml";
     static final String MAIL_SEND = "/fxml/MailSelectView.fxml";
     static final String MAIL_NAME = "EMAILS";
+    static final String STAT_SELECT = "/fxml/StatSelectView.fxml";
+    static final String STAT_NAME = "STATISTIQUES";
 
 
     private Controller currentController;

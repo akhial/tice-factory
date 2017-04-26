@@ -141,7 +141,8 @@ public class MainViewController implements Controller {
             mainApp.cancel();
             setScene(MainApp.EMAIL_LOGIN, MainApp.MAIL_NAME);
         } else if(e.getSource() == statButton) {
-            showDialog();
+            mainApp.cancel();
+            mainApp.getMainViewController().setScene(MainApp.STAT_SELECT, MainApp.STAT_NAME);
         } else if(e.getSource() == duplicatesButton) {
             mainApp.cancel();
             setScene(MainApp.DUPLICATES, MainApp.DUPLICATE_NAME);

@@ -69,11 +69,11 @@
   -fx-font-family: "Open Sans Semibold";
   -fx-text-fill: black;
 }
-#recent-files-list .list-cell {
-  -fx-background-color: #263238;
-  -fx-border-color: #00897B;
-  -fx-border-weight: 2;
-  -fx-border-style: DASHED;
+#recent-files-list .list-cell:even {
+  -fx-background-color: #00897B;
+}
+#recent-files-list .list-cell:odd {
+  -fx-background-color: #26A69A;
 }
 
 /* Button styles and graphics */

@@ -38,9 +38,9 @@ public class EmailTypeController implements Controller {
         mainApp.getMainViewController().setScene(MainApp.MAIL_SEND, MainApp.MAIL_NAME);
         ((MailSelectController) mainApp.getCurrentController()).setUsername(username);
         ((MailSelectController) mainApp.getCurrentController()).setPassword(password);
-        if(simple.isArmed()) {
+        if(simple.isSelected()) {
             ((MailSelectController) mainApp.getCurrentController()).setUnique(false);
-        } else if(unique.isArmed()) {
+        } else if(unique.isSelected()) {
             ((MailSelectController) mainApp.getCurrentController()).setUnique(true);
         }
     }

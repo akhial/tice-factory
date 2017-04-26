@@ -37,7 +37,7 @@ public class TeacherSelectionController implements Controller {
     @FXML
     private void onOpenChargesButton() {
         FileChooser chooser = new FileChooser();
-        chooser.setSelectedExtensionFilter(new FileChooser.ExtensionFilter("Fichiers Excel", ".xlsx"));
+        chooser.setSelectedExtensionFilter(new FileChooser.ExtensionFilter("Fichiers Excel", "*.xlsx"));
         chooser.setTitle("Séléctionner le fichier des charges...");
         File result = chooser.showOpenDialog(null);
         if(result != null) {
@@ -49,7 +49,7 @@ public class TeacherSelectionController implements Controller {
     @FXML
     private void onOpenEmailButton() {
         FileChooser chooser = new FileChooser();
-        chooser.getExtensionFilters().add(new FileChooser.ExtensionFilter("Fichiers Excel", ".xlsx"));
+        chooser.getExtensionFilters().add(new FileChooser.ExtensionFilter("Fichiers Excel", "*.xlsx"));
         chooser.setTitle("Séléctionner le fichier des emails...");
         File result = chooser.showOpenDialog(null);
         if(result != null) {

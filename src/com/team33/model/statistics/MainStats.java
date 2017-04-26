@@ -1,3 +1,5 @@
+package com.team33.model.statistics;
+
 import org.apache.poi.ss.usermodel.Cell;
 import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.ss.usermodel.Sheet;
@@ -17,7 +19,7 @@ import java.util.TreeSet;
  */
 public class MainStats {
     public static void main(String[] args) {
-        program1();
+        program2();
     }
 
     static void program1(){
@@ -29,24 +31,12 @@ public class MainStats {
             e.printStackTrace();
         }*/
         try {
-            TreeSet<String> propositions= new TreeSet<>();
+            TreeSet<String> propositions;
             StatisticsGenerator.trierFichierExcel("C:\\Users\\dell\\Downloads\\logs_20170324-2244.xlsx", "temp1.xlsx", 5);
             StatisticsGenerator.selectDates("1/1/2016","12/5/2017","temp1.xlsx","temp1.xlsx");
             StatisticsGenerator.semiGeneralStats("temp1.xlsx","temp1.xlsx",1);
-            XSSFWorkbook wb = new XSSFWorkbook(new FileInputStream(new File("temp1.xlsx")));
-            Sheet sheet = wb.getSheetAt(0);
-            int nbRows = sheet.getLastRowNum();
-            int i = sheet.getFirstRowNum();
-            while (i <= nbRows) {
-                Row row = sheet.getRow(i);
-                try{
-                    propositions.add(row.getCell(0).getStringCellValue());
-                }catch(Exception e){}
-                i++;
-            }
-
+            propositions=StatisticsGenerator.getPropositions("temp1.xlsx");
             BarChartData chart = new BarChartData("");
-
             Iterator<String> iter = propositions.iterator();
             String current;
             while (iter.hasNext()) {
@@ -72,12 +62,9 @@ public class MainStats {
             StatisticsGenerator.trierFichierExcel("C:\\Users\\dell\\Downloads\\logs_20170324-2244.xlsx", "temp1.xlsx", 3);
             StatisticsGenerator.selectDates("1/1/2016","12/5/2017","temp1.xlsx","temp1.xlsx");
             StatisticsGenerator.coursStats("temp1.xlsx","temp2.xlsx",1);
-
-            BarChartData chart = new BarChartData("");
-                chart.readFromFile("temp2.xlsx");
-                chart.afficher();
-                System.out.println();
-
+            PieChartData pie=new PieChartData();
+            pie.readFromFile("temp2.xlsx");
+            pie.afficher();
         }catch (FileNotFoundException e) {
             e.printStackTrace();
         } catch (IOException e) {

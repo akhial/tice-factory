@@ -1,4 +1,4 @@
-/**
+package com.team33.model.statistics; /**
  * Created by dell on 24/04/2017.
  */
 import org.apache.poi.ss.usermodel.Cell;
@@ -10,6 +10,7 @@ import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import java.io.*;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.TreeSet;
 
 /**
  * Created by Amine on 18/02/2017.
@@ -194,40 +195,22 @@ public class StatisticsGenerator {
             //System.out.println(rw.getCell(3).getStringCellValue());
             if (rw.getCell(3).getStringCellValue().contains("Course")) {
                 if (rw.getCell(3).getStringCellValue().equals(a)) {//on voit la colonne F si elle correspond à notre reference
-
-                    if (rw.getCell(0).getStringCellValue().contains(b)) {// si oui on regarde la date
+                    if(rw.getCell(0).getStringCellValue().contains(b)){// si oui on regarde la date
                         occurence++;
-                    } else {// si la date est differente on ecrit les anciennes données et on travaille avec les nouvelles
-                        //System.out.println(a + "    " + b);
-                        //System.out.println(occurence);
-                        Row r = s.createRow(index);
-                        Cell d = r.createCell(0);
-                        d.setCellValue(a);
-                        Cell c = r.createCell(1);
-                        //c.setCellValue(dateFormat(rw.getCell(0).getStringCellValue(),FORMATCHOISI));
-                        c.setCellValue(dateFormat(b, FORMATCHOISI));
-                        c = r.createCell(2);
-                        c.setCellValue(occurence);
-                        index++;
-                        b = dateFormat(rw.getCell(0).getStringCellValue(), FORMATCHOISI);
-                        occurence = 1;
                     }
-                } else {//si l'evenement est different on ecrit les anciennes donnees et on prend les nouvelles
-                    //System.out.println(a + "    " + b);
-                    //System.out.println(occurence);
+                }else{//si l'evenement est different on ecrit les anciennes donnees et on prend les nouvelles
+                   // System.out.println(a+"    "+b);
+                    // System.out.println(occurence);
                     Row r = s.createRow(index);
-                    Cell d = r.createCell(0);
+                    Cell d= r.createCell(0);
                     d.setCellValue(a);
                     Cell c = r.createCell(1);
-                    c.setCellValue(dateFormat(b, FORMATCHOISI));
-                    c = r.createCell(2);
                     c.setCellValue(occurence);
                     index++;
-                    a = rw.getCell(3).getStringCellValue();
-                    b = dateFormat(rw.getCell(0).getStringCellValue(), FORMATCHOISI);
+                    a=rw.getCell(3).getStringCellValue();
+                    b=dateFormat(rw.getCell(0).getStringCellValue(),FORMATCHOISI);
                     occurence = 1;
-                }
-            }
+                }}
             i++;
         }
         // ici c'est le cas du dernier élément
@@ -235,8 +218,6 @@ public class StatisticsGenerator {
         Cell d = r.createCell(0);
         d.setCellValue(a);
         Cell c = r.createCell(1);
-        c.setCellValue(dateFormat(rw.getCell(0).getStringCellValue(), FORMATCHOISI));
-        c = r.createCell(2);
         c.setCellValue(occurence);
         index++;
         //a=rw.getCell(5).getStringCellValue();
@@ -463,6 +444,22 @@ public class StatisticsGenerator {
         fileOut.flush();
         fileOut.close();
 
+    }
+
+    public static TreeSet<String> getPropositions(String inputFile)throws Exception{
+        TreeSet<String> propositions= new TreeSet<>();
+        XSSFWorkbook wb = new XSSFWorkbook(new FileInputStream(new File(inputFile)));
+        Sheet sheet = wb.getSheetAt(0);
+        int nbRows = sheet.getLastRowNum();
+        int i = sheet.getFirstRowNum();
+        while (i <= nbRows) {
+            Row row = sheet.getRow(i);
+            try{
+                propositions.add(row.getCell(0).getStringCellValue());
+            }catch(Exception e){}
+            i++;
+        }
+        return propositions;
     }
 }
 
