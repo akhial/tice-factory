@@ -2,6 +2,7 @@ package com.team33.model;
 
 import com.team33.model.csv.CSVBuilder;
 import com.team33.model.csv.Students.*;
+import com.team33.model.csv.Students.Courses.Course;
 import com.team33.model.csv.Students.Courses.CoursesStore;
 import com.team33.model.csv.Students.Courses.UnExistingOptionException;
 
@@ -16,10 +17,10 @@ public class Test {
     public static void main(String[] args) throws IOException {
        ArrayList<String> workbooksPaths = new ArrayList<String>();
 
-        workbooksPaths.add("liste email tous les etudiants.xlsx");
-        workbooksPaths.add("Listes-Etudiants_2CPI_S1_2016-2017(1) (2).xlsx");
-        GradesFormat studentFormat = new GradesFormat("2CPI","CPI","");
-        CSVBuilder csvBuilder = new CSVBuilder(workbooksPaths,studentFormat,"C:/Users/Adel/IdeaProjects/Team-33");
+        /*workbooksPaths.add("liste email tous les etudiants.xlsx");
+        workbooksPaths.add("NOTES ORGA 1CS 2017 BENYAHIA.xlsx");
+        GradesFormat studentFormat = new GradesFormat("1CS","SC","");
+        CSVBuilder csvBuilder = new CSVBuilder(workbooksPaths,studentFormat,"C:\\Users\\hamza\\Desktop\\TICE");
         csvBuilder.buildCSV();
         String email = null;
         for(Student student : studentFormat.getListOfStudentsWithoutEmail())
@@ -51,8 +52,8 @@ public class Test {
             listOfUsedEmails.add(email);
         }
         studentFormat.saveUsersList(new File(csvBuilder.getTempPath()));
-        csvBuilder.convertToCSV();
-        /*CoursesStore coursesStore = new CoursesStore();
+        csvBuilder.convertToCSV();*/
+       /* CoursesStore coursesStore = new CoursesStore();
         coursesStore.getCycleSuperieur().getCS2().ajouterOption("SIQ");
         coursesStore.getCycleSuperieur().getCS2().ajouterOption("SIT");
         coursesStore.getCycleSuperieur().getCS2().ajouterOption("SIL");
@@ -134,12 +135,89 @@ public class Test {
         }catch (UnExistingOptionException e){
             e.printStackTrace();
         }
-        coursesStore.saveChanges();*/
+        coursesStore.saveChanges()*/;
         /*coursesStore.load();
         coursesStore.getCycleSuperieur().getCS2().ajouterModuleCommun("ALOG","Arcihetctures logicielles");
         coursesStore.getCycleSuperieur().getCS2().ajouterModuleCommun("COM","Compilation");
         coursesStore.saveChanges();
         System.out.println(coursesStore.getCycleSuperieur().getCS2().getSemestre1("SIT"));*/
+
+        CoursesStore coursesStore = new CoursesStore();
+        coursesStore.load();
+        System.out.println("CYCLE PREPARATOIRE");
+        System.out.println("\t>1CP");
+        System.out.println("\t\t>SEMESTRE1");
+
+        for(Course course: coursesStore.getCyclePreparatoire().getCPI1().getSemestre1()){
+            System.out.println("\t\t\t"+course);
+        }
+        System.out.println("\t\tSEMESTRE2");
+        //System.out.println("coursesStore.getCyclePreparatoire().getCPI1().ajouterCoursSemsetre1("+'"'+course.getShortName()+'"'+","+'"'+course.getFullName()+'"'+");");
+        for(Course course: coursesStore.getCyclePreparatoire().getCPI1().getSemestre2()){
+            System.out.println("\t\t\t"+course);
+        }
+        System.out.println("\t>2CP");
+        System.out.println("\t\t>SEMESTRE1");
+        //System.out.println("coursesStore.getCyclePreparatoire().getCPI1().ajouterCoursSemstre2("+'"'+course.getShortName()+'"'+','+'"'+course.getFullName()+'"'+");");
+        for(Course course: coursesStore.getCyclePreparatoire().getCPI2().getSemestre1()){
+            System.out.println("\t\t\t"+course);
+        }
+        System.out.println("\t\t>SEMESTRE2");
+        //System.out.println("coursesStore.getCyclePreparatoire().getCPI2().ajouterCoursSemsetre1("+'"'+course.getShortName()+'"'+","+'"'+course.getFullName()+'"'+");");
+        for(Course course: coursesStore.getCyclePreparatoire().getCPI2().getSemestre2()){
+            System.out.println("\t\t\t"+course);
+        }
+        System.out.println("CYCLE SUPERIEUR");
+        System.out.println("\t>1CS");
+        System.out.println("\t\t>SEMESTRE1");
+        //System.out.println("coursesStore.getCyclePreparatoire().getCPI2().ajouterCoursSemstre2("+'"'+course.getShortName()+'"'+','+'"'+course.getFullName()+'"'+");");
+        for(Course course: coursesStore.getCycleSuperieur().getCS1().getSemestre1()){
+            System.out.println("\t\t\t"+course);
+        }
+        System.out.println("\t\t>SEMESTRE2");
+        //System.out.println("coursesStore.getCycleSuperieur().getCS1().ajouterCoursSemsetre1("+'"'+course.getShortName()+'"'+','+'"'+course.getFullName()+'"'+");");
+        for(Course course: coursesStore.getCycleSuperieur().getCS1().getSemestre2()){
+            System.out.println("\t\t\t"+course);
+        }
+        System.out.println("\t>2CS");
+        System.out.println("\t\t>SIQ");
+        System.out.println("\t\t\t>SEMESTRE1");
+        //System.out.println("coursesStore.getCycleSuperieur().getCS1().ajouterCoursSemstre2("+'"'+course.getShortName()+'"'+','+'"'+course.getFullName()+'"'+");");
+        for(Course course: coursesStore.getCycleSuperieur().getCS2().getSemestre1("SIQ")){
+            System.out.println("\t\t\t\t"+course);
+        }
+        System.out.println("\t\t\t>SEMESTRE2");
+        //System.out.println("coursesStore.getCycleSuperieur().getCS2().ajouterCoursSemestre1("+'"'+"SIQ"+'"'+','+'"'+course.getShortName()+'"'+','+'"'+course.getFullName()+'"'+");");
+        for(Course course: coursesStore.getCycleSuperieur().getCS2().getSemestre2("SIQ")){
+            System.out.println("\t\t\t\t"+course);
+        }
+
+        System.out.println("\t\t>SIT");
+        System.out.println("\t\t\t>SEMESTRE1");
+        //System.out.println("coursesStore.getCycleSuperieur().getCS2().ajouterCoursSemestre2("+'"'+"SIQ"+'"'+','+'"'+course.getShortName()+'"'+','+'"'+course.getFullName()+'"'+");");
+        for(Course course: coursesStore.getCycleSuperieur().getCS2().getSemestre1("SIT")){
+            System.out.println("\t\t\t\t"+course);
+        }
+        System.out.println("\t\t\t>SEMESTRE2");
+        //System.out.println("coursesStore.getCycleSuperieur().getCS2().ajouterCoursSemestre1("+'"'+"SIT"+'"'+','+'"'+course.getShortName()+'"'+','+'"'+course.getFullName()+'"'+");");
+        for(Course course: coursesStore.getCycleSuperieur().getCS2().getSemestre2("SIT")){
+            System.out.println("\t\t\t\t"+course);
+        }
+        System.out.println("\t\t>SIL");
+        System.out.println("\t\t\t>SEMESTRE1");
+        //System.out.println("coursesStore.getCycleSuperieur().getCS2().ajouterCoursSemestre2("+'"'+"SIT"+'"'+','+'"'+course.getShortName()+'"'+','+'"'+course.getFullName()+'"'+");");
+        for(Course course: coursesStore.getCycleSuperieur().getCS2().getSemestre1("SIL")){
+            System.out.println("\t\t\t\t"+course);
+        }
+        System.out.println("\t\t\t>SEMESTRE2");
+        //System.out.println("coursesStore.getCycleSuperieur().getCS2().ajouterCoursSemestre1("+'"'+"SIL"+'"'+','+'"'+course.getShortName()+'"'+','+'"'+course.getFullName()+'"'+");");
+        for(Course course: coursesStore.getCycleSuperieur().getCS2().getSemestre2("SIL")){
+            System.out.println("\t\t\t\t"+course);
+        }
+        System.out.println("\t\t>Modules Communs");
+        for(Course course : coursesStore.getCycleSuperieur().getCS2().getModulesCommuns()){
+            System.out.println("\t\t\t"+course);
+        }
     }
     public static void deleteUsedEmails(Student student)
     {
