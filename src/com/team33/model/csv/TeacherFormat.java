@@ -102,14 +102,12 @@ public class TeacherFormat extends UserFormat {
     private String ChooseEmail(ArrayList<String> listEmails, Row rw, int colNom, int colPrenom)
     {
         String email = null;
-        if ((listEmails.size() > 0)) {
-            if (listEmails.size() == 1){
-                email = listEmails.get(0);
-            }else{
-
-                unHandledEmails.put(rw.getCell(colNom).toString().toLowerCase()+"*"+rw.getCell(colPrenom).toString().toLowerCase(),listEmails);
-            }
+        if (listEmails.size() == 1){
+            email = listEmails.get(0);
+        }else{
+            unHandledEmails.put(rw.getCell(colNom).toString().toLowerCase()+"*"+rw.getCell(colPrenom).toString().toLowerCase(),listEmails);
         }
+
         return email;
     }
     /**
@@ -157,14 +155,13 @@ public class TeacherFormat extends UserFormat {
             if (email != null) arrayList.add( email.substring(0,email.indexOf("@"))) ;
             else  arrayList.add(null) ;
             arrayList.add((this.isGeneratedPassword()) ? generatePassWord(8) : row.getCell(firstNameColumn).toString().toLowerCase());
-            arrayList.add(row.getCell(firstNameColumn).toString().toUpperCase()+" ENS:");
-            arrayList.add(row.getCell(lastNameColumn).toString().toUpperCase());
+            arrayList.add(row.getCell(lastNameColumn).toString().toUpperCase()+" ENS:");
+            arrayList.add(row.getCell(firstNameColumn).toString().toUpperCase());
             arrayList.add(email);
             generateRow(numRow, (ArrayList<String>) arrayList.clone());
             arrayList.clear();
             numRow++;
         }
-
         File file = new File(tempName);
         saveUsersList(file);
         return file.getPath();
