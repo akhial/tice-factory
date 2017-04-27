@@ -60,51 +60,27 @@ public abstract class UserFormat implements CSVFormat {
         header = workbookOut.getSheetAt(0).getRow(0);
     }
 
-    public void openWorkbookIn(String fiilePathIn)//charger un fichier excel dans le wbin
+    public void openWorkbookIn(String fiilePathIn) throws IOException, InvalidFormatException//charger un fichier excel dans le wbin
     {
-
-        try {
-            this.workbookIn = (XSSFWorkbook) WorkbookFactory.create(new File(fiilePathIn));
-        }catch (FileNotFoundException e){
-            e.printStackTrace();
-        }catch (IOException e){
-            e.printStackTrace();
-        } catch (InvalidFormatException e) {
-            e.printStackTrace();
-        }
-
+        this.workbookIn = (XSSFWorkbook) WorkbookFactory.create(new File(fiilePathIn));
     }
 
 
 
-    public void saveUsersList(File file)//enregistrer les résultat obtenue dans wbout dans le disque dure
+    public void saveUsersList(File file) throws IOException//enregistrer les résultat obtenue dans wbout dans le disque dure
     {
-        try {
-            FileOutputStream fos = new FileOutputStream(file);
-            workbookOut.write(fos);
-            fos.close();
-            workbookOut.close();
-            workbookIn.close();
-            EmailsWorkbook.close();
-        }catch (FileNotFoundException e){
-            e.printStackTrace();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+        FileOutputStream fos = new FileOutputStream(file);
+        workbookOut.write(fos);
+        fos.close();
+        workbookOut.close();
+        workbookIn.close();
+        EmailsWorkbook.close();
 
     }
 
-    public void openEmailWorkbook(String emailFilePath)// ouvrire le fichier contenant les e-mails
+    public void openEmailWorkbook(String emailFilePath) throws IOException, InvalidFormatException// ouvrire le fichier contenant les e-mails
     {
-        try {
-            this.EmailsWorkbook = (XSSFWorkbook) WorkbookFactory.create(new File(emailFilePath));
-        }catch (FileNotFoundException e){
-            e.printStackTrace();
-        }catch (IOException e){
-            e.printStackTrace();
-        } catch (InvalidFormatException e) {
-            e.printStackTrace();
-        }
+        this.EmailsWorkbook = (XSSFWorkbook) WorkbookFactory.create(new File(emailFilePath));
     }
     /*
      *Méthodes utilitaires
