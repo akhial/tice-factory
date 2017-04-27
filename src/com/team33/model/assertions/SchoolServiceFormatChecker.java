@@ -2,6 +2,7 @@ package com.team33.model.assertions;
 
 import org.apache.poi.ss.usermodel.Cell;
 import org.apache.poi.ss.usermodel.Row;
+import org.apache.poi.ss.usermodel.Sheet;
 import org.apache.poi.xssf.usermodel.XSSFCell;
 import org.apache.poi.xssf.usermodel.XSSFSheet;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
@@ -17,46 +18,48 @@ import java.util.Scanner;
  */
 public class SchoolServiceFormatChecker implements ExcelFormat {
 
-
     public boolean checkFormat(String f1) throws IOException, MissingFieldsException, NoLineFoundException {
         XSSFWorkbook wB = new XSSFWorkbook(new FileInputStream(f1));
-        XSSFSheet sheet = wB.getSheetAt(0);
-        if (wB.getSheetAt(0).getRow(wB.getSheetAt(0).getLastRowNum())==null)
-            throw new NoSuchElementException("fichier Vide !");
-        Row row;
-        int cpt = 1;
-        Cell cell;
-        boolean bb=false;
-        Iterator<Row> rowIterator = sheet.iterator();
-        row = rowIterator.next();
-        while (rowIterator.hasNext()) {
-            if (Util.getInstance().existInRow(row, "Nom") || Util.getInstance().existInRow(row, "Prenom") ||
-                    Util.getInstance().existInRow(row, "Optin") || Util.getInstance().existInRow(row, "Moyenne")
-                    || Util.getInstance().existInRow(row, "NG") || Util.getInstance().existInRow(row, "NS") ||
-                    Util.getInstance().existInRow(row, "CI") || Util.getInstance().existInRow(row, "CF") ||
-                    Util.getInstance().existInRow(row, "CC")
-                    || Util.getInstance().existInRow(row, "TP") || Util.getInstance().existInRow(row, "Num") ||
-                    Util.getInstance().existInRow(row, "Matrin") || Util.getInstance().existInRow(row, "Anetin")
-                    ) { bb=true;
-                if (!Util.getInstance().existInRow(row, "Nom") || !Util.getInstance().existInRow(row, "Prenom") ||
-                        !Util.getInstance().existInRow(row, "Optin") || !Util.getInstance().existInRow(row, "NG")) {
 
-                    String s1 = "Champ(s) Introuvable(s) : " + cpt + " :";
-                    if (!Util.getInstance().existInRow(row, "Nom")) s1 = s1 + "  Nom,";
-                    if (!Util.getInstance().existInRow(row, "Prenom")) s1 = s1 + "  Prenom,";
-                    if (!Util.getInstance().existInRow(row, "NG")) s1 = s1 + "  NG,";
-                    if (!Util.getInstance().existInRow(row, "Anetin")) s1 = s1 + "  Anetin,";
-                    throw new MissingFieldsException(s1);
-                }
-            }
+        for(Sheet sheet : wB) {
+            if(wB.getSheetAt(0).getRow(wB.getSheetAt(0).getLastRowNum()) == null)
+                throw new NoSuchElementException("fichier Vide !");
+            Row row;
+            int cpt = 1;
+            Cell cell;
+            boolean bb = false;
+            Iterator<Row> rowIterator = sheet.iterator();
             row = rowIterator.next();
-            cpt++;
+            while(rowIterator.hasNext()) {
+                if(Util.getInstance().existInRow(row, "Nom") || Util.getInstance().existInRow(row, "Prenom") ||
+                        Util.getInstance().existInRow(row, "Optin") || Util.getInstance().existInRow(row, "Moyenne")
+                        || Util.getInstance().existInRow(row, "NG") || Util.getInstance().existInRow(row, "NS") ||
+                        Util.getInstance().existInRow(row, "CI") || Util.getInstance().existInRow(row, "CF") ||
+                        Util.getInstance().existInRow(row, "CC")
+                        || Util.getInstance().existInRow(row, "TP") || Util.getInstance().existInRow(row, "Num") ||
+                        Util.getInstance().existInRow(row, "Matrin") || Util.getInstance().existInRow(row, "Anetin")
+                        ) {
+                    bb = true;
+                    if(!Util.getInstance().existInRow(row, "Nom") || !Util.getInstance().existInRow(row, "Prenom") ||
+                            !Util.getInstance().existInRow(row, "Optin") || !Util.getInstance().existInRow(row, "NG")) {
+
+                        String s1 = "Champ(s) Introuvable(s) : "+cpt+" :";
+                        if(!Util.getInstance().existInRow(row, "Nom")) s1 = s1+"  Nom,";
+                        if(!Util.getInstance().existInRow(row, "Prenom")) s1 = s1+"  Prenom,";
+                        if(!Util.getInstance().existInRow(row, "NG")) s1 = s1+"  NG,";
+                        if(!Util.getInstance().existInRow(row, "Anetin")) s1 = s1+"  Anetin,";
+                        throw new MissingFieldsException(s1);
+                    }
+                }
+                row = rowIterator.next();
+                cpt++;
 
 
+            }
+
+            if(!bb) throw new NoLineFoundException("Header de la table non-trouvé !");
         }
-
-        if (bb==false) throw new NoLineFoundException("Header de la table non-trouvé !");
-        else return true;
+        return true;
     }
 
     @Override

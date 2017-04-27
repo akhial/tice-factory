@@ -80,7 +80,6 @@ public class StatSelectController implements Controller {
                         e.getMessage());
             }
         }
-
     }
 
     @Override
