@@ -13,7 +13,7 @@ public class CreatingAndAffectingStudentsToCourseFormat extends AffectingStudent
     public CreatingAndAffectingStudentsToCourseFormat(String level, String optin, String filePathOut) throws IOException {
         super(level, optin, filePathOut);
     }
-    protected void createStudentList()  {
+    protected void createStudentList() throws IOException {
         int numRow = 1;
         FileInformationExtractor extractor = new FileInformationExtractor(getWorkbookIn(), getOptin());
         HashMap<String,Student> students = extractor.findStudents();

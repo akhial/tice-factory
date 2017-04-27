@@ -2,6 +2,7 @@ package com.team33.model.csv.Students;
 
 import com.team33.model.Utilities.Util;
 import com.team33.model.csv.UserFormat;
+import org.apache.poi.openxml4j.exceptions.InvalidFormatException;
 import org.apache.poi.ss.usermodel.Cell;
 import org.apache.poi.ss.usermodel.CellType;
 import org.apache.poi.ss.usermodel.Row;
@@ -138,7 +139,7 @@ public abstract class AffectingStudentToCourseFormat extends UserFormat {
     abstract protected void createStudentList() throws IOException;
 
     @Override
-    public String buildCSV(ArrayList<String> workbooksPaths) throws IOException {
+    public String buildCSV(ArrayList<String> workbooksPaths) throws IOException, InvalidFormatException {
         // WorkbooksPaths should contain only list of first semester and list of e-mails
 
         String type;

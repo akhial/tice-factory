@@ -91,8 +91,7 @@ public class StudentFormat extends UserFormat implements CSVFormat {
         return null;
     }
 
-    private void createStudentList()
-    {
+    private void createStudentList() throws IOException {
         Long startTime = System.currentTimeMillis();
         System.out.println("Création de la liste ***");
         int numRow = 1;
@@ -135,7 +134,7 @@ public class StudentFormat extends UserFormat implements CSVFormat {
 
 
     @Override
-    public String buildCSV(ArrayList<String> workbooksPaths) throws IOException {
+    public String buildCSV(ArrayList<String> workbooksPaths) throws IOException, InvalidFormatException {
         // WorkbooksPaths should contain only list of first semester and list of e-mails
 
         String type;

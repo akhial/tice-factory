@@ -14,7 +14,7 @@ public class CreatingAndAffectingStudentToCrourseFormat extends GroupFormat {
         super(level, optin, filePathOut);
     }
 
-    protected void createStudentList() {
+    protected void createStudentList() throws IOException {
         int numRow = 1;
         FileInformationExtractor extractor = new FileInformationExtractor(getWorkbookIn(), getOptin());
         HashMap<String,Student> students = extractor.findStudents();

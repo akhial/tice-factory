@@ -1,6 +1,7 @@
 package com.team33.model.csv;
 
 import com.team33.model.Utilities.Util;
+import org.apache.poi.openxml4j.exceptions.InvalidFormatException;
 import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.ss.usermodel.Sheet;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
@@ -125,7 +126,7 @@ public class TeacherFormat extends UserFormat {
 
 
     @Override
-    public String buildCSV(ArrayList<String> workbooks) {
+    public String buildCSV(ArrayList<String> workbooks) throws IOException, InvalidFormatException {
         String workbookPath = workbooks.get(0);
         String emailWorkbookPath = workbooks.get(1);
         int firstNameColumn = 0 ;

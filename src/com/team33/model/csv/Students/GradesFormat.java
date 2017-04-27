@@ -3,6 +3,7 @@ package com.team33.model.csv.Students;
 import com.team33.model.Utilities.Util;
 import com.team33.model.csv.CSVFormat;
 import com.team33.model.csv.UserFormat;
+import org.apache.poi.openxml4j.exceptions.InvalidFormatException;
 import org.apache.poi.ss.usermodel.Cell;
 import org.apache.poi.ss.usermodel.CellType;
 import org.apache.poi.ss.usermodel.Row;
@@ -86,7 +87,7 @@ public abstract class GradesFormat extends UserFormat implements CSVFormat {
     }
     protected abstract void createStudentsList() throws IOException;
     @Override
-    public String buildCSV(ArrayList<String> workbooksPaths) throws IOException {
+    public String buildCSV(ArrayList<String> workbooksPaths) throws IOException, InvalidFormatException {
         String type;
         FileInformationExtractor extractor = new FileInformationExtractor();
         for (String workbooksPath : workbooksPaths) {
