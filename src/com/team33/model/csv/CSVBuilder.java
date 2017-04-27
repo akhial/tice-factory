@@ -39,14 +39,9 @@ public class CSVBuilder  {
         tempPath = format.buildCSV(workbooksPaths);
     }
 
-    public void convertToCSV(){
+    public void convertToCSV() throws IOException, InvalidFormatException {
         ToCSV toCSV = new ToCSV();
-        try {
-            toCSV.convertExcelToCSV(tempPath,destination);
-        } catch (IOException e) {
-            e.printStackTrace();
-        } catch (InvalidFormatException e) {
-            e.printStackTrace();
-        }
+        toCSV.convertExcelToCSV(tempPath,destination);
+
     }
 }
