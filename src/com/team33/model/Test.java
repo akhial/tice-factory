@@ -14,7 +14,7 @@ public class Test {
         ArrayList<String> arrayList = new ArrayList<>();
         arrayList.add("C:\\Users\\Amine\\IdeaProjects\\team-33\\CHARGES_enseignants_Février2017_2016-2017 (1).xlsx");
         arrayList.add("C:\\Users\\Amine\\IdeaProjects\\team-33\\Emails enseignants.xlsx");
-        CSVBuilder csvBuilder = new CSVBuilder(arrayList,new TeacherFormat(),".");
+        CSVBuilder csvBuilder = new CSVBuilder(arrayList,new TeacherFormat(true),".");
         try {
             csvBuilder.buildCSV();
         } catch (IOException e) {

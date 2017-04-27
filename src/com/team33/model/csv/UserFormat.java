@@ -21,17 +21,26 @@ public abstract class UserFormat implements CSVFormat {
     private XSSFWorkbook workbookOut;
     private XSSFWorkbook EmailsWorkbook;
     private Row header = null;
+    private boolean generatedPassword;
 
     public Row getHeader() {
         return header;
     }
 
     public UserFormat() {
+    }
+
+    public boolean isGeneratedPassword() {
+        return generatedPassword;
+    }
+
+    public UserFormat(boolean isGenerated) {
         this.workbookIn = new XSSFWorkbook();
         this.workbookOut = new XSSFWorkbook();
         this.workbookOut.createSheet();
         this.header = workbookOut.getSheetAt(0).createRow(0);
         this.EmailsWorkbook = new XSSFWorkbook();
+        generatedPassword = isGenerated ;
     }
 
     public XSSFWorkbook getWorkbookIn() {

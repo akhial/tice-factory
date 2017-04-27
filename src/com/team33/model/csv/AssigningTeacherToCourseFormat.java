@@ -16,7 +16,11 @@ import java.util.Iterator;
  */
 public class AssigningTeacherToCourseFormat extends UserFormat implements CSVFormat {
 
-    public void generateHeaderInTempFile(XSSFWorkbook workbook,int maxColumn) {
+    public AssigningTeacherToCourseFormat(boolean isGenerated) {
+        super(isGenerated);
+    }
+
+    public void generateHeaderInTempFile(XSSFWorkbook workbook, int maxColumn) {
         Row row = workbook.getSheetAt(0).getRow(0);
         int j = 1;
         for (int i = 5; i < maxColumn+4;i += 2)
@@ -73,7 +77,7 @@ public class AssigningTeacherToCourseFormat extends UserFormat implements CSVFor
         String emailWorkbookPath = workbooksPaths.get(1);
         openWorkbookIn(workbookPath);
         openEmailWorkbook(emailWorkbookPath);
-        TeacherFormat teacherFormat = new TeacherFormat();
+        TeacherFormat teacherFormat = new TeacherFormat(this.isGeneratedPassword());
         String tempFile = teacherFormat.buildCSV(workbooksPaths);
         FileInputStream fileInputStream = new FileInputStream(tempFile);
         XSSFWorkbook workbook = new XSSFWorkbook(fileInputStream);

@@ -19,7 +19,8 @@ import java.util.StringTokenizer;
 public class TeacherFormat extends UserFormat {
     private HashMap<String,ArrayList<String>> unHandledEmails;
     private final String tempName = "TeachersList.xlsx";
-    public TeacherFormat() {
+    public TeacherFormat(boolean isGenerated) {
+        super(isGenerated);
         unHandledEmails = new HashMap<>();
     }
 
@@ -155,7 +156,7 @@ public class TeacherFormat extends UserFormat {
             email = EmailAdress(row,row.getCell(lastNameColumn).toString(),lastNameColumn,firstNameColumn);
             if (email != null) arrayList.add( email.substring(0,email.indexOf("@"))) ;
             else  arrayList.add(null) ;
-            arrayList.add(generatePassWord(8));
+            arrayList.add((this.isGeneratedPassword()) ? generatePassWord(8) : row.getCell(firstNameColumn).toString().toLowerCase());
             arrayList.add(row.getCell(firstNameColumn).toString().toUpperCase()+" ENS:");
             arrayList.add(row.getCell(lastNameColumn).toString().toUpperCase());
             arrayList.add(email);
