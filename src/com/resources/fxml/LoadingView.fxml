@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import com.jfoenix.controls.JFXSpinner?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.layout.AnchorPane?>
+
+
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="74.0" prefWidth="226.0" xmlns="http://javafx.com/javafx/8.0.111" xmlns:fx="http://javafx.com/fxml/1">
+   <children>
+      <Label id="black-thin-label" layoutX="85.0" layoutY="29.0" stylesheets="@style.css" text="CHARGEMENT" AnchorPane.rightAnchor="56.0" AnchorPane.topAnchor="29.0" />
+      <JFXSpinner layoutX="35.0" layoutY="22.0" />
+   </children>
+</AnchorPane>
