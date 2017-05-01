@@ -129,6 +129,12 @@
   -fx-graphic: url("../img/hat_s.png");
   -fx-background-color: #263238;
 }
+#delete-button {
+  -fx-graphic: url("../img/delete.png");
+}
+#add-button {
+  -fx-graphic: url("../img/add.png");
+}
 
 /* Control styles */
 

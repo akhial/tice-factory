@@ -12,10 +12,15 @@ public class RecentFileHandler {
     public static void writeFile(String filePath) {
         try {
             Formatter formatter = new Formatter("recent.txt");
-            formatter.format("%s\n", filePath);
+            Scanner input = new Scanner(Paths.get("recent.txt"));
+            StringBuilder old = new StringBuilder();
+            while(input.hasNext()) {
+                old.append(input.nextLine());
+            }
+            // TODO check if works
+            formatter.format("%s%s\n", old.toString(), filePath);
             formatter.close();
-            System.out.println("Wrote file");
-        } catch(FileNotFoundException e) {
+        } catch(IOException e) {
             e.printStackTrace();
         }
     }
@@ -25,7 +30,9 @@ public class RecentFileHandler {
         try {
             Scanner input = new Scanner(Paths.get("recent.txt"));
             while(input.hasNext()) {
-                recents.add(input.nextLine());
+                String e = input.nextLine();
+                if(!e.isEmpty())
+                    recents.add(e);
             }
         } catch(IOException e) {
             e.printStackTrace();

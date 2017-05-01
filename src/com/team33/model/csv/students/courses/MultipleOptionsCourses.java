@@ -1,4 +1,4 @@
-package com.team33.model.csv.Students.Courses;
+package com.team33.model.csv.students.courses;
 
 
 

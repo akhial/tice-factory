@@ -3,8 +3,8 @@ package com.team33.gui;
 import com.jfoenix.controls.JFXButton;
 import com.jfoenix.controls.JFXComboBox;
 import com.jfoenix.controls.JFXTextField;
-import com.team33.model.csv.Students.Student;
-import com.team33.model.csv.Students.StudentInterface;
+import com.team33.model.csv.students.Student;
+import com.team33.model.csv.students.StudentInterface;
 import javafx.fxml.FXML;
 import javafx.scene.Node;
 import javafx.scene.control.Label;
@@ -24,7 +24,7 @@ public class StudentExceptionController implements Controller {
     @FXML
     private GridPane exceptionPane;
 
-    public void setup() {
+    void setup() {
         ArrayList<Student> listOfStudentsWithoutEmail;
         listOfStudentsWithoutEmail = ((StudentInterface) mainApp.getHelper().getFormat()).getListOfStudentsWithoutEmail();
 
@@ -60,10 +60,11 @@ public class StudentExceptionController implements Controller {
                 if(input instanceof JFXTextField) {
                     result = ((JFXTextField) input).getText();
                 } else {
-                    result = ((JFXComboBox) input).getSelectionModel().getSelectedItem().toString();
-                }
-                if(!result.isEmpty()) {
-                    result = "";
+                    Object selectedItem = ((JFXComboBox) input).getSelectionModel().getSelectedItem();
+                    if(selectedItem != null)
+                        result = selectedItem.toString();
+                    else
+                        result = "";
                 }
                 listOfUsedEmails.add(result);
                 button.setDisable(true);
@@ -100,20 +101,14 @@ public class StudentExceptionController implements Controller {
     }
 
     private boolean containsEmptyNode() {
+        // TODO change verification criteria
         for(Node n : comboBoxes.values()) {
-            if(n instanceof JFXComboBox) {
-                if(((JFXComboBox) n).getSelectionModel().getSelectedItem() == null) {
-                    return true;
-                }
-            } else {
-                if(((JFXTextField) n).getText().isEmpty())
-                    return true;
-            }
+            if(!n.isDisable()) return true;
         }
         return false;
     }
 
-    public void setAggregateHelper(AggregateHelper aggregateHelper) {
+    void setAggregateHelper(AggregateHelper aggregateHelper) {
         this.aggregateHelper = aggregateHelper;
     }
 

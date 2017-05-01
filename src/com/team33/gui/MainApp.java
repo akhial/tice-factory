@@ -1,14 +1,10 @@
 package com.team33.gui;
 
 import com.jfoenix.controls.JFXDecorator;
-import com.jfoenix.controls.JFXDialog;
-import com.team33.model.csv.Students.Courses.CoursesStore;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
-import javafx.geometry.Insets;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
-import javafx.scene.control.Label;
 import javafx.stage.Stage;
 
 public class MainApp extends Application {
@@ -34,6 +30,8 @@ public class MainApp extends Application {
     static final String MAIL_NAME = "EMAILS";
     static final String STAT_SELECT = "/fxml/StatSelectView.fxml";
     static final String STAT_NAME = "STATISTIQUES";
+    static final String COURSE_EDIT = "/fxml/CourseEditView.fxml";
+    static final String COURSE_NAME = "COURS";
 
 
     private Controller currentController;

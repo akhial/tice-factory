@@ -1,4 +1,4 @@
-package com.team33.model.csv.Students;
+package com.team33.model.csv.students;
 
 import com.team33.model.Utilities.Util;
 import org.apache.poi.ss.usermodel.Row;

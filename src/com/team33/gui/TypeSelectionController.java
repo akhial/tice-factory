@@ -29,7 +29,7 @@ public class TypeSelectionController implements Controller {
 
     @FXML
     private void onStudentLessonsButton() {
-        mainApp.setAggregateHelper(new AggregateHelper("lessons"));
+        mainApp.setAggregateHelper(new AggregateHelper("courses"));
         mainApp.getMainViewController().setScene(MainApp.STUDENT_SELECT, MainApp.CONVERT_NAME);
         ((StudentSelectionController) mainApp.getCurrentController()).setup();
     }

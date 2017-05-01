@@ -4,6 +4,8 @@ import com.jfoenix.controls.JFXListView;
 import javafx.fxml.FXML;
 import javafx.scene.control.Label;
 
+import java.util.ArrayList;
+
 public class DashboardViewController implements Controller {
 
     private MainApp mainApp;
@@ -16,9 +18,10 @@ public class DashboardViewController implements Controller {
 
     @FXML
     public void initialize() {
-        if(!RecentFileHandler.readFile().isEmpty()) {
+        ArrayList<String> strings = RecentFileHandler.readFile();
+        if(!strings.isEmpty() && fileLists.getItems().isEmpty()) {
             noFile.setVisible(false);
-            for(String s : RecentFileHandler.readFile()) {
+            for(String s : strings) {
                 fileLists.getItems().add(s);
             }
         }

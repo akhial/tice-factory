@@ -15,7 +15,6 @@
 <?import javafx.scene.layout.StackPane?>
 <?import javafx.scene.layout.VBox?>
 
-
 <StackPane fx:id="rootStackPane" xmlns="http://javafx.com/javafx/8.0.111" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.team33.gui.MainViewController">
    <children>
       <AnchorPane>
@@ -102,7 +101,7 @@
                   </HBox>
                   <HBox id="top-bar" alignment="CENTER_LEFT" GridPane.columnIndex="1">
                      <children>
-                        <JFXHamburger prefHeight="62.0" prefWidth="18.0" scaleY="0.5">
+                        <JFXHamburger fx:id="hamburger" prefHeight="62.0" prefWidth="18.0" scaleY="0.5">
                            <HBox.margin>
                               <Insets left="10.0" />
                            </HBox.margin>

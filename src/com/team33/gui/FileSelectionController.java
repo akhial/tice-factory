@@ -23,7 +23,6 @@ public class FileSelectionController implements Controller {
 
     private MainApp mainApp;
     private ObservableList<Label> levels = FXCollections.observableArrayList();
-    private HashMap<Label, JFXButton> buttons = new HashMap<>();
 
     @FXML
     private VBox levelContainer;

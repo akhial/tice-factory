@@ -1,6 +1,6 @@
-package com.team33.model.csv.Students;
+package com.team33.model.csv.students;
 
-import com.team33.model.csv.Students.Courses.CoursesStore;
+import com.team33.model.csv.students.courses.CoursesStore;
 import org.apache.poi.ss.usermodel.CellType;
 import org.apache.poi.ss.usermodel.Row;
 

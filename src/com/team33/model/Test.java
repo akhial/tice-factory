@@ -1,15 +1,12 @@
 package com.team33.model;
 
-import com.team33.model.csv.CSVBuilder;
-import com.team33.model.csv.Students.*;
-import com.team33.model.csv.Students.Courses.Course;
-import com.team33.model.csv.Students.Courses.CoursesStore;
-import com.team33.model.csv.Students.Courses.UnExistingOptionException;
+import com.team33.model.csv.students.*;
+import com.team33.model.csv.students.courses.Course;
+import com.team33.model.csv.students.courses.CoursesStore;
+import com.team33.model.csv.students.courses.UnExistingOptionException;
 
-import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Scanner;
 
 public class Test {
 
@@ -53,7 +50,7 @@ public class Test {
         }
         studentFormat.saveUsersList(new File(csvBuilder.getTempPath()));
         csvBuilder.convertToCSV();*/
-       /* CoursesStore coursesStore = new CoursesStore();
+        /*CoursesStore coursesStore = new CoursesStore();
         coursesStore.getCycleSuperieur().getCS2().ajouterOption("SIQ");
         coursesStore.getCycleSuperieur().getCS2().ajouterOption("SIT");
         coursesStore.getCycleSuperieur().getCS2().ajouterOption("SIL");
@@ -135,7 +132,7 @@ public class Test {
         }catch (UnExistingOptionException e){
             e.printStackTrace();
         }
-        coursesStore.saveChanges()*/;
+        coursesStore.saveChanges();*/
         /*coursesStore.load();
         coursesStore.getCycleSuperieur().getCS2().ajouterModuleCommun("ALOG","Arcihetctures logicielles");
         coursesStore.getCycleSuperieur().getCS2().ajouterModuleCommun("COM","Compilation");
@@ -218,6 +215,7 @@ public class Test {
         for(Course course : coursesStore.getCycleSuperieur().getCS2().getModulesCommuns()){
             System.out.println("\t\t\t"+course);
         }
+
     }
     public static void deleteUsedEmails(Student student)
     {

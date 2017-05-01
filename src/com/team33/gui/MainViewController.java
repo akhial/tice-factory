@@ -2,6 +2,7 @@ package com.team33.gui;
 
 import com.jfoenix.controls.JFXButton;
 import com.jfoenix.controls.JFXDialog;
+import com.jfoenix.controls.JFXHamburger;
 import javafx.event.Event;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -21,7 +22,6 @@ import java.util.HashMap;
 public class MainViewController implements Controller {
 
     private MainApp mainApp;
-    private HashMap<String, Parent> views = new HashMap<>();
     private JFXDialog loadingDialog;
 
     @FXML
@@ -54,6 +54,11 @@ public class MainViewController implements Controller {
     @FXML
     private JFXButton lessonsButton;
 
+    @FXML
+    private JFXHamburger hamburger;
+
+    private boolean small = false;
+
     private ArrayList<JFXButton> buttons = new ArrayList<>();
 
     @FXML
@@ -61,6 +66,16 @@ public class MainViewController implements Controller {
     private void initialize() {
         setupButtons();
         setButtonSelected(homeButton);
+
+        hamburger.setOnMouseClicked(e -> {
+            if(!small) {
+                gridPane.getColumnConstraints().get(0).setPrefWidth(40);
+                small = true;
+            } else {
+                gridPane.getColumnConstraints().get(0).setPrefWidth(205);
+                small = false;
+            }
+        });
 
         Circle c = new Circle(15);
         c.setCenterX(userImage.getFitWidth()/2);
@@ -73,24 +88,18 @@ public class MainViewController implements Controller {
         if(gridPane.getChildren().size() > 3)
             gridPane.getChildren().remove(3);
         Parent parent = null;
-        //if(!views.containsKey(scene)) {
-            FXMLLoader loader = new FXMLLoader(getClass().getResource(scene));
-            try {
-                parent = loader.load();
-            } catch(IOException e) {
-                e.printStackTrace();
-            }
-            views.put(scene, parent);
-            try {
-                ((Controller) loader.getController()).setMainApp(mainApp);
-                mainApp.setCurrentController(loader.getController());
-            } catch(NullPointerException e) {
-                System.err.println("No controller set in "+loader.getLocation());
-            }
-        //} else {
-        //    parent = views.get(scene);
-            // TODO cache controllers
-        //}
+        FXMLLoader loader = new FXMLLoader(getClass().getResource(scene));
+        try {
+            parent = loader.load();
+        } catch(IOException e) {
+            e.printStackTrace();
+        }
+        try {
+            ((Controller) loader.getController()).setMainApp(mainApp);
+            mainApp.setCurrentController(loader.getController());
+        } catch(NullPointerException e) {
+            System.err.println("No controller set in "+loader.getLocation());
+        }
         gridPane.add(parent, 1, 1);
     }
 
@@ -147,7 +156,8 @@ public class MainViewController implements Controller {
             mainApp.cancel();
             setScene(MainApp.DUPLICATES, MainApp.DUPLICATE_NAME);
         } else if(e.getSource() == lessonsButton) {
-            showDialog();
+            mainApp.cancel();
+            setScene(MainApp.COURSE_EDIT, MainApp.COURSE_NAME);
         }
 
         // TODO fix these
@@ -201,7 +211,6 @@ public class MainViewController implements Controller {
     }
 
     void showLongConfirmationDialog(final String title, final String message, DuplicateCheckController controller) {
-        JFXDialog dialog = new JFXDialog();
         FXMLLoader loader = new FXMLLoader();
         loader.setLocation(getClass().getResource("/fxml/LongDialogBox.fxml"));
         Region region = null;
@@ -216,8 +225,6 @@ public class MainViewController implements Controller {
         ((LongDialogController) loader.getController()).setDialog(title, message);
         ((LongDialogController) loader.getController()).setStage(stage);
         ((LongDialogController) loader.getController()).setDuplicateCheckController(controller);
-        //dialog.setContent(region);
-        //dialog.show(rootStackPane);
         stage.showAndWait();
     }
 

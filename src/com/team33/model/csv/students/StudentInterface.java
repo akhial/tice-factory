@@ -1,4 +1,4 @@
-package com.team33.model.csv.Students;
+package com.team33.model.csv.students;
 
 import java.io.File;
 import java.util.ArrayList;

@@ -2,14 +2,13 @@ package com.team33.gui;
 
 import com.team33.model.csv.CSVBuilder;
 import com.team33.model.csv.CSVFormat;
-import com.team33.model.csv.Students.*;
+import com.team33.model.csv.students.*;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.scene.control.Label;
 
 import java.io.File;
 import java.io.IOException;
-import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.StringTokenizer;
@@ -73,6 +72,9 @@ public class AggregateHelper {
                     break;
             }
 
+            if(format == null) {
+                System.out.println("YAW YAW YAW");
+            }
             builder = new CSVBuilder(workbookPaths, format, outPath);
             System.out.println(workbookPaths);
             try {

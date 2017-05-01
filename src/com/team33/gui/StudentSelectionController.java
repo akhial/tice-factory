@@ -1,13 +1,12 @@
 package com.team33.gui;
 
 import com.jfoenix.controls.JFXListView;
-import com.team33.model.csv.Students.Courses.CoursesStore;
+import com.team33.model.csv.students.courses.CoursesStore;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.scene.control.Label;
 import javafx.scene.control.SelectionMode;
 
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
 

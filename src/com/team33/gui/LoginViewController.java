@@ -18,7 +18,6 @@ public class LoginViewController implements Controller {
     @FXML
     private void checkConnection() {
         String username = userField.getText();
-        mainApp.getMainViewController().showLoadingDialog();
         if(username.isEmpty()) {
             mainApp.getMainViewController().showConfirmationDialog("Erreur",
                     "Le champ utilisateur ne doit pas être vide!");

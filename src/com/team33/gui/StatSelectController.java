@@ -40,6 +40,10 @@ public class StatSelectController implements Controller {
         applyButton.setDisable(true);
         criteria.setDisable(true);
         criteriaLabel.setDisable(true);
+        fileField.setEditable(false);
+
+        start.setOnAction(e -> checkConditions());
+        end.setOnAction(e -> checkConditions());
     }
 
     @FXML
@@ -47,38 +51,37 @@ public class StatSelectController implements Controller {
         FileChooser fileChooser = new FileChooser();
         fileChooser.getExtensionFilters().add(new FileChooser.ExtensionFilter("Fichiers excel", "*.xlsx"));
         File result = fileChooser.showOpenDialog(null);
-        fileField.setText(result.getAbsolutePath());
-        fileField.setDisable(true);
+        if(result != null) {
+            fileField.setText(result.getAbsolutePath());
+            checkConditions();
+        }
+    }
+
+    private void checkConditions() {
+        if(end.getValue() != null && start.getValue() != null && !fileField.getText().isEmpty()) {
+            criteria.setDisable(false);
+            applyButton.setDisable(false);
+            start.setDisable(true);
+            end.setDisable(true);
+            fileField.setDisable(true);
+        }
     }
 
     @FXML
     private void onApplyButton() {
         LocalDate dateStart = start.getValue();
         LocalDate dateEnd = end.getValue();
-        if(dateStart == null) {
-            mainApp.getMainViewController().showConfirmationDialog("Alerte",
-                    "La date de début est vide!");
-            return;
-        } else if(dateEnd == null) {
-            mainApp.getMainViewController().showConfirmationDialog("Alerte",
-                    "La date de fin est vide!");
-            return;
-        } else {
-            start.setDisable(true);
-            end.setDisable(true);
+        String startDate = dateStart.toString();
+        String endDate = dateEnd.toString();
 
-            String startDate = dateStart.toString();
-            String endDate = dateEnd.toString();
-
-            try {
-                TreeSet<String> propositions = StatisticsGenerator.getPropositions(fileField.getText());
-                criteria.setDisable(false);
-                criteriaLabel.setDisable(false);
-                criteria.getItems().addAll(propositions);
-            } catch(Exception e) {
-                mainApp.getMainViewController().showConfirmationDialog("Erreur",
-                        e.getMessage());
-            }
+        try {
+            TreeSet<String> propositions = StatisticsGenerator.getPropositions(fileField.getText());
+            criteria.setDisable(false);
+            criteriaLabel.setDisable(false);
+            criteria.getItems().addAll(propositions);
+        } catch(Exception e) {
+            mainApp.getMainViewController().showConfirmationDialog("Erreur",
+                    e.getMessage());
         }
     }
 

@@ -1,7 +1,6 @@
-package com.team33.model.csv.Students.Courses;
+package com.team33.model.csv.students.courses;
 
 import java.io.Serializable;
-import java.util.ArrayList;
 import java.util.HashSet;
 
 /**

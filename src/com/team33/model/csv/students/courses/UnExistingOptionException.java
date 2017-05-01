@@ -1,4 +1,4 @@
-package com.team33.model.csv.Students.Courses;
+package com.team33.model.csv.students.courses;
 
 /**
  * Created by hamza on 19/04/2017.
