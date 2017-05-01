@@ -11,15 +11,6 @@
     <orderEntry type="module-library" exported="">
       <library>
         <CLASSES>
-          <root url="jar://$USER_HOME$/Downloads/jfoenix.jar!/" />
-        </CLASSES>
-        <JAVADOC />
-        <SOURCES />
-      </library>
-    </orderEntry>
-    <orderEntry type="module-library" exported="">
-      <library>
-        <CLASSES>
           <root url="jar://$MODULE_DIR$/src/lib/activation.jar!/" />
         </CLASSES>
         <JAVADOC />
