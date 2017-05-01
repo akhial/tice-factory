@@ -5,6 +5,7 @@ import com.jfoenix.controls.JFXComboBox;
 import com.jfoenix.controls.JFXDatePicker;
 import com.jfoenix.controls.JFXTextField;
 import com.team33.model.statistics.StatisticsGenerator;
+import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.scene.control.Label;
 import javafx.stage.FileChooser;
@@ -12,6 +13,7 @@ import javafx.stage.FileChooser;
 import java.io.File;
 import java.time.LocalDate;
 import java.util.TreeSet;
+import java.util.concurrent.FutureTask;
 
 public class StatSelectController implements Controller {
 
@@ -59,29 +61,64 @@ public class StatSelectController implements Controller {
 
     private void checkConditions() {
         if(end.getValue() != null && start.getValue() != null && !fileField.getText().isEmpty()) {
+
+            LocalDate dateStart = start.getValue();
+            LocalDate dateEnd = end.getValue();
+            StringBuilder builder = new StringBuilder();
+
+            builder.append(dateStart.getDayOfMonth())
+            .append("/")
+            .append(dateStart.getMonthValue())
+            .append("/")
+            .append(dateStart.getYear());
+
+            String startDate = builder.toString();
+            builder = new StringBuilder();
+
+            builder.append(dateEnd.getDayOfMonth())
+                    .append("/")
+                    .append(dateEnd.getMonthValue())
+                    .append("/")
+                    .append(dateEnd.getYear());
+
+            String endDate = builder.toString();
+
             criteria.setDisable(false);
             applyButton.setDisable(false);
             start.setDisable(true);
             end.setDisable(true);
             fileField.setDisable(true);
+
+            try {
+                StatisticsGenerator.trierFichierExcel(fileField.getText(), "temp.xlsx", 5);
+                StatisticsGenerator.selectDates(startDate, endDate, "temp.xlsx", "temp.xlsx");
+                StatisticsGenerator.semiGeneralStats("temp.xlsx", "temp.xlsx", 1);
+                TreeSet<String> propositions = StatisticsGenerator.getPropositions("temp.xlsx");
+
+                criteria.setDisable(false);
+                criteriaLabel.setDisable(false);
+                criteria.getItems().addAll(propositions);
+            } catch(Exception e) {
+                mainApp.getMainViewController().showConfirmationDialog("Erreur",
+                        "Une erreur c'est produite...");
+                criteria.setDisable(true);
+                applyButton.setDisable(true);
+                start.setDisable(false);
+                end.setDisable(false);
+                fileField.setDisable(false);
+            }
         }
     }
 
     @FXML
     private void onApplyButton() {
-        LocalDate dateStart = start.getValue();
-        LocalDate dateEnd = end.getValue();
-        String startDate = dateStart.toString();
-        String endDate = dateEnd.toString();
-
-        try {
-            TreeSet<String> propositions = StatisticsGenerator.getPropositions(fileField.getText());
-            criteria.setDisable(false);
-            criteriaLabel.setDisable(false);
-            criteria.getItems().addAll(propositions);
-        } catch(Exception e) {
-            mainApp.getMainViewController().showConfirmationDialog("Erreur",
-                    e.getMessage());
+        if(criteria.getSelectionModel().getSelectedItem() != null) {
+            mainApp.getMainViewController().setScene(MainApp.BAR_CHART, MainApp.STAT_NAME);
+            ((BarChartController) mainApp.getCurrentController()).setCriteria(criteria.getSelectionModel().getSelectedItem());
+            ((BarChartController) mainApp.getCurrentController()).setup();
+        } else {
+            mainApp.getMainViewController().showConfirmationDialog("Alerte",
+                    "Veuillez séléctionner un critère!");
         }
     }
 

@@ -19,7 +19,7 @@ import java.util.TreeSet;
  */
 public class BarChartData {
     String nom;
-    TreeSet<BaseData> datas = new TreeSet<BaseData>();
+    TreeSet<BaseData> datas = new TreeSet<>();
 
     public BarChartData(String nom) {
         this.nom = nom;
@@ -47,6 +47,10 @@ public class BarChartData {
             }
 
         }
+
+    public TreeSet<BaseData> getDatas() {
+        return datas;
+    }
 
     public void addData(BaseData data) {
         datas.add(data);

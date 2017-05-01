@@ -21,7 +21,7 @@
                   <Insets left="20.0" top="20.0" />
                </VBox.margin>
             </Label>
-            <ScrollPane hbarPolicy="NEVER" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="300.0" prefWidth="560.0" VBox.vgrow="ALWAYS">
+            <ScrollPane hbarPolicy="NEVER" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="341.0" prefWidth="560.0" VBox.vgrow="ALWAYS">
                <VBox.margin>
                   <Insets left="20.0" right="20.0" top="10.0" />
                </VBox.margin>
@@ -49,10 +49,12 @@
                   </GridPane>
                </content>
             </ScrollPane>
-            <Region prefHeight="56.0" prefWidth="600.0" VBox.vgrow="ALWAYS" />
             <HBox alignment="CENTER">
                <children>
-                  <JFXButton id="form-button" onAction="#onFinishButton" text="TERMINER" />
+                  <JFXButton id="form-button" onAction="#onFinishButton" text="TERMINER">
+                     <HBox.margin>
+                        <Insets top="7.0" />
+                     </HBox.margin></JFXButton>
                </children>
             </HBox>
             <Region maxHeight="-Infinity" minHeight="-Infinity" prefHeight="20.0" />

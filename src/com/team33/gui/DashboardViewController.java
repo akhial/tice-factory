@@ -2,6 +2,7 @@ package com.team33.gui;
 
 import com.jfoenix.controls.JFXListView;
 import javafx.fxml.FXML;
+import javafx.scene.chart.BarChart;
 import javafx.scene.control.Label;
 
 import java.util.ArrayList;
@@ -15,6 +16,9 @@ public class DashboardViewController implements Controller {
 
     @FXML
     private JFXListView<String> fileLists;
+
+    @FXML
+    private BarChart barChart;
 
     @FXML
     public void initialize() {

@@ -41,13 +41,14 @@ public class SchoolServiceFormatChecker implements ExcelFormat {
                         ) {
                     bb = true;
                     if(!Util.getInstance().existInRow(row, "Nom") || !Util.getInstance().existInRow(row, "Prenom") ||
-                            !Util.getInstance().existInRow(row, "Optin") || !Util.getInstance().existInRow(row, "NG")) {
+                            !Util.getInstance().existInRow(row, "Optin") || !Util.getInstance().existInRow(row, "NG")
+                            ||  !Util.getInstance().existInRow(row, "Matrin")) {
 
                         String s1 = "Champ(s) Introuvable(s) : "+cpt+" :";
                         if(!Util.getInstance().existInRow(row, "Nom")) s1 = s1+"  Nom,";
                         if(!Util.getInstance().existInRow(row, "Prenom")) s1 = s1+"  Prenom,";
                         if(!Util.getInstance().existInRow(row, "NG")) s1 = s1+"  NG,";
-                        if(!Util.getInstance().existInRow(row, "Anetin")) s1 = s1+"  Anetin,";
+                        if(!Util.getInstance().existInRow(row, "Matrin")) s1 = s1+"  Matrin,";
                         throw new MissingFieldsException(s1);
                     }
                 }

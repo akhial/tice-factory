@@ -39,8 +39,13 @@ public class SaveSelectionController implements Controller {
 
     @FXML
     private void onNextButton() {
-        mainApp.getHelper().setOutPath(fileLabel.getText());
-        mainApp.getHelper().makeLevelCSV();
+        if(fileLabel.getText().isEmpty()) {
+            mainApp.getMainViewController().showConfirmationDialog("Alerte",
+                    "Veuillez choisir le dossier destination!");
+        } else {
+            mainApp.getHelper().setOutPath(fileLabel.getText());
+            mainApp.getHelper().makeLevelCSV();
+        }
     }
 
     @Override

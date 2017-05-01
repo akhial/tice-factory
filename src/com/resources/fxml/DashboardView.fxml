@@ -2,7 +2,7 @@
 
 <?import com.jfoenix.controls.JFXListView?>
 <?import javafx.geometry.Insets?>
-<?import javafx.scene.chart.AreaChart?>
+<?import javafx.scene.chart.BarChart?>
 <?import javafx.scene.chart.CategoryAxis?>
 <?import javafx.scene.chart.NumberAxis?>
 <?import javafx.scene.control.Label?>
@@ -33,18 +33,18 @@
                   <Insets bottom="5.0" top="5.0" />
                </VBox.margin>
             </Line>
-            <Label id="green-heading-text" text="NOMBRE D'ACCÉS PAR PÉRIODE">
+            <Label id="green-heading-text" text="PLUS RÉCENTE STATISTIQUE">
                <VBox.margin>
                   <Insets left="10.0" />
                </VBox.margin></Label>
-            <AreaChart maxHeight="-Infinity" prefHeight="300.0" prefWidth="600.0" VBox.vgrow="NEVER">
+            <BarChart fx:id="barChart" maxHeight="-Infinity" prefHeight="250.0" prefWidth="600.0" VBox.vgrow="NEVER">
               <xAxis>
                 <CategoryAxis side="BOTTOM" />
               </xAxis>
               <yAxis>
                 <NumberAxis side="LEFT" />
               </yAxis>
-            </AreaChart>
+            </BarChart>
          </children>
       </VBox>
    </children>

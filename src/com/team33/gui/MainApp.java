@@ -32,7 +32,7 @@ public class MainApp extends Application {
     static final String STAT_NAME = "STATISTIQUES";
     static final String COURSE_EDIT = "/fxml/CourseEditView.fxml";
     static final String COURSE_NAME = "COURS";
-
+    static final String BAR_CHART = "/fxml/BarChartView.fxml";
 
     private Controller currentController;
     private MainViewController mainViewController;

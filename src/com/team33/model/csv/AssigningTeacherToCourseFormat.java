@@ -85,6 +85,7 @@ public class AssigningTeacherToCourseFormat extends UserFormat implements CSVFor
         openWorkbookIn(workbookPath);
         openEmailWorkbook(emailWorkbookPath);
         TeacherFormat teacherFormat = new TeacherFormat();
+        teacherFormat.setGeneratedPassword(this.isGeneratedPassword());
         String tempFile = teacherFormat.buildCSV(workbooksPaths);
         unHandledEmails = teacherFormat.getUnHandledEmails();
         FileInputStream fileInputStream = new FileInputStream(tempFile);
