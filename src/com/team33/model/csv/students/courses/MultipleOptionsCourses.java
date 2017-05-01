@@ -11,11 +11,22 @@ import java.util.HashSet;
  * Created by hamza on 19/04/2017.
  */
 public class MultipleOptionsCourses implements Serializable{
-    private HashMap<String,HashSet<Course>> semestre1 = new HashMap<>();
-    private HashMap<String,HashSet<Course>> semestre2 = new HashMap<>();
+    private HashMap<String,HashSet<Course>> semestre1;
+    private HashMap<String,HashSet<Course>> semestre2;
     private ArrayList<String> options;
-    private HashSet<Course> modulesCommuns = new HashSet<>();
-    private HashSet<Course> modulesOptionnels = new HashSet<>();
+    private HashSet<Course> modulesCommuns;
+    private HashSet<Course> modulesOptionnels;
+
+    public MultipleOptionsCourses() {
+        options = new ArrayList<>();
+        options.add("SIL");
+        options.add("SIQ");
+        options.add("SIT");
+        semestre1 = new HashMap<>();
+        semestre2 = new HashMap<>();
+        modulesCommuns = new HashSet<>();
+        modulesOptionnels = new HashSet<>();
+    }
 
 
     public void ajouterCoursSemestre1(String option,String shortName,String fullName) {
