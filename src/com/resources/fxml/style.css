@@ -46,10 +46,23 @@
   -fx-background: #263238;
   -fx-background-color: #263238;
 }
-#b-chart {
-  
+.tree-cell {
+  -fx-background-color: #263238;
+  -fx-font-family: "Open Sans Semibold";
+  -fx-text-fill: white;
 }
+.tree-cell > .tree-disclosure-node > .arrow  {
+    -fx-background-color: #26A69A;
+}
+.tree-cell:expanded > .tree-disclosure-node > .arrow {
+    -fx-background-color: white;
+}
+#b-chart {
 
+}
+#course-pane {
+  -fx-background-color: #263238;
+}
 /* Label styles */
 
 .label {

@@ -100,7 +100,7 @@ public class MainViewController implements Controller {
         } catch(NullPointerException e) {
             System.err.println("No controller set in "+loader.getLocation());
         }
-        gridPane.add(parent, 1, 1);
+            gridPane.add(parent, 1, 1);
     }
 
     private void setButtonSelected(JFXButton button) {

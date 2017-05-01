@@ -6,6 +6,7 @@ import com.jfoenix.controls.JFXDatePicker;
 import com.jfoenix.controls.JFXTextField;
 import com.team33.model.statistics.StatisticsGenerator;
 import javafx.application.Platform;
+import javafx.concurrent.Task;
 import javafx.fxml.FXML;
 import javafx.scene.control.Label;
 import javafx.stage.FileChooser;
@@ -84,23 +85,36 @@ public class StatSelectController implements Controller {
                     .append(dateEnd.getYear());
 
             String endDate = builder.toString();
-
-            criteria.setDisable(false);
-            applyButton.setDisable(false);
             start.setDisable(true);
             end.setDisable(true);
             fileField.setDisable(true);
 
             try {
-                StatisticsGenerator.trierFichierExcel(fileField.getText(), "temp.xlsx", 5);
-                RecentFileHandler.writeFile(fileField.getText());
-                StatisticsGenerator.selectDates(startDate, endDate, "temp.xlsx", "temp.xlsx");
-                StatisticsGenerator.semiGeneralStats("temp.xlsx", "temp.xlsx", 1);
-                TreeSet<String> propositions = StatisticsGenerator.getPropositions("temp.xlsx");
 
-                criteria.setDisable(false);
-                criteriaLabel.setDisable(false);
-                criteria.getItems().addAll(propositions);
+                mainApp.getMainViewController().showLoadingDialog();
+
+                Task<Void> task = new Task<Void>() {
+                    @Override
+                    protected Void call() throws Exception {
+                        StatisticsGenerator.trierFichierExcel(fileField.getText(), "temp.xlsx", 5);
+                        RecentFileHandler.writeFile(fileField.getText());
+                        StatisticsGenerator.selectDates(startDate, endDate, "temp.xlsx", "temp.xlsx");
+                        StatisticsGenerator.semiGeneralStats("temp.xlsx", "temp.xlsx", 1);
+                        TreeSet<String> propositions = StatisticsGenerator.getPropositions("temp.xlsx");
+
+                        criteria.setDisable(false);
+                        criteriaLabel.setDisable(false);
+                        applyButton.setDisable(false);
+                        criteria.getItems().addAll(propositions);
+                        mainApp.getMainViewController().hideLoadingDialog();
+                        return null;
+                    }
+                };
+
+                Thread thread = new Thread(task);
+                thread.setDaemon(true);
+                thread.start();
+
             } catch(Exception e) {
                 mainApp.getMainViewController().showConfirmationDialog("Erreur",
                         "Une erreur c'est produite...");
