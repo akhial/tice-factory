@@ -43,10 +43,8 @@ public class CoursesStore implements Serializable {
             this.cyclePreparatoire = coursesStore.cyclePreparatoire;
             this.cycleSuperieur = coursesStore.cycleSuperieur;
 
-        } catch (IOException e) {
-            e.printStackTrace();
-        } catch (ClassNotFoundException e) {
-            e.printStackTrace();
+        } catch (IOException | ClassNotFoundException e) {
+            System.out.println("Instanciation et création du fichier");
         }
     }
 

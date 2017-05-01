@@ -144,7 +144,7 @@ public class GroupFormat extends UserFormat implements CSVFormat, StudentInterfa
         return null;
     }
 
-    private void createStudentList() throws IOException {
+    private void createStudentList() throws IOException, EmptyCoursesException {
         int numRow = 1;
         FileInformationExtractor extractor = new FileInformationExtractor(getWorkbookIn(), getOptin());
         HashMap<String,Student> students = extractor.findStudents();
@@ -176,7 +176,7 @@ public class GroupFormat extends UserFormat implements CSVFormat, StudentInterfa
 
 
     @Override
-    public String buildCSV(ArrayList<String> workbooksPaths) throws IOException, InvalidFormatException {
+    public String buildCSV(ArrayList<String> workbooksPaths) throws IOException, InvalidFormatException, EmptyCoursesException {
         // WorkbooksPaths should contain only list of first semester and list of e-mails
 
         String type;

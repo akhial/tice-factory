@@ -48,7 +48,7 @@ public class CourseEditController implements Controller {
         prepa.getChildren().add(second);
 
         coursesStore = new CoursesStore();
-        //coursesStore.initialize();
+       // coursesStore.initialize();
         coursesStore.load();
 
         setupSemester(firstS1, coursesStore.getCyclePreparatoire().getCPI1().getSemestre1(), 1, "");

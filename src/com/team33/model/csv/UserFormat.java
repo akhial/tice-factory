@@ -1,5 +1,6 @@
 package com.team33.model.csv;
 
+import com.team33.model.csv.students.EmptyCoursesException;
 import org.apache.poi.openxml4j.exceptions.InvalidFormatException;
 import org.apache.poi.ss.usermodel.Cell;
 import org.apache.poi.ss.usermodel.Row;
@@ -110,7 +111,7 @@ public abstract class UserFormat implements CSVFormat {
     }
 
     @Override
-    public String buildCSV(ArrayList<String> workbooks) throws IOException, InvalidFormatException {
+    public String buildCSV(ArrayList<String> workbooks) throws IOException, InvalidFormatException, EmptyCoursesException {
         return null;
     }
 }

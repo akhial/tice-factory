@@ -4,6 +4,7 @@ import com.jfoenix.controls.JFXRadioButton;
 import com.jfoenix.controls.JFXTextField;
 import com.team33.model.assertions.*;
 import com.team33.model.csv.*;
+import com.team33.model.csv.students.EmptyCoursesException;
 import javafx.fxml.FXML;
 import javafx.scene.control.ToggleGroup;
 import javafx.stage.DirectoryChooser;
@@ -119,7 +120,7 @@ public class TeacherSelectionController implements Controller {
                     csvBuilder = new CSVBuilder(workbookPaths, format, save.getAbsolutePath());
                     try {
                         csvBuilder.buildCSV();
-                    } catch(IOException | InvalidFormatException e) {
+                    } catch(IOException | InvalidFormatException | EmptyCoursesException e) {
                         mainApp.getMainViewController().showConfirmationDialog("Erreur",
                                 "Une erreur c'est produite pendant l'ecriture dans le fichier " + csvBuilder.getTempPath());
                     }
