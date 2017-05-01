@@ -56,6 +56,7 @@ public class TeacherSelectionController implements Controller {
         chooser.setTitle("Séléctionner le fichier des charges...");
         File result = chooser.showOpenDialog(null);
         if(result != null) {
+            RecentFileHandler.writeFile(result.getAbsolutePath());
             webTextField.setText(result.getAbsolutePath());
             chargesSelected = true;
         }
@@ -68,6 +69,7 @@ public class TeacherSelectionController implements Controller {
         chooser.setTitle("Séléctionner le fichier des emails...");
         File result = chooser.showOpenDialog(null);
         if(result != null) {
+            RecentFileHandler.writeFile(result.getAbsolutePath());
             mailTextField.setText(result.getAbsolutePath());
             emailSelected = true;
         }

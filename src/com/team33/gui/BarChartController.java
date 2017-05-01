@@ -7,6 +7,7 @@ import javafx.scene.chart.BarChart;
 import javafx.scene.chart.CategoryAxis;
 import javafx.scene.chart.NumberAxis;
 import javafx.scene.chart.XYChart;
+import javafx.scene.control.Label;
 import javafx.scene.layout.AnchorPane;
 
 import java.util.TreeSet;
@@ -17,9 +18,13 @@ public class BarChartController implements Controller {
     private String criteria;
 
     @FXML
+    private Label criteriaLabel;
+
+    @FXML
     private AnchorPane box;
 
     void setup() {
+        criteriaLabel.setText("OCCURRENCES DU CRITÈRE: " + criteria.toUpperCase());
         BarChartData chartData = new BarChartData(criteria);
         try {
             chartData.readFromFile("temp.xlsx");
@@ -31,7 +36,7 @@ public class BarChartController implements Controller {
                     new BarChart<>(xAxis,yAxis);
 
             xAxis.setLabel("Dates");
-            yAxis.setLabel("Occurences");
+            yAxis.setLabel("Occurrences");
 
             XYChart.Series<String, Number> series = new XYChart.Series<>();
             for(BaseData bd : data) {

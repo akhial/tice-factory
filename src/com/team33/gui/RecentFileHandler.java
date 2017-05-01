@@ -1,6 +1,5 @@
 package com.team33.gui;
 
-import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.nio.file.Paths;
 import java.util.ArrayList;
@@ -11,15 +10,22 @@ public class RecentFileHandler {
 
     public static void writeFile(String filePath) {
         try {
-            Formatter formatter = new Formatter("recent.txt");
             Scanner input = new Scanner(Paths.get("recent.txt"));
             StringBuilder old = new StringBuilder();
             while(input.hasNext()) {
-                old.append(input.nextLine());
+                String s = input.nextLine();
+                if(s.equals(filePath)) {
+                    input.close();
+                    return;
+                }
+                old.append(s)
+                .append("\n");
             }
-            // TODO check if works
-            formatter.format("%s%s\n", old.toString(), filePath);
+            input.close();
+            Formatter formatter = new Formatter("recent.txt");
+            formatter.format("%s%s", old.toString(), filePath);
             formatter.close();
+            // TODO check if works
         } catch(IOException e) {
             e.printStackTrace();
         }

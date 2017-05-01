@@ -62,6 +62,8 @@ public class StatSelectController implements Controller {
     private void checkConditions() {
         if(end.getValue() != null && start.getValue() != null && !fileField.getText().isEmpty()) {
 
+            RecentFileHandler.writeFile(fileField.getText());
+
             LocalDate dateStart = start.getValue();
             LocalDate dateEnd = end.getValue();
             StringBuilder builder = new StringBuilder();
@@ -91,6 +93,7 @@ public class StatSelectController implements Controller {
 
             try {
                 StatisticsGenerator.trierFichierExcel(fileField.getText(), "temp.xlsx", 5);
+                RecentFileHandler.writeFile(fileField.getText());
                 StatisticsGenerator.selectDates(startDate, endDate, "temp.xlsx", "temp.xlsx");
                 StatisticsGenerator.semiGeneralStats("temp.xlsx", "temp.xlsx", 1);
                 TreeSet<String> propositions = StatisticsGenerator.getPropositions("temp.xlsx");

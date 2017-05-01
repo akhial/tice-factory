@@ -33,9 +33,10 @@ public class MailSelectController implements Controller {
         chooser.getExtensionFilters().add(new FileChooser.ExtensionFilter("Fichiers Excel", "*.xlsx"));
         chooser.setTitle("Séléctionner le fichier scolarité...");
         File result = chooser.showOpenDialog(null);
-        if(result != null)
+        if(result != null) {
             fileField.setText(result.getAbsolutePath());
-        else
+            RecentFileHandler.writeFile(result.getAbsolutePath());
+        } else
             mainApp.getMainViewController().showConfirmationDialog("Alerte",
                     "Veuillez choisir un fichier!");
     }

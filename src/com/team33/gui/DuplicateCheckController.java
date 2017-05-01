@@ -117,6 +117,7 @@ public class DuplicateCheckController implements Controller {
         chooser.setTitle("Séléctionner un fichier...");
         File result = chooser.showOpenDialog(null);
         if(result != null) {
+            RecentFileHandler.writeFile(result.getAbsolutePath());
             fileField.setText(result.getAbsolutePath());
             fileChosen = true;
         }
