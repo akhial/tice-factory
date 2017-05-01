@@ -16,11 +16,17 @@ public class SingleOptionCourses implements Serializable{
     }
 
     public HashSet<Course> getSemestre1() {
-        return semestre1;
+        if(semestre1 != null)
+            return semestre1;
+        else
+            return new HashSet<>();
     }
 
     public HashSet<Course> getSemestre2() {
-        return semestre2;
+        if(semestre2 != null)
+            return semestre2;
+        else
+            return new HashSet<>();
     }
 
     public void ajouterCoursSemsetre1(String shortName, String fullName){
@@ -33,14 +39,14 @@ public class SingleOptionCourses implements Serializable{
         this.semestre2.add(course);
     }
 
-    public void supprimerCoursSemestre1(String shortName,String fullName)
+    public void supprimerCoursSemestre1(Course course)
     {
-        this.semestre1.remove(new Course(shortName,fullName));
+        this.semestre1.remove(course);
     }
 
-    public void supprimerCoursSemestre2(String shortName,String fullName)
+    public void supprimerCoursSemestre2(Course course)
     {
-        this.semestre2.remove(new Course(shortName,fullName));
+        this.semestre2.remove(course);
     }
 
 

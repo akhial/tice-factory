@@ -163,14 +163,11 @@ public class MainViewController implements Controller {
         // TODO fix these
     }
 
-    private void showDialog() {
+    JFXDialog showDialog(Region content) {
         JFXDialog dialog = new JFXDialog();
-        Label content = new Label("Coming soon!");
-        content.getStylesheets().add("/fxml/style.css");
-        content.setId("bold-label");
-        content.setPadding(new Insets(40, 40,40, 40));
         dialog.setContent(content);
         dialog.show(rootStackPane);
+        return dialog;
     }
 
     void showConfirmationDialog(final String title, final   String message) {

@@ -32,7 +32,7 @@ public class StudentSelectionController implements Controller {
         }
         for(int i = 3; i < levels.length; i++) {
             for(String option : options) {
-                levelList.getItems().add(new Label(levels[i] + "-" +     option));
+                levelList.getItems().add(new Label(levels[i] + "-" + option));
             }
         }
 
