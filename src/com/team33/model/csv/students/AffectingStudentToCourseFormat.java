@@ -132,7 +132,7 @@ public class AffectingStudentToCourseFormat extends UserFormat implements Studen
         return null;
     }
 
-    protected void createStudentList() throws IOException {
+    protected void createStudentList() throws IOException, EmptyCoursesException {
         int numRow = 1;
         FileInformationExtractor extractor = new FileInformationExtractor(getWorkbookIn(), getOptin());
         HashMap<String,Student> students = extractor.findStudents();
@@ -160,7 +160,7 @@ public class AffectingStudentToCourseFormat extends UserFormat implements Studen
         saveUsersList(file);
     }
     @Override
-    public String buildCSV(ArrayList<String> workbooksPaths) throws IOException, InvalidFormatException {
+    public String buildCSV(ArrayList<String> workbooksPaths) throws IOException, InvalidFormatException, EmptyCoursesException {
         // WorkbooksPaths should contain only list of first semester and list of e-mails
 
         String type;

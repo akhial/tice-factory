@@ -79,6 +79,9 @@ public class AggregateHelper {
                 builder.buildCSV();
             } catch(IOException | InvalidFormatException e) {
                 e.printStackTrace();
+            } catch (EmptyCoursesException e) {
+                mainApp.getMainViewController().showConfirmationDialog("Erreur",
+                        e.getMessage());
             }
             mainApp.getMainViewController().setScene(MainApp.STUDENT_EXCEPTION, MainApp.CONVERT_NAME);
             ((StudentExceptionController) mainApp.getCurrentController()).setup();

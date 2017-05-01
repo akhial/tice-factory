@@ -2,6 +2,7 @@ package com.team33.model.csv;
 
 
 import com.team33.model.Utilities.ToCSV;
+import com.team33.model.csv.students.EmptyCoursesException;
 import org.apache.poi.openxml4j.exceptions.InvalidFormatException;
 
 import java.io.IOException;
@@ -36,7 +37,7 @@ public class CSVBuilder  {
         return tempPath;
     }
 
-    public void buildCSV() throws IOException, InvalidFormatException {
+    public void buildCSV() throws IOException, InvalidFormatException, EmptyCoursesException {
         tempPath = format.buildCSV(workbooksPaths);
     }
 

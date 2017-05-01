@@ -15,7 +15,7 @@ public class AffectingIntershipStudentToCourseFormat extends AffectingStudentToC
         super(level, optin, filePathOut);
     }
 
-    protected void createStudentList() throws IOException {
+    protected void createStudentList() throws IOException, EmptyCoursesException {
 
         Long startTime = System.currentTimeMillis();
         System.out.println("Création de la liste ***");
