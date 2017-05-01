@@ -2,6 +2,7 @@
 
 <?import com.jfoenix.controls.JFXButton?>
 <?import com.jfoenix.controls.JFXProgressBar?>
+<?import com.jfoenix.controls.JFXRadioButton?>
 <?import com.jfoenix.controls.JFXTextField?>
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Label?>
@@ -9,8 +10,7 @@
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.VBox?>
 
-
-<AnchorPane xmlns="http://javafx.com/javafx/8.0.111" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.team33.gui.TeacherSelectionController">
+<AnchorPane prefHeight="497.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/8.0.111" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.team33.gui.TeacherSelectionController">
    <children>
       <VBox id="dash-container" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" stylesheets="@style.css" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
          <children>
@@ -34,6 +34,12 @@
                   <Label layoutX="30.0" layoutY="170.0" prefHeight="30.0" prefWidth="305.0" text="VEUILLEZ SÉLÉCTIONNER LE FICHIER DES EMAILS" AnchorPane.topAnchor="170.0" />
                   <JFXTextField id="file-field" fx:id="mailTextField" focusColor="#26a696" layoutX="30.0" layoutY="230.0" prefHeight="25.0" prefWidth="540.0" AnchorPane.leftAnchor="30.0" AnchorPane.rightAnchor="30.0" AnchorPane.topAnchor="230.0" />
                   <JFXButton id="file-button" layoutX="528.0" layoutY="222.0" onAction="#onOpenEmailButton" text=" " AnchorPane.rightAnchor="20.0" AnchorPane.topAnchor="222.0" />
+                  <VBox alignment="CENTER" layoutX="250.0" layoutY="297.0" prefHeight="89.0" prefWidth="100.0" spacing="10.0" AnchorPane.leftAnchor="30.0" AnchorPane.rightAnchor="30.0" AnchorPane.topAnchor="300.0">
+                     <children>
+                        <JFXRadioButton fx:id="randomButton" prefWidth="250.0" text="Mot de passe aléatoire" />
+                        <JFXRadioButton fx:id="nameButton" prefWidth="250.0" text="Utiliser le nom comme mot de passe" />
+                     </children>
+                  </VBox>
                </children>
             </AnchorPane>
          </children>

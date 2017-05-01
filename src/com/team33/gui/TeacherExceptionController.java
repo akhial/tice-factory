@@ -62,8 +62,7 @@ public class TeacherExceptionController implements Controller {
                         result = ((JFXComboBox) input).getSelectionModel().getSelectedItem().toString();
                         listOfUsedEmails.add(result);
                     } else {
-                        mainApp.getMainViewController().showConfirmationDialog("Erreur",
-                                "Aucun email séléctionné");
+                        result = "";
                     }
                 }
                 if(!result.isEmpty()) {
@@ -89,9 +88,12 @@ public class TeacherExceptionController implements Controller {
                     });
                     listOfUsedEmails.clear();
                     input.setDisable(true);
+                    button.setDisable(true);
+                } else {
+                    input.setDisable(true);
+                    button.setDisable(true);
                 }
                 finalMails.put(verified.get(button), result);
-                button.setDisable(true);
             });
             String parsed = next.replace('*', ' ');
             exceptionPane.addRow(i+1, new Label(parsed), node, button);
@@ -111,14 +113,7 @@ public class TeacherExceptionController implements Controller {
 
     private boolean containsEmptyNode() {
         for(Node n : comboBoxes.values()) {
-            if(n instanceof JFXComboBox) {
-                if(((JFXComboBox) n).getSelectionModel().getSelectedItem() == null) {
-                    return true;
-                }
-            } else {
-                if(((JFXTextField) n).getText().isEmpty())
-                    return true;
-            }
+            if(!n.isDisable()) return true;
         }
         return false;
     }

@@ -2,6 +2,7 @@ package com.team33.model.csv.students;
 
 import com.team33.model.csv.students.courses.CoursesStore;
 import com.team33.model.csv.UserFormat;
+import org.apache.poi.openxml4j.exceptions.InvalidFormatException;
 import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.ss.usermodel.Sheet;
 
@@ -131,7 +132,7 @@ public class AffectingStudentToCourseFormat extends UserFormat implements Studen
         return null;
     }
 
-    protected void createStudentList()  {
+    protected void createStudentList() throws IOException {
         int numRow = 1;
         FileInformationExtractor extractor = new FileInformationExtractor(getWorkbookIn(), getOptin());
         HashMap<String,Student> students = extractor.findStudents();
@@ -159,7 +160,7 @@ public class AffectingStudentToCourseFormat extends UserFormat implements Studen
         saveUsersList(file);
     }
     @Override
-    public String buildCSV(ArrayList<String> workbooksPaths) throws IOException {
+    public String buildCSV(ArrayList<String> workbooksPaths) throws IOException, InvalidFormatException {
         // WorkbooksPaths should contain only list of first semester and list of e-mails
 
         String type;

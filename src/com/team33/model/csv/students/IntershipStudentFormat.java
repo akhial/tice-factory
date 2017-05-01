@@ -4,6 +4,7 @@ import org.apache.poi.ss.usermodel.Row;
 
 
 import java.io.File;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
@@ -40,7 +41,7 @@ public class IntershipStudentFormat  extends StudentFormat{
         rw.createCell(4).setCellValue("email");
     }
 
-    protected void createStudentList()  {
+    protected void createStudentList() throws IOException {
 
         Long startTime = System.currentTimeMillis();
         System.out.println("Création de la liste ***");

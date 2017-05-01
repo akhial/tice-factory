@@ -98,41 +98,35 @@ public class CoursesStore implements Serializable {
         this.getCycleSuperieur().getCS1().ajouterCoursSemstre2("SEC","Introduction à la sécurité");
         this.getCycleSuperieur().getCS1().ajouterCoursSemstre2("RES2","Réseaux II");
         this.getCycleSuperieur().getCS1().ajouterCoursSemstre2("SYSC2","Systèmes Centralisés II");
-        try {
-
-
-            this.getCycleSuperieur().getCS2().ajouterCoursSemestre1("SIQ", "FAS_2CS_SIQ", "File d'attente et simulation");
-            this.getCycleSuperieur().getCS2().ajouterCoursSemestre1("SIQ", "AQ_SIQ", "Stage Pratique en Entreprise");
-            this.getCycleSuperieur().getCS2().ajouterCoursSemestre1("SIQ", "ANAD_SIQ", "Analyse et fouilles de Données");
-            this.getCycleSuperieur().getCS2().ajouterCoursSemestre1("SIQ", "TPRO_SIQ", "Théorie de la programmation");
-            this.getCycleSuperieur().getCS2().ajouterCoursSemestre1("SIQ", "RESA_SIQSIL", "Réseaux avancés");
-            this.getCycleSuperieur().getCS2().ajouterCoursSemestre2("SIQ", "PRS_SIQ", "Projet de Spécialité");
-            this.getCycleSuperieur().getCS2().ajouterCoursSemestre2("SIQ", "BDDA", "SGBD et Bases de Données Avancées");
-            this.getCycleSuperieur().getCS2().ajouterCoursSemestre2("SIQ", "OPT", "Optimisation combinatoire");
-            this.getCycleSuperieur().getCS2().ajouterCoursSemestre2("SIQ", "SSR_SIQ", "Sécurité des système et réseaux");
-            this.getCycleSuperieur().getCS2().ajouterCoursSemestre2("SIQ", "SYSR", "Système répartis");
-            this.getCycleSuperieur().getCS2().ajouterCoursSemestre1("SIT", "SPE", "Stage pratique en entreprise");
-            this.getCycleSuperieur().getCS2().ajouterCoursSemestre1("SIT", "ANAD", "Analyse et fouille de données");
-            this.getCycleSuperieur().getCS2().ajouterCoursSemestre1("SIT", "AQUA", "Assurance qualité");
-            this.getCycleSuperieur().getCS2().ajouterCoursSemestre1("SIT", "MPSI", "Management du changement dans les projets SI");
-            this.getCycleSuperieur().getCS2().ajouterCoursSemestre1("SIT", "SIAD", "S.I d'aide à la décision : Méthodes et Outils");
-            this.getCycleSuperieur().getCS2().ajouterCoursSemestre1("SIT", "TICO", "TIC en Organisation");
-            this.getCycleSuperieur().getCS2().ajouterCoursSemestre1("SIT", "BDA", "Base de données avancées");
-            this.getCycleSuperieur().getCS2().ajouterCoursSemestre1("SIT", "SI", "Analyse des Systèmes d'infformation");
-            this.getCycleSuperieur().getCS2().ajouterCoursSemestre2("SIT", "PRJS", "Projet de spécialité");
-            this.getCycleSuperieur().getCS2().ajouterCoursSemestre2("SIT", "COFI", "Comptabilité et Finance");
-            this.getCycleSuperieur().getCS2().ajouterCoursSemestre2("SIT", "FASI", "Files d'Attentes et Simulation");
-            this.getCycleSuperieur().getCS2().ajouterCoursSemestre2("SIT", "PGI", "Système d'Information à base de PGI");
-            this.getCycleSuperieur().getCS2().ajouterCoursSemestre2("SIT", "MSSI", "Ingenierie et manangement de la Sécurité de S.I");
-            this.getCycleSuperieur().getCS2().ajouterCoursSemestre2("SIT", "SIC", "Systèmes d'Information Copératifs");
-            this.getCycleSuperieur().getCS2().ajouterCoursSemestre1("SIL", "MAGIL", "Méthodes agiles");
-            this.getCycleSuperieur().getCS2().ajouterCoursSemestre1("SIL", "ANAFD", "Analyse et fouilles de donnes");
-            this.getCycleSuperieur().getCS2().ajouterCoursSemestre1("SIL", "PATCON", "Patrons de conception");
-            this.getCycleSuperieur().getCS2().ajouterCoursSemestre1("SIL", "TECWEB", "Technologies et developement Web");
-            saveChanges();
-        }catch (UnExistingOptionException e){
-            e.printStackTrace();
-        }
+        this.getCycleSuperieur().getCS2().ajouterCoursSemestre1("SIQ", "FAS_2CS_SIQ", "File d'attente et simulation");
+        this.getCycleSuperieur().getCS2().ajouterCoursSemestre1("SIQ", "AQ_SIQ", "Stage Pratique en Entreprise");
+        this.getCycleSuperieur().getCS2().ajouterCoursSemestre1("SIQ", "ANAD_SIQ", "Analyse et fouilles de Données");
+        this.getCycleSuperieur().getCS2().ajouterCoursSemestre1("SIQ", "TPRO_SIQ", "Théorie de la programmation");
+        this.getCycleSuperieur().getCS2().ajouterCoursSemestre1("SIQ", "RESA_SIQSIL", "Réseaux avancés");
+        this.getCycleSuperieur().getCS2().ajouterCoursSemestre2("SIQ", "PRS_SIQ", "Projet de Spécialité");
+        this.getCycleSuperieur().getCS2().ajouterCoursSemestre2("SIQ", "BDDA", "SGBD et Bases de Données Avancées");
+        this.getCycleSuperieur().getCS2().ajouterCoursSemestre2("SIQ", "OPT", "Optimisation combinatoire");
+        this.getCycleSuperieur().getCS2().ajouterCoursSemestre2("SIQ", "SSR_SIQ", "Sécurité des système et réseaux");
+        this.getCycleSuperieur().getCS2().ajouterCoursSemestre2("SIQ", "SYSR", "Système répartis");
+        this.getCycleSuperieur().getCS2().ajouterCoursSemestre1("SIT", "SPE", "Stage pratique en entreprise");
+        this.getCycleSuperieur().getCS2().ajouterCoursSemestre1("SIT", "ANAD", "Analyse et fouille de données");
+        this.getCycleSuperieur().getCS2().ajouterCoursSemestre1("SIT", "AQUA", "Assurance qualité");
+        this.getCycleSuperieur().getCS2().ajouterCoursSemestre1("SIT", "MPSI", "Management du changement dans les projets SI");
+        this.getCycleSuperieur().getCS2().ajouterCoursSemestre1("SIT", "SIAD", "S.I d'aide à la décision : Méthodes et Outils");
+        this.getCycleSuperieur().getCS2().ajouterCoursSemestre1("SIT", "TICO", "TIC en Organisation");
+        this.getCycleSuperieur().getCS2().ajouterCoursSemestre1("SIT", "BDA", "Base de données avancées");
+        this.getCycleSuperieur().getCS2().ajouterCoursSemestre1("SIT", "SI", "Analyse des Systèmes d'infformation");
+        this.getCycleSuperieur().getCS2().ajouterCoursSemestre2("SIT", "PRJS", "Projet de spécialité");
+        this.getCycleSuperieur().getCS2().ajouterCoursSemestre2("SIT", "COFI", "Comptabilité et Finance");
+        this.getCycleSuperieur().getCS2().ajouterCoursSemestre2("SIT", "FASI", "Files d'Attentes et Simulation");
+        this.getCycleSuperieur().getCS2().ajouterCoursSemestre2("SIT", "PGI", "Système d'Information à base de PGI");
+        this.getCycleSuperieur().getCS2().ajouterCoursSemestre2("SIT", "MSSI", "Ingenierie et manangement de la Sécurité de S.I");
+        this.getCycleSuperieur().getCS2().ajouterCoursSemestre2("SIT", "SIC", "Systèmes d'Information Copératifs");
+        this.getCycleSuperieur().getCS2().ajouterCoursSemestre1("SIL", "MAGIL", "Méthodes agiles");
+        this.getCycleSuperieur().getCS2().ajouterCoursSemestre1("SIL", "ANAFD", "Analyse et fouilles de donnes");
+        this.getCycleSuperieur().getCS2().ajouterCoursSemestre1("SIL", "PATCON", "Patrons de conception");
+        this.getCycleSuperieur().getCS2().ajouterCoursSemestre1("SIL", "TECWEB", "Technologies et developement Web");
+        saveChanges();
     }
 
     public Collection<String> getListOfCourses(String level, String optin){

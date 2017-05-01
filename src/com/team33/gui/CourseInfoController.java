@@ -12,6 +12,7 @@ public class CourseInfoController implements Controller {
     private int semester;
     private TreeItem<String> root;
     private JFXDialog dialog;
+    private String option = "";
 
     @FXML
     private JFXTextField fullField;
@@ -21,7 +22,7 @@ public class CourseInfoController implements Controller {
 
     @FXML
     private void onConfirmButton() {
-        courseEditController.addCourse(root, semester, fullField.getText(), shortField.getText());
+        courseEditController.addCourse(root, semester, fullField.getText(), shortField.getText(), option);
         dialog.close();
     }
 
@@ -42,8 +43,12 @@ public class CourseInfoController implements Controller {
         this.root = root;
     }
 
-    public void setDialog(JFXDialog dialog) {
+    void setDialog(JFXDialog dialog) {
         this.dialog = dialog;
+    }
+
+    void setOption(String option) {
+        this.option = option;
     }
 
     @Override

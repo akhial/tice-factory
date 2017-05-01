@@ -2,6 +2,7 @@ package com.team33.model.csv.students;
 
 import com.team33.model.csv.CSVFormat;
 import com.team33.model.csv.UserFormat;
+import org.apache.poi.openxml4j.exceptions.InvalidFormatException;
 import org.apache.poi.ss.usermodel.*;
 
 import java.io.*;
@@ -79,8 +80,7 @@ public class StudentFormat extends UserFormat implements CSVFormat, StudentInter
         return null;
     }
 
-    protected void createStudentList()
-    {
+    protected void createStudentList() throws IOException {
         Long startTime = System.currentTimeMillis();
         System.out.println("Création de la liste ***");
         int numRow = 1;
@@ -114,7 +114,7 @@ public class StudentFormat extends UserFormat implements CSVFormat, StudentInter
 
 
     @Override
-    public String buildCSV(ArrayList<String> workbooksPaths) throws IOException {
+    public String buildCSV(ArrayList<String> workbooksPaths) throws IOException, InvalidFormatException {
         // WorkbooksPaths should contain only list of first semester and list of e-mails
 
         String type;

@@ -1,14 +1,14 @@
 package com.team33.gui;
 
+import com.jfoenix.controls.JFXRadioButton;
 import com.jfoenix.controls.JFXTextField;
 import com.team33.model.assertions.*;
-import com.team33.model.csv.AssigningTeacherToCourseFormat;
-import com.team33.model.csv.CSVBuilder;
-import com.team33.model.csv.CSVFormat;
-import com.team33.model.csv.TeacherFormat;
+import com.team33.model.csv.*;
 import javafx.fxml.FXML;
+import javafx.scene.control.ToggleGroup;
 import javafx.stage.DirectoryChooser;
 import javafx.stage.FileChooser;
+import org.apache.poi.openxml4j.exceptions.InvalidFormatException;
 
 import java.io.File;
 import java.io.IOException;
@@ -33,6 +33,20 @@ public class TeacherSelectionController implements Controller {
 
     @FXML
     private JFXTextField mailTextField;
+
+    @FXML
+    private JFXRadioButton randomButton;
+
+    @FXML
+    private JFXRadioButton nameButton;
+
+    @FXML
+    private void initialize() {
+        ToggleGroup group = new ToggleGroup();
+        randomButton.setToggleGroup(group);
+        nameButton.setToggleGroup(group);
+        randomButton.setSelected(true);
+    }
 
     @FXML
     private void onOpenChargesButton() {
@@ -101,10 +115,11 @@ public class TeacherSelectionController implements Controller {
                     File save = directoryChooser.showDialog(null);
 
                     format = withAssignment ? new AssigningTeacherToCourseFormat() : new TeacherFormat();
+                    ((UserFormat) format).setGeneratedPassword(randomButton.isSelected());
                     csvBuilder = new CSVBuilder(workbookPaths, format, save.getAbsolutePath());
                     try {
                         csvBuilder.buildCSV();
-                    } catch(IOException e) {
+                    } catch(IOException | InvalidFormatException e) {
                         mainApp.getMainViewController().showConfirmationDialog("Erreur",
                                 "Une erreur c'est produite pendant l'ecriture dans le fichier " + csvBuilder.getTempPath());
                     }

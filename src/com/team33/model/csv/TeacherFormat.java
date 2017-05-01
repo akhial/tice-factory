@@ -1,6 +1,7 @@
 package com.team33.model.csv;
 
 import com.team33.model.Utilities.Util;
+import org.apache.poi.openxml4j.exceptions.InvalidFormatException;
 import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.ss.usermodel.Sheet;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
@@ -52,6 +53,16 @@ public class TeacherFormat extends UserFormat {
         return str;
 
     }
+    public String generatePassWord(int length)
+    {
+        String chars = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890";
+        StringBuilder pass = new StringBuilder();
+        for(int x = 0; x < length; x++)   {
+            int i = (int)Math.floor(Math.random() * (chars.length() -1));
+            pass.append(chars.charAt(i));
+        }
+        return pass.toString();
+    }
     /**
      * Permet d'écrire la liste de chaines dans la ligne N =° numRow du workbookOut
      * */
@@ -91,14 +102,12 @@ public class TeacherFormat extends UserFormat {
     private String ChooseEmail(ArrayList<String> listEmails, Row rw, int colNom, int colPrenom)
     {
         String email = null;
-        if ((listEmails.size() > 0)) {
-            if (listEmails.size() == 1){
-                email = listEmails.get(0);
-            }else{
-
-                unHandledEmails.put(rw.getCell(colNom).toString().toLowerCase()+"*"+rw.getCell(colPrenom).toString().toLowerCase(),listEmails);
-            }
+        if (listEmails.size() == 1){
+            email = listEmails.get(0);
+        }else{
+            unHandledEmails.put(rw.getCell(colNom).toString().toLowerCase()+"*"+rw.getCell(colPrenom).toString().toLowerCase(),listEmails);
         }
+
         return email;
     }
     /**
@@ -116,7 +125,7 @@ public class TeacherFormat extends UserFormat {
 
 
     @Override
-    public String buildCSV(ArrayList<String> workbooks) {
+    public String buildCSV(ArrayList<String> workbooks) throws IOException, InvalidFormatException {
         String workbookPath = workbooks.get(0);
         String emailWorkbookPath = workbooks.get(1);
         int firstNameColumn = 0 ;
@@ -145,15 +154,14 @@ public class TeacherFormat extends UserFormat {
             email = EmailAdress(row,row.getCell(lastNameColumn).toString(),lastNameColumn,firstNameColumn);
             if (email != null) arrayList.add( email.substring(0,email.indexOf("@"))) ;
             else  arrayList.add(null) ;
-            arrayList.add(row.getCell(lastNameColumn).toString().toLowerCase());
-            arrayList.add(row.getCell(firstNameColumn).toString().toUpperCase()+" ENS:");
-            arrayList.add(row.getCell(lastNameColumn).toString().toUpperCase());
+            arrayList.add((this.isGeneratedPassword()) ? generatePassWord(8) : row.getCell(firstNameColumn).toString().toLowerCase());
+            arrayList.add(row.getCell(lastNameColumn).toString().toUpperCase()+" ENS:");
+            arrayList.add(row.getCell(firstNameColumn).toString().toUpperCase());
             arrayList.add(email);
             generateRow(numRow, (ArrayList<String>) arrayList.clone());
             arrayList.clear();
             numRow++;
         }
-
         File file = new File(tempName);
         saveUsersList(file);
         return file.getPath();
@@ -189,4 +197,3 @@ public class TeacherFormat extends UserFormat {
 
     }
 }
-

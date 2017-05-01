@@ -10,6 +10,7 @@ import javafx.scene.Node;
 import javafx.scene.control.Label;
 import javafx.scene.layout.GridPane;
 
+import java.io.IOException;
 import java.util.*;
 
 public class StudentExceptionController implements Controller {
@@ -96,7 +97,12 @@ public class StudentExceptionController implements Controller {
             mainApp.getMainViewController().showConfirmationDialog("Erreur",
                     "Veuillez vérifier tout les emails!");
         } else {
-            aggregateHelper.finishCSV();
+            try {
+                aggregateHelper.finishCSV();
+            } catch(IOException e) {
+                mainApp.getMainViewController().showConfirmationDialog("Erreur",
+                        "Une erreur c'est produite lors de l'ecriture du fichier!");
+            }
         }
     }
 

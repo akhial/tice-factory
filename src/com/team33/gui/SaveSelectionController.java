@@ -26,6 +26,7 @@ public class SaveSelectionController implements Controller {
         ToggleGroup group = new ToggleGroup();
         singleButton.setToggleGroup(group);
         multiButton.setToggleGroup(group);
+        singleButton.setSelected(true);
     }
 
     @FXML

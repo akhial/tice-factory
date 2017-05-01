@@ -69,10 +69,10 @@ public class MainViewController implements Controller {
 
         hamburger.setOnMouseClicked(e -> {
             if(!small) {
-                gridPane.getColumnConstraints().get(0).setPrefWidth(40);
+                gridPane.getColumnConstraints().get(0).setMaxWidth(40);
                 small = true;
             } else {
-                gridPane.getColumnConstraints().get(0).setPrefWidth(205);
+                gridPane.getColumnConstraints().get(0).setMaxWidth(205);
                 small = false;
             }
         });
@@ -159,8 +159,6 @@ public class MainViewController implements Controller {
             mainApp.cancel();
             setScene(MainApp.COURSE_EDIT, MainApp.COURSE_NAME);
         }
-
-        // TODO fix these
     }
 
     JFXDialog showDialog(Region content) {

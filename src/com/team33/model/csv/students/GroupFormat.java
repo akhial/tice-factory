@@ -3,6 +3,7 @@ package com.team33.model.csv.students;
 import com.team33.model.csv.CSVFormat;
 import com.team33.model.csv.students.courses.CoursesStore;
 import com.team33.model.csv.UserFormat;
+import org.apache.poi.openxml4j.exceptions.InvalidFormatException;
 import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.ss.usermodel.Sheet;
 
@@ -143,7 +144,7 @@ public class GroupFormat extends UserFormat implements CSVFormat, StudentInterfa
         return null;
     }
 
-    private void createStudentList() {
+    private void createStudentList() throws IOException {
         int numRow = 1;
         FileInformationExtractor extractor = new FileInformationExtractor(getWorkbookIn(), getOptin());
         HashMap<String,Student> students = extractor.findStudents();
@@ -175,7 +176,7 @@ public class GroupFormat extends UserFormat implements CSVFormat, StudentInterfa
 
 
     @Override
-    public String buildCSV(ArrayList<String> workbooksPaths) throws IOException {
+    public String buildCSV(ArrayList<String> workbooksPaths) throws IOException, InvalidFormatException {
         // WorkbooksPaths should contain only list of first semester and list of e-mails
 
         String type;

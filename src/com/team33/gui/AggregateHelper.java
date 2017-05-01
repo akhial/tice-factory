@@ -6,6 +6,7 @@ import com.team33.model.csv.students.*;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.scene.control.Label;
+import org.apache.poi.openxml4j.exceptions.InvalidFormatException;
 
 import java.io.File;
 import java.io.IOException;
@@ -72,14 +73,11 @@ public class AggregateHelper {
                     break;
             }
 
-            if(format == null) {
-                System.out.println("YAW YAW YAW");
-            }
             builder = new CSVBuilder(workbookPaths, format, outPath);
             System.out.println(workbookPaths);
             try {
                 builder.buildCSV();
-            } catch(IOException e) {
+            } catch(IOException | InvalidFormatException e) {
                 e.printStackTrace();
             }
             mainApp.getMainViewController().setScene(MainApp.STUDENT_EXCEPTION, MainApp.CONVERT_NAME);
@@ -92,7 +90,7 @@ public class AggregateHelper {
         }
     }
 
-    public void finishCSV() {
+    public void finishCSV() throws IOException {
         ((StudentInterface) format).saveUsersList(new File(builder.getTempPath()));
         builder.convertToCSV();
         makeLevelCSV();

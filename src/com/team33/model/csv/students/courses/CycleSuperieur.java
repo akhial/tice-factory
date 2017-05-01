@@ -30,8 +30,8 @@ public class CycleSuperieur implements Serializable{
         this.CS3courses.add(course);
     }
 
-    public void suprimerCours3CS(String shortName,String fullName){
-        this.CS3courses.remove(new Course(shortName,fullName));
+    public void suprimerCours3CS(Course course){
+        this.CS3courses.remove(course);
     }
 
 

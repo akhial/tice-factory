@@ -18,36 +18,27 @@ public class MultipleOptionsCourses implements Serializable{
     private HashSet<Course> modulesOptionnels = new HashSet<>();
 
 
-    public void ajouterCoursSemestre1(String option,String shortName,String fullName) throws UnExistingOptionException {
+    public void ajouterCoursSemestre1(String option,String shortName,String fullName) {
         if(this.semestre1 == null) this.semestre1 = new HashMap<>();
-        if(options.contains(option))
-        {
         Course course = new Course(shortName,fullName);
         if(!this.semestre1.containsKey(option)) this.semestre1.put(option,new HashSet<>());
         this.semestre1.get(option).add(course);
-        }else {
-            throw new UnExistingOptionException("Cette option n'existe pas");
-        }
     }
 
-    public void ajouterCoursSemestre2(String option,String shortName,String fullName) throws UnExistingOptionException{
+    public void ajouterCoursSemestre2(String option,String shortName,String fullName) {
         if(this.semestre2 == null) this.semestre2 = new HashMap<>();
-        if(options.contains(option))
-        {
-            Course course = new Course(shortName,fullName);
-            if(!this.semestre2.containsKey(option)) this.semestre2.put(option,new HashSet<>());
-            this.semestre2.get(option).add(course);
-        }else {
-            throw new UnExistingOptionException("Cette option n'existe pas");
-        }
+        Course course = new Course(shortName,fullName);
+        if(!this.semestre2.containsKey(option)) this.semestre2.put(option,new HashSet<>());
+        this.semestre2.get(option).add(course);
+
     }
 
-    public void supprimerCoursSemestre1(String option,String shortName,String fullName){
-        this.semestre1.get(option).remove(new Course(shortName,fullName));
+    public void supprimerCoursSemestre1(String option,Course course){
+        this.semestre1.get(option).remove(course);
     }
 
-    public void supprimerCoursSemestre2(String option,String shortName,String fullName){
-        this.semestre2.get(option).remove(new Course(shortName,fullName));
+    public void supprimerCoursSemestre2(String option,Course course){
+        this.semestre2.get(option).remove(course);
     }
 
     public void ajouterModuleCommun(String shortName, String fullName){
@@ -62,12 +53,12 @@ public class MultipleOptionsCourses implements Serializable{
         this.modulesOptionnels.add(course);
     }
 
-    public void suprimerModulesCommun(String shortName,String fullName){
-        this.modulesCommuns.remove(new Course(shortName,fullName));
+    public void suprimerModulesCommun(Course course){
+        this.modulesCommuns.remove(course);
     }
 
-    public void supprimerModulesOptionnel(String shortName,String fullName){
-        this.modulesOptionnels.remove(new Course(shortName,fullName));
+    public void supprimerModulesOptionnel(Course course){
+        this.modulesOptionnels.remove(course);
     }
 
     public HashSet<Course> getModulesCommuns() {

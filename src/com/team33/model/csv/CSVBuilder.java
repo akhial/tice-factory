@@ -36,7 +36,7 @@ public class CSVBuilder  {
         return tempPath;
     }
 
-    public void buildCSV() throws IOException {
+    public void buildCSV() throws IOException, InvalidFormatException {
         tempPath = format.buildCSV(workbooksPaths);
     }
 

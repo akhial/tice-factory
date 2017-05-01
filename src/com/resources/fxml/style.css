@@ -42,6 +42,10 @@
   -jfx-focus-color: #26A69A;
   -fx-text-fill: white;
 }
+.jfx-scroll-pane {
+  -fx-background: #263238;
+  -fx-background-color: #263238;
+}
 
 /* Label styles */
 

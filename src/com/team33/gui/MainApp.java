@@ -23,7 +23,7 @@ public class MainApp extends Application {
     static final String TEACHER_EXCEPTION = "/fxml/TeacherExceptionView.fxml";
     static final String CONVERT_NAME = "CONVERTIR";
     static final String DUPLICATES = "/fxml/DuplicateCheckView.fxml";
-    static final String DUPLICATE_NAME = "DOUBLANTS";
+    static final String DUPLICATE_NAME = "DOUBLONS";
     static final String EMAIL_LOGIN = "/fxml/EmailLoginView.fxml";
     static final String MAIL_TYPE_SELECT = "/fxml/EmailTypeView.fxml";
     static final String MAIL_SEND = "/fxml/MailSelectView.fxml";
