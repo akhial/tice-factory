@@ -163,7 +163,7 @@ public class TeacherSelectionController implements Controller {
             } else {
                 ((TeacherFormat) format).AddingMissingEmails(finalMails);
             }
-        } catch(IOException e) {
+        } catch(IOException | InvalidFormatException e) {
             mainApp.getMainViewController().showConfirmationDialog("Erreur",
                     "Erreur pendant l'écriture du fichier CSV");
         }

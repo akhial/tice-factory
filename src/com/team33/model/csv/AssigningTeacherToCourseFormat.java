@@ -18,7 +18,7 @@ import java.util.StringTokenizer;
  */
 public class AssigningTeacherToCourseFormat extends UserFormat implements CSVFormat {
     private HashMap<String,ArrayList<String>> unHandledEmails;
-    private final String tempName = "CreatingTeachersWithCourses.xlsx";
+    private final String tempName = "TeachersListWithCourses.xlsx";
     public HashMap<String, ArrayList<String>> getUnHandledEmails() {
         return unHandledEmails;
     }
@@ -116,8 +116,9 @@ public class AssigningTeacherToCourseFormat extends UserFormat implements CSVFor
         new File(tempFile).delete();
         return file.getPath() ;
     }
-    public void AddingMissingEmails(HashMap<String,String> finalEmails) throws IOException {
-        this.setWorkbookOut(new XSSFWorkbook(tempName));
+    public void AddingMissingEmails(HashMap<String,String> finalEmails) throws IOException, InvalidFormatException {
+        FileInputStream file = new FileInputStream(tempName);
+        this.setWorkbookOut(new XSSFWorkbook(file));
         for (HashMap.Entry e:finalEmails.entrySet()) {
             StringTokenizer stringTokenizer = new StringTokenizer((String) e.getKey(),"*");
             String lastName = stringTokenizer.nextToken();
@@ -128,8 +129,8 @@ public class AssigningTeacherToCourseFormat extends UserFormat implements CSVFor
             int i = 1 ;
             while (!found && i < getWorkbookOut().getSheetAt(0).getLastRowNum()+1){
                 row = getWorkbookOut().getSheetAt(0).getRow(i);
-                if (rowContains(row,firstName.toUpperCase()+" ENS:") && rowContains(row,lastName.toUpperCase())){
-                    row.getCell(0).setCellValue(email.substring(0,email.indexOf("@")));
+                if (rowContains(row,"ENS: "+lastName.toUpperCase()) && rowContains(row,firstName.toUpperCase())){
+                    row.getCell(0).setCellValue((email.indexOf("@") != -1) ? email.substring(0, email.indexOf("@")):null);
                     row.getCell(4).setCellValue(email);
                     found = true;
 
@@ -138,9 +139,8 @@ public class AssigningTeacherToCourseFormat extends UserFormat implements CSVFor
                 i++;
             }
         }
-        saveUsersList(new File("TeacherList.xlsx"));
-        new File(tempName).delete();
-        new File("TeacherList.xlsx").renameTo(new File(tempName));
+        file.close();
+        saveUsersList(new File(tempName));
 
     }
 }
