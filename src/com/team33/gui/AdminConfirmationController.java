@@ -43,7 +43,7 @@ public class AdminConfirmationController implements Controller {
             try {
                 ObjectOutputStream oos = new ObjectOutputStream(Files.newOutputStream(Paths.get("users.dat")));
 
-                User user = new User(userField.getText(), passField.getText(), AuthenticationType.ADMIN);
+                User user = new User(userName, password, AuthenticationType.ADMIN);
                 userWrapper.addUser(user);
                 oos.writeObject(userWrapper);
                 oos.close();
