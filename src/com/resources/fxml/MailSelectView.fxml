@@ -9,12 +9,11 @@
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.VBox?>
 
-
 <AnchorPane xmlns="http://javafx.com/javafx/8.0.111" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.team33.gui.MailSelectController">
    <children>
       <VBox id="dash-container" layoutX="1.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" stylesheets="@style.css" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
          <children>
-            <Label text="IMPORTER LE FICHIER EXCEL QUI CONTIENT LES MAILS">
+            <Label text="IMPORTER LE FICHIER CSV QUI CONTIENT LES MAILS">
                <VBox.margin>
                   <Insets left="17.0" top="17.0" />
                </VBox.margin>
