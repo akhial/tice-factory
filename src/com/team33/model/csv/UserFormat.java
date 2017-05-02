@@ -8,11 +8,9 @@ import org.apache.poi.ss.usermodel.WorkbookFactory;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 
 import java.io.File;
-import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Iterator;
 
 /**
  * Created by Amine on 28/02/2017.
@@ -70,7 +68,14 @@ public abstract class UserFormat implements CSVFormat {
         this.workbookIn = (XSSFWorkbook) WorkbookFactory.create(new File(fiilePathIn));
     }
 
+    public void openEmailWorkbook(String emailFilePath) throws IOException, InvalidFormatException// ouvrire le fichier contenant les e-mails
+    {
+        this.EmailsWorkbook = (XSSFWorkbook) WorkbookFactory.create(new File(emailFilePath));
+    }
 
+    /**
+     * Cette méthode permet de sauvegarder le workbookOut des un fchier file
+     * */
 
     public void saveUsersList(File file) throws IOException//enregistrer les résultat obtenue dans wbout dans le disque dure
     {
@@ -79,14 +84,13 @@ public abstract class UserFormat implements CSVFormat {
         fos.close();
     }
 
-    public void openEmailWorkbook(String emailFilePath) throws IOException, InvalidFormatException// ouvrire le fichier contenant les e-mails
-    {
-        this.EmailsWorkbook = (XSSFWorkbook) WorkbookFactory.create(new File(emailFilePath));
-    }
-    /*
+    /**
      *Méthodes utilitaires
-     */
-    public void generateHeader()// gener le header ie ecrire dans la première ligne (username,fistname,lastname,email) -> le format accepté par moodle
+     **/
+    /**
+    * gener le header ie ecrire dans la première ligne (username,fistname,lastname,email) -> le format accepté par moodle
+    * **/
+    public void generateHeader()
     {
 
         for(int i = 0; i < 5; i++) {
@@ -100,7 +104,10 @@ public abstract class UserFormat implements CSVFormat {
         this.getHeader().getCell(4).setCellValue("email");
     }
 
-    public boolean rowContains(Row rw, String str)//verrifie si la ligne rw contient la chaine str
+    /**
+     * verrifie si la ligne rw contient la chaine str
+     * **/
+    public boolean rowContains(Row rw, String str)
     {
         boolean contains = false;
         for(Cell cell : rw)

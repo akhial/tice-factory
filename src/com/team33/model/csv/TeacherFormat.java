@@ -124,7 +124,10 @@ public class TeacherFormat extends UserFormat {
 
     }
 
-
+    /**
+     * Cette méthode crée un fichier (*.xlsx) qui sera converti après en csv pour la création des comptes enseignasts
+     * elle accepte en entrée le fichier des charges + le fichier des e-mails
+     * */
     @Override
     public String buildCSV(ArrayList<String> workbooks) throws IOException, InvalidFormatException {
         String workbookPath = workbooks.get(0);
@@ -167,7 +170,10 @@ public class TeacherFormat extends UserFormat {
         saveUsersList(file);
         return file.getPath();
     }
-
+    /**
+     *  Cette méthode est utilisée pour ajouter les informations manquantes dans le fichier initiale
+     *  à cause de l'ambiguîté ou d'inexistance des e-mails
+     * */
     public void AddingMissingEmails(HashMap<String,String> finalEmails) throws IOException {
         FileInputStream fis = new FileInputStream(tempName);
         this.setWorkbookOut(new XSSFWorkbook(fis));
