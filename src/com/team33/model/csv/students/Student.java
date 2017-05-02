@@ -211,11 +211,11 @@ public class Student implements Serializable{
         this.password = this.firstName;
     }
 
-    public void allocateCourses(CoursesStore courseFormat, HashMap<String,ArrayList<String>> optionalModules) throws  EmptyCoursesException
+    public void allocateCourses(CoursesStore courseFormat, HashMap<String,ArrayList<String>> optionalModules) //throws  EmptyCoursesException
     {
         this.courses =  new ArrayList<>();
-        if(courseFormat.getListOfCourses(this.level,this.optin).isEmpty()) throw new EmptyCoursesException();
-        else {
+        /*if(courseFormat.getListOfCourses(this.level,this.optin).isEmpty()) throw new EmptyCoursesException();
+        else*/ {
             this.courses.addAll(courseFormat.getListOfCourses(this.level,this.optin));
             if(level.equals("2CS"))
             {

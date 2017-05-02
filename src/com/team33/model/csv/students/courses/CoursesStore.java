@@ -37,18 +37,23 @@ public class CoursesStore implements Serializable {
     }
 
     public void load(){
+        CoursesStore coursesStore;
         try {
             ObjectInputStream ois = new ObjectInputStream(new BufferedInputStream(new FileInputStream("courses")));
-            CoursesStore coursesStore = (CoursesStore) ois.readObject();
-            this.cyclePreparatoire = coursesStore.cyclePreparatoire;
-            this.cycleSuperieur = coursesStore.cycleSuperieur;
-
+            coursesStore = (CoursesStore) ois.readObject();
         } catch (IOException | ClassNotFoundException e) {
-            // do nothing
+            System.out.println("Instanciation et création du fichier");
+            coursesStore = new CoursesStore();
         }
+        this.cyclePreparatoire = coursesStore.getCyclePreparatoire();
+        this.cycleSuperieur = coursesStore.getCycleSuperieur();
+        this.saveChanges();
     }
 
     public void initialize(){
+        this.getCycleSuperieur().getCS2().ajouterOption("SIQ");
+        this.getCycleSuperieur().getCS2().ajouterOption("SIT");
+        this.getCycleSuperieur().getCS2().ajouterOption("SIL");
         this.getCyclePreparatoire().getCPI1().ajouterCoursSemsetre1("TEO1","Techniques d'expression orale");
         this.getCyclePreparatoire().getCPI1().ajouterCoursSemsetre1("SYS1","Introduction aux Système d'Exploitation 1");
         this.getCyclePreparatoire().getCPI1().ajouterCoursSemsetre1("ALSDS","Algorithmique et Structure de Données Statiques (ALDS)");
