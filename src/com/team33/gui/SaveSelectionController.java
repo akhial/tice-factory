@@ -48,6 +48,11 @@ public class SaveSelectionController implements Controller {
         }
     }
 
+    @FXML
+    private void onCancelButton() {
+        mainApp.getMainViewController().setScene(MainApp.DASHBOARD, MainApp.DASHBOARD_NAME);
+    }
+
     @Override
     public void cancel() {
 

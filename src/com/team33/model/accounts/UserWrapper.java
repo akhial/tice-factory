@@ -11,6 +11,13 @@ public class UserWrapper implements Serializable {
         users.add(user);
     }
 
+    public User getUser(String name) {
+        for(User user : users) {
+            if(user.getUserName().equals(name)) return user;
+        }
+        return null;
+    }
+
     public boolean userExists(String name) {
         for(User user : users) {
             if(user.getUserName().equals(name)) {

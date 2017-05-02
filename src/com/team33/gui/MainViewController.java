@@ -92,6 +92,10 @@ public class MainViewController implements Controller {
     }
 
     void setScene(final String scene, final String sceneName) {
+        if(scene.equals(MainApp.DASHBOARD)) {
+            clearButtons();
+            setButtonSelected(homeButton);
+        }
         contentLabel.setText(sceneName);
         if(gridPane.getChildren().size() > 3)
             gridPane.getChildren().remove(3);

@@ -1,11 +1,18 @@
 package com.team33.model;
 
+import com.team33.model.accounts.AuthenticationType;
+import com.team33.model.accounts.User;
+import com.team33.model.accounts.UserWrapper;
 import com.team33.model.csv.students.*;
 import com.team33.model.csv.students.courses.Course;
 import com.team33.model.csv.students.courses.CoursesStore;
 import com.team33.model.csv.students.courses.UnExistingOptionException;
 
 import java.io.IOException;
+import java.io.ObjectOutputStream;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.ArrayList;
 
 public class Test {
@@ -139,8 +146,18 @@ public class Test {
         coursesStore.saveChanges();
         System.out.println(coursesStore.getCycleSuperieur().getCS2().getSemestre1("SIT"));*/
 
+        User user = new User("AdelK", "qwerty", AuthenticationType.ADMIN);
+        User user2 = new User("AmineG", "azerty", AuthenticationType.USER);
+
+        /*UserWrapper userWrapper = new UserWrapper();
+        userWrapper.addUser(user);
+        userWrapper.addUser(user2);
+        ObjectOutputStream oos = new ObjectOutputStream(Files.newOutputStream(Paths.get("users.dat")));
+        oos.writeObject(userWrapper);
+        oos.close();*/
+
         CoursesStore coursesStore = new CoursesStore();
-        coursesStore.initialize();
+        //coursesStore.initialize();
         coursesStore.load();
         System.out.println("CYCLE PREPARATOIRE");
         System.out.println("\t>1CP");

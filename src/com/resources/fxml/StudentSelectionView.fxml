@@ -9,7 +9,6 @@
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.VBox?>
 
-
 <AnchorPane xmlns="http://javafx.com/javafx/8.0.111" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.team33.gui.StudentSelectionController">
    <children>
       <VBox id="dash-container" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" stylesheets="@style.css" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
@@ -29,7 +28,7 @@
                   <Label layoutX="30.0" layoutY="14.0" prefHeight="30.0" prefWidth="222.0" text="VEUILLEZ CHOISIR LES NIVEAUX" AnchorPane.leftAnchor="30.0" AnchorPane.topAnchor="14.0" />
                   <JFXListView id="level-list" fx:id="levelList" layoutX="31.0" layoutY="44.0" prefHeight="264.0" prefWidth="540.0" AnchorPane.bottomAnchor="69.0" AnchorPane.leftAnchor="30.0" AnchorPane.rightAnchor="30.0" AnchorPane.topAnchor="55.0" />
                   <JFXButton id="form-button" fx:id="nextButton" layoutX="518.0" layoutY="300.0" onAction="#onNextButtonClick" text="SUIVANT" AnchorPane.bottomAnchor="27.0" AnchorPane.rightAnchor="30.0" />
-                  <JFXButton id="form-button" fx:id="cancelButton" layoutX="447.0" layoutY="300.0" text="ANNULER" AnchorPane.bottomAnchor="27.0" AnchorPane.rightAnchor="101.0" />
+                  <JFXButton id="form-button" fx:id="cancelButton" layoutX="447.0" layoutY="300.0" onAction="#onCancelButton" text="ANNULER" AnchorPane.bottomAnchor="27.0" AnchorPane.rightAnchor="101.0" />
                </children>
             </AnchorPane>
          </children>

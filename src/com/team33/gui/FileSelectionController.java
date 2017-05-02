@@ -128,6 +128,12 @@ public class FileSelectionController implements Controller {
                     "Veuillez choisir un fichier pour tout les niveaux!");
     }
 
+    @FXML
+    void onCancelButton() {
+        levels.clear();
+        mainApp.getMainViewController().setScene(MainApp.DASHBOARD, MainApp.DASHBOARD_NAME);
+    }
+
     @Override
     public void setMainApp(MainApp mainApp) {
         this.mainApp = mainApp;

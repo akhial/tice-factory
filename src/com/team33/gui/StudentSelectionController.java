@@ -50,6 +50,11 @@ public class StudentSelectionController implements Controller {
                     "Veuillez sélectionner au moins un fichier!");
     }
 
+    @FXML
+    private void onCancelButton() {
+        mainApp.getMainViewController().setScene(MainApp.DASHBOARD, MainApp.DASHBOARD_NAME);
+    }
+
     public void setMainApp(MainApp mainApp) {
         this.mainApp = mainApp;
     }

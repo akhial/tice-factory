@@ -55,9 +55,9 @@ public class MainApp extends Application {
         JFXDecorator decorator = new JFXDecorator(primaryStage, login);
 
         primaryStage.setTitle("TICE Factory");
-        primaryStage.setScene(new Scene(decorator, 950, 650));
-        primaryStage.setMinWidth(950);
-        primaryStage.setMinHeight(650);
+        primaryStage.setScene(new Scene(decorator, 600, 400));
+        primaryStage.setMinWidth(600);
+        primaryStage.setMinHeight(400);
         primary = primaryStage;
         primaryStage.show();
     }

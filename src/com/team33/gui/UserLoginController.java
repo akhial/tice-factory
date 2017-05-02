@@ -1,10 +1,20 @@
 package com.team33.gui;
 
 import com.jfoenix.controls.JFXButton;
+import com.jfoenix.controls.JFXDialog;
 import com.jfoenix.controls.JFXPasswordField;
 import com.jfoenix.controls.JFXTextField;
 import com.team33.model.accounts.AuthenticationType;
+import com.team33.model.accounts.UserWrapper;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.layout.Region;
+import javafx.scene.layout.StackPane;
+
+import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 
 public class UserLoginController implements Controller {
 
@@ -23,6 +33,9 @@ public class UserLoginController implements Controller {
     private JFXButton signupButton;
 
     @FXML
+    private StackPane rootStackPane;
+
+    @FXML
     private void initialize() {
 
     }
@@ -32,10 +45,30 @@ public class UserLoginController implements Controller {
         String username = userField.getText();
         String password = passField.getText();
 
-        if(username.equals("root") && password.equals("sudo")) {
-            mainApp.login("root", AuthenticationType.ADMIN);
+        try {
+            ObjectInputStream ois = new ObjectInputStream(Files.newInputStream(Paths.get("users.dat")));
+            UserWrapper userWrapper = (UserWrapper) ois.readObject();
+            if(userWrapper.checkAuthentication(username, password)) {
+                mainApp.login(username, userWrapper.getUser(username).getAuthenticationType());
+            } else {
+                JFXDialog dialog = new JFXDialog();
+                FXMLLoader loader = new FXMLLoader();
+                loader.setLocation(getClass().getResource("/fxml/ConfirmationDialogBox.fxml"));
+                Region region = null;
+                try {
+                    region = loader.load();
+                } catch(IOException e) {
+                    e.printStackTrace();
+                }
+                ((ConfirmationDialogBoxController) loader.getController()).setDialog("Erreur",
+                        "Nom d'utilisateur ou mot de passe incorrect!");
+                ((ConfirmationDialogBoxController) loader.getController()).setDialog(dialog);
+                dialog.setContent(region);
+                dialog.show(rootStackPane);
+            }
+        } catch(IOException | ClassNotFoundException e) {
+            e.printStackTrace();
         }
-        // TODO authenticate here
     }
 
     @FXML

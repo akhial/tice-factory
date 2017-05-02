@@ -146,7 +146,7 @@ public class TeacherSelectionController implements Controller {
 
     @FXML
     private void onCancelButton() {
-
+        mainApp.getMainViewController().setScene(MainApp.DASHBOARD, MainApp.DASHBOARD_NAME);
     }
 
     void setFinalMails(HashMap<String, String> finalMails) {
