@@ -27,6 +27,10 @@ public class AssigningTeacherToCourseFormat extends UserFormat implements CSVFor
     public AssigningTeacherToCourseFormat() {
         unHandledEmails = new HashMap<>();
     }
+
+    /**
+     * Génére la première ligne du fichier temporaire (i.e. *.xlsx)
+     * **/
     public void generateHeaderInTempFile(XSSFWorkbook workbook,int maxColumn) {
         Row row = workbook.getSheetAt(0).getRow(0);
         int j = 1;
@@ -39,6 +43,10 @@ public class AssigningTeacherToCourseFormat extends UserFormat implements CSVFor
             j++;
         }
     }
+    /**
+     * Cette méthde permet l'ajout du nom du cour avec le role dans ce cour à partir de la chine info
+     * qui représente la valeur d'une cellule du fichier des charges
+     * **/
     private void AddInformation(ArrayList<String> arrayList,String info,boolean isCourse){
         if (!(info == null||info.isEmpty()) ){
             if (isCourse){
@@ -58,6 +66,9 @@ public class AssigningTeacherToCourseFormat extends UserFormat implements CSVFor
         }
 
     }
+    /**
+     * Permet d'obtenir tous les cours d'un enseignants donné avec son rôle dans ces cours-là
+     * **/
     private void getAssignedCourses(Row row, int firstCourse, int CourseColumn, ArrayList<String> arrayList){
         String info = row.getCell(CourseColumn).toString();
         boolean isCourse = false;
@@ -71,6 +82,9 @@ public class AssigningTeacherToCourseFormat extends UserFormat implements CSVFor
        }
         else AddInformation(arrayList,info,isCourse);
     }
+    /**
+     * génére une ligne (i.e. les infos d'un enseignants ) dans le fichier de sortie
+     * **/
     public void generateRow(int numRow,int index ,ArrayList<String> arrayList)
     {
         Row rw = getWorkbookOut().getSheetAt(0).getRow(numRow);
@@ -78,6 +92,11 @@ public class AssigningTeacherToCourseFormat extends UserFormat implements CSVFor
             rw.createCell(j).setCellValue(arrayList.get(j-index));
         }
     }
+
+    /***
+     *Cette méthode crée un fichier (*.xlsx) qui sera converti après en csv pour l'affectation des  enseignants aux espaces cours associés
+     * elle accepte en entrée le fichier des charges + le fichier des e-mails
+     * **/
     @Override
     public String buildCSV(ArrayList<String> workbooksPaths) throws IOException, InvalidFormatException {
         String workbookPath = workbooksPaths.get(0);
@@ -116,6 +135,10 @@ public class AssigningTeacherToCourseFormat extends UserFormat implements CSVFor
         new File(tempFile).delete();
         return file.getPath() ;
     }
+    /**
+     *  Cette méthode est utilisée pour ajouter les informations manquantes dans le fichier initiale
+     *  à cause de l'ambiguîté ou d'inexistance des e-mails
+     * */
     public void AddingMissingEmails(HashMap<String,String> finalEmails) throws IOException, InvalidFormatException {
         FileInputStream file = new FileInputStream(tempName);
         this.setWorkbookOut(new XSSFWorkbook(file));
