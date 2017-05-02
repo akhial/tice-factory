@@ -81,7 +81,7 @@ public class DashboardViewController implements Controller {
     private void onResetButton() {
         RecentFileHandler.clear();
         fileLists.getItems().clear();
-        noFile.setDisable(false);
+        noFile.setVisible(true);
     }
 
     @Override

@@ -8,7 +8,6 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.layout.Region;
 import javafx.stage.FileChooser;
 
-import javax.mail.MessagingException;
 import java.io.File;
 import java.io.IOException;
 
@@ -33,8 +32,8 @@ public class MailSelectController implements Controller {
     @FXML
     private void onFileButton() {
         FileChooser chooser = new FileChooser();
-        chooser.getExtensionFilters().add(new FileChooser.ExtensionFilter("Fichiers Excel", "*.xlsx"));
-        chooser.setTitle("Séléctionner le fichier scolarité...");
+        chooser.getExtensionFilters().add(new FileChooser.ExtensionFilter("Fichiers CSV", "*.csv"));
+        chooser.setTitle("Séléctionner le fichier qui contient les mails...");
         File result = chooser.showOpenDialog(null);
         if(result != null) {
             fileField.setText(result.getAbsolutePath());
