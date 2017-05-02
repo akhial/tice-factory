@@ -5,6 +5,7 @@ import com.team33.model.Utilities.ToCSV;
 import com.team33.model.csv.students.EmptyCoursesException;
 import org.apache.poi.openxml4j.exceptions.InvalidFormatException;
 
+import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 
@@ -45,6 +46,7 @@ public class CSVBuilder  {
         ToCSV toCSV = new ToCSV();
         try {
             toCSV.convertExcelToCSV(tempPath,destination);
+            new File(tempPath).delete();
         } catch (IOException | InvalidFormatException e) {
             e.printStackTrace();
         }

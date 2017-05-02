@@ -7,6 +7,7 @@ import org.apache.poi.ss.usermodel.Sheet;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 
 import java.io.File;
+import java.io.FileInputStream;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -155,8 +156,8 @@ public class TeacherFormat extends UserFormat {
             if (email != null) arrayList.add( email.substring(0,email.indexOf("@"))) ;
             else  arrayList.add(null) ;
             arrayList.add((this.isGeneratedPassword()) ? generatePassWord(8) : row.getCell(firstNameColumn).toString().toLowerCase());
-            arrayList.add(row.getCell(lastNameColumn).toString().toUpperCase()+" ENS:");
             arrayList.add(row.getCell(firstNameColumn).toString().toUpperCase());
+            arrayList.add("ENS: "+row.getCell(lastNameColumn).toString().toUpperCase());
             arrayList.add(email);
             generateRow(numRow, (ArrayList<String>) arrayList.clone());
             arrayList.clear();
@@ -168,7 +169,8 @@ public class TeacherFormat extends UserFormat {
     }
 
     public void AddingMissingEmails(HashMap<String,String> finalEmails) throws IOException {
-        this.setWorkbookOut(new XSSFWorkbook(tempName));
+        FileInputStream fis = new FileInputStream(tempName);
+        this.setWorkbookOut(new XSSFWorkbook(fis));
         for (HashMap.Entry e:finalEmails.entrySet()) {
             StringTokenizer stringTokenizer = new StringTokenizer((String) e.getKey(),"*");
             String lastName = stringTokenizer.nextToken();
@@ -179,7 +181,7 @@ public class TeacherFormat extends UserFormat {
             int i = 1 ;
             while (!found && i < getWorkbookOut().getSheetAt(0).getLastRowNum()+1){
                 row = getWorkbookOut().getSheetAt(0).getRow(i);
-                if (rowContains(row,firstName.toUpperCase()+" ENS:") && rowContains(row,lastName.toUpperCase())){
+                if (rowContains(row,"ENS: "+lastName.toUpperCase()) && rowContains(row,firstName.toUpperCase())){
                     row.getCell(0).setCellValue(email.substring(0,email.indexOf("@")));
                     row.getCell(4).setCellValue(email);
                     found = true;
@@ -191,9 +193,7 @@ public class TeacherFormat extends UserFormat {
 
             }
         }
-        saveUsersList(new File("TeacherList.xlsx"));
-        new File(tempName).delete();
-        new File("TeacherList.xlsx").renameTo(new File(tempName));
-
+        fis.close();
+        saveUsersList(new File(tempName));
     }
 }

@@ -1,3 +1,5 @@
 C:\Users\Adel\Downloads\logs_20170324-2244.xlsx
 C:\Users\Adel\IdeaProjects\Team-33\2CPIcourses.xlsx
 C:\Users\Adel\IdeaProjects\Team-33\liste email tous les etudiants.xlsx
+C:\Users\Amine\IdeaProjects\FichierDeDonnées\CHARGES_enseignants_Février2017_2016-2017 (1).xlsx
+C:\Users\Amine\IdeaProjects\FichierDeDonnées\Emails enseignants.xlsx
