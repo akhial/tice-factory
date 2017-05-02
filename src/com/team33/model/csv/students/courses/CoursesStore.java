@@ -44,14 +44,11 @@ public class CoursesStore implements Serializable {
             this.cycleSuperieur = coursesStore.cycleSuperieur;
 
         } catch (IOException | ClassNotFoundException e) {
-            System.out.println("Instanciation et création du fichier");
+            // do nothing
         }
     }
 
     public void initialize(){
-        this.getCycleSuperieur().getCS2().ajouterOption("SIQ");
-        this.getCycleSuperieur().getCS2().ajouterOption("SIT");
-        this.getCycleSuperieur().getCS2().ajouterOption("SIL");
         this.getCyclePreparatoire().getCPI1().ajouterCoursSemsetre1("TEO1","Techniques d'expression orale");
         this.getCyclePreparatoire().getCPI1().ajouterCoursSemsetre1("SYS1","Introduction aux Système d'Exploitation 1");
         this.getCyclePreparatoire().getCPI1().ajouterCoursSemsetre1("ALSDS","Algorithmique et Structure de Données Statiques (ALDS)");

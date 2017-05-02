@@ -1,5 +1,6 @@
 package com.team33.gui;
 
+import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.nio.file.Paths;
 import java.util.ArrayList;
@@ -44,5 +45,14 @@ public class RecentFileHandler {
             e.printStackTrace();
         }
         return recents;
+    }
+
+    public static void clear() {
+        try {
+            Formatter formatter = new Formatter("recent.txt");
+            formatter.close();
+        } catch(FileNotFoundException e) {
+            e.printStackTrace();
+        }
     }
 }

@@ -10,6 +10,9 @@ import javafx.scene.chart.XYChart;
 import javafx.scene.control.Label;
 import javafx.scene.layout.AnchorPane;
 
+import java.io.ObjectOutputStream;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 import java.util.TreeSet;
 
 public class BarChartController implements Controller {
@@ -49,6 +52,12 @@ public class BarChartController implements Controller {
             AnchorPane.setBottomAnchor(bc, 30.0);
             AnchorPane.setRightAnchor(bc, 30.0);
             AnchorPane.setLeftAnchor(bc, 30.0);
+
+            ChartData dataWrapper = new ChartData(data);
+
+            ObjectOutputStream oos = new ObjectOutputStream(Files.newOutputStream(Paths.get("chart.dat")));
+            oos.writeObject(dataWrapper);
+            oos.close();
         } catch(Exception e) {
             mainApp.getMainViewController().showConfirmationDialog("Erreur",
                     "Une erreur c'est produite lors de la lecture du fichier temporaire!");

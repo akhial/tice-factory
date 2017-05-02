@@ -1,11 +1,13 @@
 package com.team33.model.statistics;
 
+import java.io.Serializable;
+
 /**
  * Created by dell on 24/04/2017.
  */
-public class BaseData implements Comparable<BaseData>{
-    String date;
-    int occurrence;
+public class BaseData implements Comparable<BaseData>, Serializable {
+    private String date;
+    private int occurrence;
 
     public String getDate() {
         return date;
@@ -15,7 +17,7 @@ public class BaseData implements Comparable<BaseData>{
         return occurrence;
     }
 
-    public BaseData(String date, int occurrence) {
+    BaseData(String date, int occurrence) {
         this.date = date;
         this.occurrence = occurrence;
     }
@@ -40,12 +42,14 @@ public class BaseData implements Comparable<BaseData>{
 
     @Override
     public int compareTo(BaseData o) {
-        if(this.equals(o)){
-        return 0;
-    }else{
+        if(this.equals(o)) {
+            return 0;
+         } else {
             try {
                 return StatisticsGenerator.compareDate(date, o.date);
-            }catch (Exception e){}
+            } catch (Exception e) {
+                // do nothing
+            }
             return 0;
         }
     }

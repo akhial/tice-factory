@@ -26,7 +26,7 @@
                         <Insets bottom="60.0" left="20.0" />
                      </HBox.margin>
                   </JFXTextField>
-                  <JFXButton id="file-button" contentDisplay="RIGHT" onAction="#onFileSelect" prefHeight="36.0" prefWidth="32.0" text=" " />
+                  <JFXButton id="file-button" fx:id="fileButton" contentDisplay="RIGHT" onAction="#onFileSelect" prefHeight="36.0" prefWidth="32.0" />
                </children>
             </HBox>
             <HBox alignment="TOP_CENTER" prefHeight="67.0" prefWidth="600.0" spacing="20.0">

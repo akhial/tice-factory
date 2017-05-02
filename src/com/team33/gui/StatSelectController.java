@@ -39,11 +39,16 @@ public class StatSelectController implements Controller {
     private JFXTextField fileField;
 
     @FXML
+    private JFXButton fileButton;
+
+    @FXML
     private void initialize() {
         applyButton.setDisable(true);
         criteria.setDisable(true);
         criteriaLabel.setDisable(true);
         fileField.setEditable(false);
+
+        fileButton.setText("");
 
         start.setOnAction(e -> checkConditions());
         end.setOnAction(e -> checkConditions());
@@ -96,6 +101,8 @@ public class StatSelectController implements Controller {
                 Task<Void> task = new Task<Void>() {
                     @Override
                     protected Void call() throws Exception {
+                        fileButton.setDisable(true);
+
                         StatisticsGenerator.trierFichierExcel(fileField.getText(), "temp.xlsx", 5);
                         RecentFileHandler.writeFile(fileField.getText());
                         StatisticsGenerator.selectDates(startDate, endDate, "temp.xlsx", "temp.xlsx");

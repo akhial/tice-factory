@@ -140,6 +140,7 @@ public class Test {
         System.out.println(coursesStore.getCycleSuperieur().getCS2().getSemestre1("SIT"));*/
 
         CoursesStore coursesStore = new CoursesStore();
+        coursesStore.initialize();
         coursesStore.load();
         System.out.println("CYCLE PREPARATOIRE");
         System.out.println("\t>1CP");

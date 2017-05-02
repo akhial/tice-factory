@@ -23,6 +23,7 @@ public class MainViewController implements Controller {
 
     private MainApp mainApp;
     private JFXDialog loadingDialog;
+    private boolean dialogShown = false;
 
     @FXML
     private StackPane rootStackPane;
@@ -136,28 +137,30 @@ public class MainViewController implements Controller {
 
     @FXML
     private void onMainButtonClick(Event e) {
-        clearButtons();
-        setButtonSelected((JFXButton) e.getSource());
+        if(!dialogShown) {
+            clearButtons();
+            setButtonSelected((JFXButton) e.getSource());
 
-        if(e.getSource() == homeButton) {
-            mainApp.cancel();
-            setScene(MainApp.DASHBOARD, MainApp.DASHBOARD_NAME);
-            ((DashboardViewController) mainApp.getCurrentController()).initialize();
-        } else if(e.getSource() == convertButton) {
-            mainApp.cancel();
-            setScene(MainApp.TYPE_SELECT, MainApp.CONVERT_NAME);
-        } else if(e.getSource() == mailButton) {
-            mainApp.cancel();
-            setScene(MainApp.EMAIL_LOGIN, MainApp.MAIL_NAME);
-        } else if(e.getSource() == statButton) {
-            mainApp.cancel();
-            mainApp.getMainViewController().setScene(MainApp.STAT_SELECT, MainApp.STAT_NAME);
-        } else if(e.getSource() == duplicatesButton) {
-            mainApp.cancel();
-            setScene(MainApp.DUPLICATES, MainApp.DUPLICATE_NAME);
-        } else if(e.getSource() == lessonsButton) {
-            mainApp.cancel();
-            setScene(MainApp.COURSE_EDIT, MainApp.COURSE_NAME);
+            if(e.getSource() == homeButton) {
+                mainApp.cancel();
+                setScene(MainApp.DASHBOARD, MainApp.DASHBOARD_NAME);
+                ((DashboardViewController) mainApp.getCurrentController()).initialize();
+            } else if(e.getSource() == convertButton) {
+                mainApp.cancel();
+                setScene(MainApp.TYPE_SELECT, MainApp.CONVERT_NAME);
+            } else if(e.getSource() == mailButton) {
+                mainApp.cancel();
+                setScene(MainApp.EMAIL_LOGIN, MainApp.MAIL_NAME);
+            } else if(e.getSource() == statButton) {
+                mainApp.cancel();
+                mainApp.getMainViewController().setScene(MainApp.STAT_SELECT, MainApp.STAT_NAME);
+            } else if(e.getSource() == duplicatesButton) {
+                mainApp.cancel();
+                setScene(MainApp.DUPLICATES, MainApp.DUPLICATE_NAME);
+            } else if(e.getSource() == lessonsButton) {
+                mainApp.cancel();
+                setScene(MainApp.COURSE_EDIT, MainApp.COURSE_NAME);
+            }
         }
     }
 
@@ -199,10 +202,12 @@ public class MainViewController implements Controller {
         dialog.setContent(region);
         dialog.setDisable(true);
         dialog.show(rootStackPane);
+        dialogShown = true;
     }
 
     void hideLoadingDialog() {
         loadingDialog.close();
+        dialogShown = false;
     }
 
     void showLongConfirmationDialog(final String title, final String message, DuplicateCheckController controller) {
