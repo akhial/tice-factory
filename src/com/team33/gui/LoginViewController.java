@@ -13,34 +13,38 @@ public class LoginViewController implements Controller {
     private JFXTextField userField;
 
     @FXML
-    private JFXPasswordField passwordField;
+    private JFXTextField apiField;
+
+    @FXML
+    private JFXTextField secretField;
 
     @FXML
     private void checkConnection() {
         String username = userField.getText();
         if(username.isEmpty()) {
             mainApp.getMainViewController().showConfirmationDialog("Erreur",
-                    "Le champ utilisateur ne doit pas être vide!");
+                    "Le champ expéditeur ne doit pas être vide!");
             return;
         }
-        String password = passwordField.getText();
-        if(password.isEmpty()) {
+        String apiKey = apiField.getText();
+        if(apiKey.isEmpty()) {
             mainApp.getMainViewController().showConfirmationDialog("Erreur",
-                    "Le champ mot de passe ne doit pas être vide!");
+                    "Le champ API-Key ne doit pas être vide!");
             return;
         }
-        try {
-            EmailSender.testLogin(username, password);
-        } catch(Exception e) {
-            mainApp.getMainViewController().hideLoadingDialog();
+        String secretKey = secretField.getText();
+        if(secretKey.isEmpty()) {
             mainApp.getMainViewController().showConfirmationDialog("Erreur",
-                    e.getMessage());
+                    "Le champ Secret-Key ne doit pas être vide!");
             return;
         }
         mainApp.getMainViewController().hideLoadingDialog();
-        mainApp.getMainViewController().setScene(MainApp.MAIL_TYPE_SELECT, MainApp.MAIL_NAME);
-        ((EmailTypeController) mainApp.getCurrentController()).setUsername(username);
-        ((EmailTypeController) mainApp.getCurrentController()).setPassword(password);
+
+        ((MailSelectController) mainApp.getCurrentController()).setUsername(username);
+        ((MailSelectController) mainApp.getCurrentController()).setApiKey(apiKey);
+        ((MailSelectController) mainApp.getCurrentController()).setSecretKey(secretKey);
+
+        ((MailSelectController) mainApp.getCurrentController()).continueSend();
     }
 
     @Override

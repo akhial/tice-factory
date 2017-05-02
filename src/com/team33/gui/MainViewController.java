@@ -150,7 +150,7 @@ public class MainViewController implements Controller {
                 setScene(MainApp.TYPE_SELECT, MainApp.CONVERT_NAME);
             } else if(e.getSource() == mailButton) {
                 mainApp.cancel();
-                setScene(MainApp.EMAIL_LOGIN, MainApp.MAIL_NAME);
+                setScene(MainApp.MAIL_TYPE_SELECT, MainApp.MAIL_NAME);
             } else if(e.getSource() == statButton) {
                 mainApp.cancel();
                 mainApp.getMainViewController().setScene(MainApp.STAT_SELECT, MainApp.STAT_NAME);
@@ -167,6 +167,7 @@ public class MainViewController implements Controller {
     JFXDialog showDialog(Region content) {
         JFXDialog dialog = new JFXDialog();
         dialog.setContent(content);
+        loadingDialog = dialog;
         dialog.show(rootStackPane);
         return dialog;
     }

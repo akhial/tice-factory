@@ -209,6 +209,13 @@
 #green-confirm-button {
   -fx-graphic: url("../img/check.png");
 }
+#green-light-confirm-button {
+  -fx-graphic: url("../img/check.png");
+  -fx-text-fill: black;
+}
+#dark-field {
+  -fx-text-fill: black;
+}
 
 /* Textfield and cbox styles */
 

@@ -4,6 +4,8 @@ import com.jfoenix.controls.JFXTextArea;
 import com.jfoenix.controls.JFXTextField;
 import com.team33.model.Emails.EmailSender;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.layout.Region;
 import javafx.stage.FileChooser;
 
 import javax.mail.MessagingException;
@@ -24,8 +26,9 @@ public class MailSelectController implements Controller {
     private JFXTextArea message;
 
     private boolean unique;
-    private String username;
-    private String password;
+    private String username = "";
+    private String apiKey = "";
+    private String secretKey = "";
 
     @FXML
     private void onFileButton() {
@@ -43,6 +46,10 @@ public class MailSelectController implements Controller {
 
     @FXML
     private void onSendButton() {
+        if(fileField.getText().isEmpty()) {
+            mainApp.getMainViewController().showConfirmationDialog("Erreur",
+                    "Veuillez choisir un fichier!");
+        }
         if(subject.getText().isEmpty()) {
             mainApp.getMainViewController().showConfirmationDialog("Erreur",
                     "Sujet ne doit pas être vide!");
@@ -51,34 +58,51 @@ public class MailSelectController implements Controller {
                     "Message ne doit pas être vide!");
         } else {
             try {
-                if(unique) {
-                    EmailSender.SendEmails(username, password, subject.getText(), message.getText(), fileField.getText(), true);
-                } else {
-                    EmailSender.SendEmails(username, password, subject.getText(), message.getText(), fileField.getText());
-                }
+                FXMLLoader loader = new FXMLLoader();
+                loader.setLocation(getClass().getResource(MainApp.EMAIL_LOGIN));
+                Region region = loader.load();
+
+                ((LoginViewController) loader.getController()).setMainApp(mainApp);
+                mainApp.getMainViewController().showDialog(region);
             } catch(IOException e) {
-                mainApp.getMainViewController().showConfirmationDialog("Erreur",
-                        "Erreur pendant lecture du fichier!");
-            } catch(MessagingException e1) {
-                mainApp.getMainViewController().showConfirmationDialog("Erreur de messagerie",
-                        e1.getMessage());
-            } catch(Exception e) {
-                mainApp.getMainViewController().showConfirmationDialog("Erreur",
-                        e.getMessage());
+                // not gonna happen
             }
         }
     }
 
-    public void setUnique(boolean unique) {
-        this.unique = unique;
+    void continueSend() {
+        if(username.isEmpty() || apiKey.isEmpty() || secretKey.isEmpty()) {
+            return;
+        }
+        try {
+            if(unique) {
+                EmailSender.SendEmails(username, apiKey, secretKey, subject.getText(), message.getText(), fileField.getText(), true);
+            } else {
+                EmailSender.SendEmails(username, apiKey, secretKey, subject.getText(), message.getText(), fileField.getText());
+            }
+        } catch(IOException e) {
+            mainApp.getMainViewController().showConfirmationDialog("Erreur",
+                    "Erreur pendant lecture du fichier!");
+        } catch(Exception e) {
+            mainApp.getMainViewController().showConfirmationDialog("Erreur",
+                    e.getMessage());
+        }
     }
 
-    public void setUsername(String username) {
+    void setUsername(String username) {
         this.username = username;
     }
 
-    public void setPassword(String password) {
-        this.password = password;
+    void setApiKey(String apiKey) {
+        this.apiKey = apiKey;
+    }
+
+    void setSecretKey(String secretKey) {
+        this.secretKey = secretKey;
+    }
+
+    void setUnique(boolean unique) {
+        this.unique = unique;
     }
 
     @Override
