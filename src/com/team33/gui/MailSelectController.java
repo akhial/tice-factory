@@ -79,6 +79,9 @@ public class MailSelectController implements Controller {
             } else {
                 EmailSender.SendEmails(username, apiKey, secretKey, subject.getText(), message.getText(), fileField.getText());
             }
+            mainApp.getMainViewController().setScene(MainApp.DASHBOARD, MainApp.DASHBOARD_NAME);
+            mainApp.getMainViewController().showConfirmationDialog("Succés",
+                    "Le mail à été envoyé avec succés!");
         } catch(IOException e) {
             mainApp.getMainViewController().showConfirmationDialog("Erreur",
                     "Erreur pendant lecture du fichier!");
