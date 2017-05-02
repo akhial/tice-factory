@@ -246,7 +246,25 @@
 .chart-horizontal-zero-line  {
     -fx-stroke: transparent;
 }
-
 .axis-label {
   -fx-text-fill: white;
+}
+.chart-bar {
+    -fx-bar-fill: #26A696;
+    -fx-background-color: linear (0%,0%) to (0%,100%)
+        stops (0%, derive(-fx-bar-fill,-30%))
+        (100%, derive(-fx-bar-fill,-40%)),
+        linear (0%,0%) to (0%,100%)
+        stops (0%, derive(-fx-bar-fill,80%))
+        (100%, derive(-fx-bar-fill, 0%)),
+        linear (0%,0%) to (0%,100%)
+        stops (0%, derive(-fx-bar-fill,30%))
+        (100%, derive(-fx-bar-fill,-10%));
+    -fx-background-insets: 0,1,2;
+    -fx-background-radius: 5 5 0 0, 4 4 0 0, 3 3 0 0;
+}
+.axis {
+    -fx-font-size: 1.4em;
+    -fx-tick-label-fill: white;
+    -fx-font-family: "Open Sans Semibold";
 }

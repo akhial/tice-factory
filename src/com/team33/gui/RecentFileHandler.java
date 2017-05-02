@@ -26,7 +26,6 @@ public class RecentFileHandler {
             Formatter formatter = new Formatter("recent.txt");
             formatter.format("%s%s", old.toString(), filePath);
             formatter.close();
-            // TODO check if works
         } catch(IOException e) {
             e.printStackTrace();
         }

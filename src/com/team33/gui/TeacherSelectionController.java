@@ -75,8 +75,6 @@ public class TeacherSelectionController implements Controller {
         }
     }
 
-    // TODO add file selection view like Hamza, choose auto password or name
-
     @FXML
     private void onNextButton() {
         if(!emailSelected) mainApp.getMainViewController().showConfirmationDialog("Erreur",

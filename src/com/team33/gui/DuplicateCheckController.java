@@ -39,6 +39,7 @@ public class DuplicateCheckController implements Controller {
 
     @FXML
     private void onCheckButton() {
+        // TODO run in separate thread
         if(fileChosen) {
             if(!(typeBox.getSelectionModel().getSelectedIndex() == -1)) {
                 String fileName = fileField.getText();
