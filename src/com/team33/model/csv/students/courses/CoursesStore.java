@@ -37,15 +37,17 @@ public class CoursesStore implements Serializable {
     }
 
     public void load(){
+        CoursesStore coursesStore;
         try {
             ObjectInputStream ois = new ObjectInputStream(new BufferedInputStream(new FileInputStream("courses")));
-            CoursesStore coursesStore = (CoursesStore) ois.readObject();
-            this.cyclePreparatoire = coursesStore.cyclePreparatoire;
-            this.cycleSuperieur = coursesStore.cycleSuperieur;
-
+            coursesStore = (CoursesStore) ois.readObject();
         } catch (IOException | ClassNotFoundException e) {
             System.out.println("Instanciation et création du fichier");
+            coursesStore = new CoursesStore();
         }
+        this.cyclePreparatoire = coursesStore.getCyclePreparatoire();
+        this.cycleSuperieur = coursesStore.getCycleSuperieur();
+        this.saveChanges();
     }
 
     public void initialize(){
