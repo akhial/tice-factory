@@ -246,3 +246,7 @@
 .chart-horizontal-zero-line  {
     -fx-stroke: transparent;
 }
+
+.axis-label {
+  -fx-text-fill: white;
+}

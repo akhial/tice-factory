@@ -47,6 +47,7 @@ public class BarChartController implements Controller {
             }
             bc.getData().add(series);
             bc.setId("b-chart");
+            bc.setLegendVisible(false);
             box.getChildren().add(bc);
             AnchorPane.setTopAnchor(bc, 30.0);
             AnchorPane.setBottomAnchor(bc, 30.0);

@@ -65,6 +65,7 @@ public class DashboardViewController implements Controller {
             }
             bc.getData().add(series);
             bc.setId("b-chart");
+            bc.setLegendVisible(false);
             container.getChildren().remove(container.getChildren().size()-1);
             container.getChildren().add(bc);
             AnchorPane.setTopAnchor(bc, 30.0);
