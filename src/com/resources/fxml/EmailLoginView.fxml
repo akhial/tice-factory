@@ -13,7 +13,7 @@
          <children>
             <VBox alignment="CENTER" prefHeight="200.0" prefWidth="100.0" spacing="10.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
                <children>
-                  <Label id="black-thin-label" text="NOM DE L'EXPÉDITEUR" />
+                  <Label id="black-thin-label" text="EMAIL L'EXPÉDITEUR" />
                   <JFXTextField id="dark-field" fx:id="userField">
                      <VBox.margin>
                         <Insets left="150.0" right="150.0" />
