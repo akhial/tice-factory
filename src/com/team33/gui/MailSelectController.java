@@ -33,7 +33,7 @@ public class MailSelectController implements Controller {
     @FXML
     private void onFileButton() {
         FileChooser chooser = new FileChooser();
-        chooser.getExtensionFilters().add(new FileChooser.ExtensionFilter("Fichiers Excel", "*.xlsx"));
+        chooser.getExtensionFilters().add(new FileChooser.ExtensionFilter("Fichiers CSV", "*.csv"));
         chooser.setTitle("Séléctionner le fichier scolarité...");
         File result = chooser.showOpenDialog(null);
         if(result != null) {
