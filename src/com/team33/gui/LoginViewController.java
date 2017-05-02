@@ -1,8 +1,6 @@
 package com.team33.gui;
 
-import com.jfoenix.controls.JFXPasswordField;
 import com.jfoenix.controls.JFXTextField;
-import com.team33.model.Emails.EmailSender;
 import javafx.fxml.FXML;
 
 public class LoginViewController implements Controller {
