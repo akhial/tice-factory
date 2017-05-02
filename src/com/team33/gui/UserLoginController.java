@@ -15,10 +15,12 @@ import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.nio.file.Files;
 import java.nio.file.Paths;
+import java.util.ArrayList;
 
 public class UserLoginController implements Controller {
 
     private MainApp mainApp;
+    private ArrayList<JFXDialog> dialogs = new ArrayList<>();
 
     @FXML
     private JFXTextField userField;
@@ -73,7 +75,51 @@ public class UserLoginController implements Controller {
 
     @FXML
     private void onSignupButton() {
+        JFXDialog dialog = new JFXDialog();
+        dialogs.add(dialog);
+        FXMLLoader loader = new FXMLLoader();
+        loader.setLocation(getClass().getResource("/fxml/UserCreationView.fxml"));
+        Region region = null;
+        try {
+            region = loader.load();
+        } catch(IOException e) {
+            e.printStackTrace();
+        }
+        ((UserCreationController) loader.getController()).setUserLoginController(this);
+        dialog.setContent(region);
+        dialog.show(rootStackPane);
+    }
 
+    public void showSuccessDialog() {
+        JFXDialog dialog = new JFXDialog();
+        FXMLLoader loader = new FXMLLoader();
+        loader.setLocation(getClass().getResource("/fxml/ConfirmationDialogBox.fxml"));
+        Region region = null;
+        try {
+            region = loader.load();
+        } catch(IOException e) {
+            e.printStackTrace();
+        }
+        ((ConfirmationDialogBoxController) loader.getController()).setDialog("Succés",
+                "Utilisateur créé avec succés!");
+        ((ConfirmationDialogBoxController) loader.getController()).setDialog(dialog);
+        dialog.setContent(region);
+        dialog.show(rootStackPane);
+    }
+
+    public void hideAll() {
+        for(JFXDialog d : dialogs) {
+            d.close();
+        }
+    }
+
+    public void addDialog(JFXDialog dialog) {
+        dialogs.add(dialog);
+    }
+
+
+    public StackPane getRootStackPane() {
+        return rootStackPane;
     }
 
     @Override

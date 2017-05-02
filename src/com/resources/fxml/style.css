@@ -193,6 +193,9 @@
 #level-list .list-cell:selected {
   -fx-background-color: #26A696;
 }
+#user-radio {
+  -fx-text-fill: black;
+}
 
 /* More button styles */
 

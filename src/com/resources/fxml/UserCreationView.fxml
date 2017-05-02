@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import com.jfoenix.controls.JFXButton?>
+<?import com.jfoenix.controls.JFXPasswordField?>
+<?import com.jfoenix.controls.JFXRadioButton?>
+<?import com.jfoenix.controls.JFXTextField?>
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.layout.VBox?>
+
+
+<VBox alignment="CENTER" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" stylesheets="@style.css" xmlns="http://javafx.com/javafx/8.0.111" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.team33.gui.UserCreationController">
+   <children>
+      <Label id="black-thin-label" text="NOM D'UTILISATEUR">
+         <VBox.margin>
+            <Insets bottom="10.0" />
+         </VBox.margin>
+      </Label>
+      <JFXTextField id="dark-field" fx:id="userField">
+         <VBox.margin>
+            <Insets bottom="20.0" left="100.0" right="100.0" />
+         </VBox.margin>
+      </JFXTextField>
+      <Label id="black-thin-label" text="MOT DE PASSE">
+         <VBox.margin>
+            <Insets bottom="10.0" />
+         </VBox.margin>
+      </Label>
+      <JFXPasswordField id="dark-field" fx:id="passField">
+         <VBox.margin>
+            <Insets bottom="20.0" left="100.0" right="100.0" />
+         </VBox.margin>
+      </JFXPasswordField>
+      <Label id="black-thin-label" text="CONFIRMER LE MOT DE PASSE">
+         <VBox.margin>
+            <Insets bottom="10.0" />
+         </VBox.margin>
+      </Label>
+      <JFXPasswordField id="dark-field" fx:id="confirmField">
+         <VBox.margin>
+            <Insets bottom="40.0" left="100.0" right="100.0" />
+         </VBox.margin>
+      </JFXPasswordField>
+      <JFXRadioButton id="user-radio" fx:id="adminButton" prefHeight="17.0" prefWidth="170.0" text="ADMINISTRATEUR">
+         <VBox.margin>
+            <Insets bottom="10.0" />
+         </VBox.margin>
+      </JFXRadioButton>
+      <JFXRadioButton id="user-radio" fx:id="userButton" prefHeight="17.0" prefWidth="170.0" text="UTILISATEUR SIMPLE">
+         <VBox.margin>
+            <Insets bottom="40.0" />
+         </VBox.margin>
+      </JFXRadioButton>
+      <JFXButton id="green-button" onAction="#onConfirmButton" text="CONFIRMER" />
+   </children>
+</VBox>

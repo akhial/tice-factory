@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import com.jfoenix.controls.JFXButton?>
+<?import com.jfoenix.controls.JFXPasswordField?>
+<?import com.jfoenix.controls.JFXTextField?>
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.layout.VBox?>
+
+
+<VBox alignment="CENTER" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="258.0" prefWidth="423.0" stylesheets="@style.css" xmlns="http://javafx.com/javafx/8.0.111" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.team33.gui.AdminConfirmationController">
+   <children>
+      <Label id="black-thin-label" text="VEUILLEZ CONFIRMER L'ACCÉS ADMINISTRATEUR">
+         <VBox.margin>
+            <Insets bottom="20.0" />
+         </VBox.margin>
+      </Label>
+      <Label id="black-thin-label" text="NOM D'UTILISATEUR">
+         <VBox.margin>
+            <Insets bottom="10.0" />
+         </VBox.margin>
+      </Label>
+      <JFXTextField id="dark-field" fx:id="userField">
+         <VBox.margin>
+            <Insets bottom="20.0" left="70.0" right="70.0" />
+         </VBox.margin>
+      </JFXTextField>
+      <Label id="black-thin-label" text="MOT DE PASSE">
+         <VBox.margin>
+            <Insets bottom="10.0" />
+         </VBox.margin>
+      </Label>
+      <JFXPasswordField id="dark-field" fx:id="passField">
+         <VBox.margin>
+            <Insets bottom="20.0" left="70.0" right="70.0" />
+         </VBox.margin>
+      </JFXPasswordField>
+      <JFXButton id="green-button" onAction="#onConfirmButton" text="CONFIRMER" />
+   </children>
+</VBox>
