@@ -13,12 +13,16 @@ import javafx.stage.FileChooser;
 
 import java.io.File;
 import java.time.LocalDate;
+import java.util.StringTokenizer;
 import java.util.TreeSet;
 import java.util.concurrent.FutureTask;
 
 public class StatSelectController implements Controller {
 
     private MainApp mainApp;
+    private boolean initialized = false;
+    private LocalDate min;
+    private LocalDate max;
 
     @FXML
     private JFXDatePicker start;
@@ -66,12 +70,47 @@ public class StatSelectController implements Controller {
     }
 
     private void checkConditions() {
+        if(!initialized) {
+            try {
+                String minDate = StatisticsGenerator.dateFormat(StatisticsGenerator.getMindate(fileField.getText()), 1);
+                String maxDate = StatisticsGenerator.dateFormat(StatisticsGenerator.getMaxdate(fileField.getText()), 1);
+
+                StringTokenizer tokenizer = new StringTokenizer(minDate, "/");
+                int day = Integer.parseInt(tokenizer.nextToken());
+                int month = Integer.parseInt(tokenizer.nextToken());
+                int year = Integer.parseInt(tokenizer.nextToken());
+
+                min = LocalDate.of(year + 2000, month, day);
+
+                tokenizer = new StringTokenizer(maxDate, "/");
+                day = Integer.parseInt(tokenizer.nextToken());
+                month = Integer.parseInt(tokenizer.nextToken());
+                year = Integer.parseInt(tokenizer.nextToken());
+
+                max = LocalDate.of(year + 2000, month, day);
+            } catch(Exception e) {
+                mainApp.getMainViewController().showConfirmationDialog("Erreur",
+                        "Erreur pendant la lecture du fichier!");
+            }
+            initialized = true;
+            return;
+        }
         if(end.getValue() != null && start.getValue() != null && !fileField.getText().isEmpty()) {
 
             RecentFileHandler.writeFile(fileField.getText());
 
             LocalDate dateStart = start.getValue();
+            if(dateStart.compareTo(max) > 0) {
+                mainApp.getMainViewController().showConfirmationDialog("Alerte",
+                        "Date de début trop grande!");
+                return;
+            }
             LocalDate dateEnd = end.getValue();
+            if(dateEnd.compareTo(min) < 0) {
+                mainApp.getMainViewController().showConfirmationDialog("Alerte",
+                        "Date de fin trop petite!");
+                return;
+            }
             StringBuilder builder = new StringBuilder();
 
             builder.append(dateStart.getDayOfMonth())

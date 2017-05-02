@@ -461,5 +461,21 @@ public class StatisticsGenerator {
         }
         return propositions;
     }
+
+    public static String getMindate(String inputFile) throws Exception{
+        XSSFWorkbook wb = new XSSFWorkbook(new FileInputStream(new File(inputFile)));
+        Sheet sheet = wb.getSheetAt(0);
+        int nbRows = sheet.getLastRowNum();
+        Row rw = sheet.getRow(sheet.getFirstRowNum()+1);
+        return rw.getCell(0).getStringCellValue();
+    }
+
+    public static String getMaxdate(String inputFile) throws Exception{
+        XSSFWorkbook wb = new XSSFWorkbook(new FileInputStream(new File(inputFile)));
+        Sheet sheet = wb.getSheetAt(0);
+        int nbRows = sheet.getLastRowNum();
+        Row rw = sheet.getRow(nbRows);
+        return rw.getCell(0).getStringCellValue();
+    }
 }
 

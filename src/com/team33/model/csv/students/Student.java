@@ -1,5 +1,6 @@
 package com.team33.model.csv.students;
 
+import com.team33.model.csv.TeacherFormat;
 import com.team33.model.csv.students.courses.CoursesStore;
 import org.apache.poi.ss.usermodel.CellType;
 import org.apache.poi.ss.usermodel.Row;
@@ -208,7 +209,8 @@ public class Student implements Serializable{
         tryToSetEmail();
         generateUsename();
         createLastNameInMoodle();
-        this.password = this.firstName;
+        TeacherFormat format = new TeacherFormat();
+        this.password = format.generatePassWord(8);
     }
 
     public void allocateCourses(CoursesStore courseFormat, HashMap<String,ArrayList<String>> optionalModules) //throws  EmptyCoursesException

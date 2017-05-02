@@ -1,11 +1,14 @@
 package com.team33.gui;
 
 import com.jfoenix.controls.JFXDecorator;
+import com.team33.model.accounts.AuthenticationType;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
+
+import java.io.IOException;
 
 public class MainApp extends Application {
 
@@ -33,30 +36,61 @@ public class MainApp extends Application {
     static final String COURSE_EDIT = "/fxml/CourseEditView.fxml";
     static final String COURSE_NAME = "COURS";
     static final String BAR_CHART = "/fxml/BarChartView.fxml";
+    static final String LOGIN_SCREEN = "/fxml/UserLoginView.fxml";
 
     private Controller currentController;
     private MainViewController mainViewController;
     private AggregateHelper aggregateHelper;
+    private Stage primary;
 
     @Override
     public void start(Stage primaryStage) throws Exception {
+
         FXMLLoader loader = new FXMLLoader();
-        loader.setLocation(getClass().getResource(MAIN_APP));
-        Parent root = loader.load();
+        loader.setLocation(getClass().getResource(LOGIN_SCREEN));
+        Parent login = loader.load();
 
-        mainViewController = loader.getController();
-        mainViewController.setMainApp(this);
-        mainViewController.setScene(DASHBOARD, DASHBOARD_NAME);
+        ((Controller) loader.getController()).setMainApp(this);
 
-        currentController = mainViewController;
-
-        JFXDecorator decorator = new JFXDecorator(primaryStage, root);
+        JFXDecorator decorator = new JFXDecorator(primaryStage, login);
 
         primaryStage.setTitle("TICE Factory");
         primaryStage.setScene(new Scene(decorator, 950, 650));
         primaryStage.setMinWidth(950);
         primaryStage.setMinHeight(650);
+        primary = primaryStage;
         primaryStage.show();
+    }
+
+    void login(String name, AuthenticationType authenticationType) {
+        FXMLLoader loader = new FXMLLoader();
+        loader.setLocation(getClass().getResource(MAIN_APP));
+        Parent root = null;
+        try {
+            root = loader.load();
+            mainViewController = loader.getController();
+            mainViewController.setMainApp(this);
+            mainViewController.setScene(DASHBOARD, DASHBOARD_NAME);
+
+            currentController = mainViewController;
+
+            mainViewController.setUsername(name);
+            mainViewController.setTypeLabel(authenticationType);
+
+            if(authenticationType == AuthenticationType.USER) {
+                mainViewController.disableFeatures();
+            }
+
+            primary.close();
+            Stage stage = new Stage();
+            JFXDecorator decorator = new JFXDecorator(stage, root);
+            stage.setScene(new Scene(decorator, 950, 650));
+            stage.setMinWidth(950);
+            stage.setMinHeight(650);
+            stage.show();
+        } catch(IOException e) {
+            e.printStackTrace();
+        }
     }
 
     AggregateHelper getHelper() {

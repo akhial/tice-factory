@@ -43,8 +43,11 @@
   -fx-text-fill: white;
 }
 .scroll-pane {
-  -fx-background: #263238;
+  /* -fx-background: #263238; */
   -fx-background-color: #263238;
+}
+.scroll-pane > .viewport {
+   -fx-background-color: #263238;
 }
 .tree-cell {
   -fx-background-color: #263238;

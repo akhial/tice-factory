@@ -78,12 +78,12 @@
                               </StackPane>
                               <VBox alignment="CENTER_LEFT" prefHeight="200.0" prefWidth="100.0">
                                  <children>
-                                    <Label text="Utilisateur">
+                                    <Label fx:id="userLabel" text="Utilisateur">
                                        <VBox.margin>
                                           <Insets bottom="-2.0" />
                                        </VBox.margin>
                                     </Label>
-                                    <Label id="type-label" text="Administrateur" />
+                                    <Label id="type-label" fx:id="typeLabel" text="Administrateur" />
                                  </children>
                                  <HBox.margin>
                                     <Insets left="11.0" />

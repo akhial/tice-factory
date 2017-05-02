@@ -3,6 +3,7 @@ package com.team33.gui;
 import com.jfoenix.controls.JFXButton;
 import com.jfoenix.controls.JFXDialog;
 import com.jfoenix.controls.JFXHamburger;
+import com.team33.model.accounts.AuthenticationType;
 import javafx.event.Event;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -57,6 +58,12 @@ public class MainViewController implements Controller {
 
     @FXML
     private JFXHamburger hamburger;
+
+    @FXML
+    private Label userLabel;
+
+    @FXML
+    private Label typeLabel;
 
     private boolean small = false;
 
@@ -227,6 +234,28 @@ public class MainViewController implements Controller {
         ((LongDialogController) loader.getController()).setStage(stage);
         ((LongDialogController) loader.getController()).setDuplicateCheckController(controller);
         stage.showAndWait();
+    }
+
+    void setUsername(String name) {
+        userLabel.setText(name);
+    }
+
+    void setTypeLabel(AuthenticationType authenticationType) {
+        switch(authenticationType) {
+            case USER:
+                typeLabel.setText("Utilisateur");
+                break;
+            case ADMIN:
+                typeLabel.setText("Administrateur");
+                break;
+        }
+    }
+
+    void disableFeatures() {
+        convertButton.setDisable(true);
+        mailButton.setDisable(true);
+        duplicatesButton.setDisable(true);
+        lessonsButton.setDisable(true);
     }
 
     @Override
