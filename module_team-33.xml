@@ -1,0 +1,159 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project name="module_team-33" default="compile.module.team-33">
+  <dirname property="module.team-33.basedir" file="${ant.file.module_team-33}"/>
+  
+  <property name="module.jdk.home.team-33" value="${project.jdk.home}"/>
+  <property name="module.jdk.bin.team-33" value="${project.jdk.bin}"/>
+  <property name="module.jdk.classpath.team-33" value="${project.jdk.classpath}"/>
+  
+  <property name="compiler.args.team-33" value="-encoding UTF-8 -source 8 -target 8 ${compiler.args}"/>
+  
+  <property name="team-33.output.dir" value="${module.team-33.basedir}/out/production/Team-33"/>
+  <property name="team-33.testoutput.dir" value="${module.team-33.basedir}/out/test/Team-33"/>
+  
+  <path id="team-33.module.bootclasspath">
+    <!-- Paths to be included in compilation bootclasspath -->
+  </path>
+  
+  <path id="team-33.module.production.classpath">
+    <path refid="${module.jdk.classpath.team-33}"/>
+    <pathelement location="${basedir}/src/lib/activation.jar"/>
+    <pathelement location="${basedir}/src/lib/aspose-cells-17.02.0.jar"/>
+    <pathelement location="${basedir}/src/lib/aspose-gridweb-17.02.0.jar"/>
+    <pathelement location="${basedir}/src/lib/bcprov-jdk16-146.jar"/>
+    <pathelement location="${basedir}/src/lib/commons-codec-1.10.jar"/>
+    <pathelement location="${basedir}/src/lib/commons-collections4-4.1.jar"/>
+    <pathelement location="${basedir}/src/lib/commons-logging-1.2.jar"/>
+    <pathelement location="${basedir}/src/lib/curvesapi-1.04.jar"/>
+    <pathelement location="${basedir}/src/lib/javax.mail.jar"/>
+    <pathelement location="${basedir}/src/lib/junit-4.12.jar"/>
+    <pathelement location="${basedir}/src/lib/log4j-1.2.17.jar"/>
+    <pathelement location="${basedir}/src/lib/poi-3.16-beta1.jar"/>
+    <pathelement location="${basedir}/src/lib/poi-examples-3.16-beta1.jar"/>
+    <pathelement location="${basedir}/src/lib/poi-excelant-3.16-beta1.jar"/>
+    <pathelement location="${basedir}/src/lib/poi-ooxml-3.16-beta1.jar"/>
+    <pathelement location="${basedir}/src/lib/poi-ooxml-schemas-3.16-beta1.jar"/>
+    <pathelement location="${basedir}/src/lib/poi-scratchpad-3.16-beta1.jar"/>
+    <pathelement location="${basedir}/src/lib/xmlbeans-2.6.0.jar"/>
+    <pathelement location="${basedir}/src/lib/jfoenix.jar"/>
+  </path>
+  
+  <path id="team-33.runtime.production.module.classpath">
+    <pathelement location="${team-33.output.dir}"/>
+    <pathelement location="${basedir}/src/lib/activation.jar"/>
+    <pathelement location="${basedir}/src/lib/aspose-cells-17.02.0.jar"/>
+    <pathelement location="${basedir}/src/lib/aspose-gridweb-17.02.0.jar"/>
+    <pathelement location="${basedir}/src/lib/bcprov-jdk16-146.jar"/>
+    <pathelement location="${basedir}/src/lib/commons-codec-1.10.jar"/>
+    <pathelement location="${basedir}/src/lib/commons-collections4-4.1.jar"/>
+    <pathelement location="${basedir}/src/lib/commons-logging-1.2.jar"/>
+    <pathelement location="${basedir}/src/lib/curvesapi-1.04.jar"/>
+    <pathelement location="${basedir}/src/lib/javax.mail.jar"/>
+    <pathelement location="${basedir}/src/lib/junit-4.12.jar"/>
+    <pathelement location="${basedir}/src/lib/log4j-1.2.17.jar"/>
+    <pathelement location="${basedir}/src/lib/poi-3.16-beta1.jar"/>
+    <pathelement location="${basedir}/src/lib/poi-examples-3.16-beta1.jar"/>
+    <pathelement location="${basedir}/src/lib/poi-excelant-3.16-beta1.jar"/>
+    <pathelement location="${basedir}/src/lib/poi-ooxml-3.16-beta1.jar"/>
+    <pathelement location="${basedir}/src/lib/poi-ooxml-schemas-3.16-beta1.jar"/>
+    <pathelement location="${basedir}/src/lib/poi-scratchpad-3.16-beta1.jar"/>
+    <pathelement location="${basedir}/src/lib/xmlbeans-2.6.0.jar"/>
+    <pathelement location="${basedir}/src/lib/jfoenix.jar"/>
+  </path>
+  
+  <path id="team-33.module.classpath">
+    <path refid="${module.jdk.classpath.team-33}"/>
+    <pathelement location="${team-33.output.dir}"/>
+    <pathelement location="${basedir}/src/lib/activation.jar"/>
+    <pathelement location="${basedir}/src/lib/aspose-cells-17.02.0.jar"/>
+    <pathelement location="${basedir}/src/lib/aspose-gridweb-17.02.0.jar"/>
+    <pathelement location="${basedir}/src/lib/bcprov-jdk16-146.jar"/>
+    <pathelement location="${basedir}/src/lib/commons-codec-1.10.jar"/>
+    <pathelement location="${basedir}/src/lib/commons-collections4-4.1.jar"/>
+    <pathelement location="${basedir}/src/lib/commons-logging-1.2.jar"/>
+    <pathelement location="${basedir}/src/lib/curvesapi-1.04.jar"/>
+    <pathelement location="${basedir}/src/lib/javax.mail.jar"/>
+    <pathelement location="${basedir}/src/lib/junit-4.12.jar"/>
+    <pathelement location="${basedir}/src/lib/log4j-1.2.17.jar"/>
+    <pathelement location="${basedir}/src/lib/poi-3.16-beta1.jar"/>
+    <pathelement location="${basedir}/src/lib/poi-examples-3.16-beta1.jar"/>
+    <pathelement location="${basedir}/src/lib/poi-excelant-3.16-beta1.jar"/>
+    <pathelement location="${basedir}/src/lib/poi-ooxml-3.16-beta1.jar"/>
+    <pathelement location="${basedir}/src/lib/poi-ooxml-schemas-3.16-beta1.jar"/>
+    <pathelement location="${basedir}/src/lib/poi-scratchpad-3.16-beta1.jar"/>
+    <pathelement location="${basedir}/src/lib/xmlbeans-2.6.0.jar"/>
+    <pathelement location="${basedir}/src/lib/jfoenix.jar"/>
+  </path>
+  
+  <path id="team-33.runtime.module.classpath">
+    <pathelement location="${team-33.testoutput.dir}"/>
+    <pathelement location="${team-33.output.dir}"/>
+    <pathelement location="${basedir}/src/lib/activation.jar"/>
+    <pathelement location="${basedir}/src/lib/aspose-cells-17.02.0.jar"/>
+    <pathelement location="${basedir}/src/lib/aspose-gridweb-17.02.0.jar"/>
+    <pathelement location="${basedir}/src/lib/bcprov-jdk16-146.jar"/>
+    <pathelement location="${basedir}/src/lib/commons-codec-1.10.jar"/>
+    <pathelement location="${basedir}/src/lib/commons-collections4-4.1.jar"/>
+    <pathelement location="${basedir}/src/lib/commons-logging-1.2.jar"/>
+    <pathelement location="${basedir}/src/lib/curvesapi-1.04.jar"/>
+    <pathelement location="${basedir}/src/lib/javax.mail.jar"/>
+    <pathelement location="${basedir}/src/lib/junit-4.12.jar"/>
+    <pathelement location="${basedir}/src/lib/log4j-1.2.17.jar"/>
+    <pathelement location="${basedir}/src/lib/poi-3.16-beta1.jar"/>
+    <pathelement location="${basedir}/src/lib/poi-examples-3.16-beta1.jar"/>
+    <pathelement location="${basedir}/src/lib/poi-excelant-3.16-beta1.jar"/>
+    <pathelement location="${basedir}/src/lib/poi-ooxml-3.16-beta1.jar"/>
+    <pathelement location="${basedir}/src/lib/poi-ooxml-schemas-3.16-beta1.jar"/>
+    <pathelement location="${basedir}/src/lib/poi-scratchpad-3.16-beta1.jar"/>
+    <pathelement location="${basedir}/src/lib/xmlbeans-2.6.0.jar"/>
+    <pathelement location="${basedir}/src/lib/jfoenix.jar"/>
+  </path>
+  
+  
+  <patternset id="excluded.from.module.team-33">
+    <patternset refid="ignored.files"/>
+  </patternset>
+  
+  <patternset id="excluded.from.compilation.team-33">
+    <patternset refid="excluded.from.module.team-33"/>
+  </patternset>
+  
+  <path id="team-33.module.sourcepath">
+    <dirset dir="${module.team-33.basedir}">
+      <include name="src"/>
+      <include name="src/com/resources"/>
+    </dirset>
+  </path>
+  
+  
+  <target name="compile.module.team-33" depends="compile.module.team-33.production,compile.module.team-33.tests" description="Compile module Team-33"/>
+  
+  <target name="compile.module.team-33.production" description="Compile module Team-33; production classes">
+    <mkdir dir="${team-33.output.dir}"/>
+    <javac destdir="${team-33.output.dir}" debug="${compiler.debug}" nowarn="${compiler.generate.no.warnings}" memorymaximumsize="${compiler.max.memory}" fork="true" executable="${module.jdk.bin.team-33}/javac">
+      <compilerarg line="${compiler.args.team-33}"/>
+      <bootclasspath refid="team-33.module.bootclasspath"/>
+      <classpath refid="team-33.module.production.classpath"/>
+      <src refid="team-33.module.sourcepath"/>
+      <patternset refid="excluded.from.compilation.team-33"/>
+    </javac>
+    
+    <copy todir="${team-33.output.dir}">
+      <fileset dir="${module.team-33.basedir}/src">
+        <patternset refid="compiler.resources"/>
+        <type type="file"/>
+      </fileset>
+      <fileset dir="${module.team-33.basedir}/src/com/resources">
+        <patternset refid="compiler.resources"/>
+        <type type="file"/>
+      </fileset>
+    </copy>
+  </target>
+  
+  <target name="compile.module.team-33.tests" depends="compile.module.team-33.production" description="compile module Team-33; test classes" unless="skip.tests"/>
+  
+  <target name="clean.module.team-33" description="cleanup module">
+    <delete dir="${team-33.output.dir}"/>
+    <delete dir="${team-33.testoutput.dir}"/>
+  </target>
+</project>
